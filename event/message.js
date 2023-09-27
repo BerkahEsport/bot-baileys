@@ -6,10 +6,11 @@ import chalk from "chalk"
 import axios from "axios"
 import path from "path"
 import { getBinaryNodeChildren } from "@whiskeysockets/baileys"
-import { exec } from "child_process"
+import cp, { exec } from "child_process"
 import { format } from "util"
 import { fileURLToPath } from "url"
 import { createRequire } from "module"
+import { promisify } from 'util'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const __filename = Func.__filename(import.meta.url)
@@ -64,22 +65,19 @@ export default async function Message(conn, m, chatUpdate) {
                     }
                 }, { quoted: m })
             }
-            break
-            case "speed": {
-                const { promisify } = (await import("util"))
-                const cp = (await import("child_process")).default
-                let execute = promisify(exec).bind(cp)
-                m.reply("Testing Speed...")
-                let o
-                try {
-                    o = exec(`speedtest --accept-license`) // install speedtest-cli
-                } catch (e) {
-                    o = e
-                } finally {
+            case "speed":  {
+                        m.reply('*ꜱᴇᴅᴀɴɢ ᴘʀᴏꜱᴇꜱ ᴋᴇᴄᴇᴘᴀᴛᴀɴ ɪɴᴛᴇʀɴᴇᴛ...*')
+                        let exec = promisify(cp.exec).bind(cp)
+                      let o
+                      try {
+                      o = await exec('python speed.py')
+                      } catch (e) {
+                      o = e
+                     } finally {
                     let { stdout, stderr } = o
-                    if (stdout) return m.reply(stdout)
-                    if (stderr) return m.reply(stderr)
-                }
+                    if (stdout.trim()) m.reply(stdout)
+                    if (stderr.trim()) m.reply(stderr)
+                        }
             }
             break
             case "owner": {
