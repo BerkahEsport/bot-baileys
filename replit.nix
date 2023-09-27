@@ -1,20 +1,16 @@
 { pkgs }: {
-    deps = [
-        pkgs.nodejs
+	deps = [
+		pkgs.neofetch
+		pkgs.imagemagick
+		pkgs.nodejs-19_x
         pkgs.nodePackages.typescript
-        pkgs.ffmpeg
-        pkgs.imagemagick
-        pkgs.git
-        pkgs.neofetch
+		pkgs.jellyfin-ffmpeg
+		pkgs.git
+		pkgs.python2
+		pkgs.python310Packages.python
         pkgs.libwebp
-        pkgs.speedtest-cli
         pkgs.wget
         pkgs.yarn
         pkgs.libuuid
-    ];
-    env = {
-        LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [
-            pkgs.libuuid
-        ];
-    };
+	];
 }
