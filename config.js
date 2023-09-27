@@ -1,11 +1,12 @@
 
 // setting your list menu on here
 const menu = {
-   main: ["help", "speed", "owner", "ping", "quoted"],
+   main: ["speed", "owner", "ping", "quoted"],
+   islam: ["doa", "kisahnabi"],
    owner: ["eval", "exec", "mute", "public", "setprofile", "setname"],
    convert: ["sticker", "toimage"],
    group: ["hidetag", "add", "welcome", "leaving", "setprofile", "setname", "linkgroup"],
-   tool: ["fetch", "rvo"]
+   tool: ["fetch", "rvo", "ai"]
 }
 
 const limit = {

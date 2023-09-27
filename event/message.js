@@ -16,7 +16,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const __filename = Func.__filename(import.meta.url)
 const require = createRequire(import.meta.url)
 
-export default async function Message(conn, m, chatUpdate) {
+export default async function Message(conn, m) {
     try {
         if (!m) return
         if (!config.options.public && !m.isOwner) return
@@ -24,7 +24,7 @@ export default async function Message(conn, m, chatUpdate) {
         if (m.isBaileys) return
 
         (await import("../lib/loadDatabase.js")).default(m)
-
+        (await import("./before.js")).default(conn, m)
         const prefix = m.prefix
         const isCmd = m.body.startsWith(prefix)
         const command = isCmd ? m.command.toLowerCase() : ""
@@ -290,6 +290,60 @@ export default async function Message(conn, m, chatUpdate) {
                 await conn.sendMessage(m.from, { forward: quoted }, { quoted: m })
             }
             break
+            case "kisahnabi": {
+if (!m.body) return conn.reply(m.from, `ʜᴀʀᴀᴘ ᴍᴀꜱᴜᴋᴀɴ ɴᴀᴍᴀ ɴᴀʙɪ\n\nᴄᴏɴᴛᴏʜ: .kisahnabi ᴍᴜʜᴀᴍᴍᴀᴅ`,m);
+let data = [ 'Adam', 'Idris', 'Nuh', 'Hud', 'Sholeh',
+'Ibrahim', 'Ismail', 'Luth', 'Ishaq', 'Yaqub',
+'Yusuf', "Syu'aib", 'Ayyub', 'Dzulkifli', 'Musa',
+'Harun', 'Daud','Sulaiman','Ilyas', 'Ilyasa',
+'Yunus', 'Zakariya','Yahya', 'Isa', 'Muhammad']
+let mirip = didYouMean(`${args[0].replace(/[^a-zA-Z]/g, '')}`, data)
+let nomorjson = data.indexOf(mirip)
+let res = await fetch(`https://raw.githubusercontent.com/BerkahEsport/api-be/main/data/islam/kisahnabi/${nomorjson+1}.json`);
+if (!res.ok) return m.reply(await res.text());
+let json = await res.json();
+let more = String.fromCharCode(8206);
+let readMore = more.repeat(4001);
+let gmbr = `${json[0].image_url}`;
+let anu = `*── 「 𝐊𝐈𝐒𝐀𝐇 𝐍𝐀𝐁𝐈 」 ──*
+▢ *𝐍𝐚𝐛𝐢*: ${json[0].name}
+▢ *ʟᴀʜɪʀ*: ${json[0].thn_kelahiran}
+▢ *ᴜᴍᴜʀ*: ${json[0].usia} ᴛᴀʜᴜɴ.
+▢ *ᴛᴇᴍᴘᴀᴛ*: ${json[0].tmp}
+${readMore}
+${json[0].description}`;
+conn.sendFiles(m.chat, gmbr, "nabi.jpg", anu, m);
+};
+break
+case "doa": {
+    if (!m.body) return conn.reply(m.from, `ʜᴀʀᴀᴘ ᴍᴀꜱᴜᴋᴀɴ ɴᴀᴍᴀ ɴᴀʙɪ\n\nᴄᴏɴᴛᴏʜ: .kisahnabi ᴍᴜʜᴀᴍᴍᴀᴅ`,m);
+conn.doa = conn.doa ? conn.doa : {}
+let doaseharihari = await (await fetch("https://raw.githubusercontent.com/BerkahEsport/api-be/main/data/islam/lainya/doaharian.json")).json()
+let data = doaseharihari.data.map(v => v.title)
+let mirip = didyoumean(`Doa ${text}`, data)
+if (mirip == null) {
+  const datas = doaseharihari.data.filter(item => item.title.toLowerCase().match(text));
+  if (datas.length == 0) throw ('Doa tidak ditemukan!')
+  let id = await m.reply(`★彡[ʜᴀꜱɪʟ ᴅᴏᴀ ʏᴀɴɢ ᴅɪᴛᴇᴍᴜᴋᴀɴ]彡★
+
+${datas.map((v,i) => `\n${i+1}. ${v.title}`)}
+
+_Silahkan balas pesan ini dan ketikkan angkanya yang ingin dipilih!_`.trim())
+  conn.doa[m.chat] = [{isi: datas, id: id.id},
+  setTimeout(() => {
+    delete conn.doa[m.chat]
+}, 120000)]
+} else {
+  const result = doaseharihari.filter(item => item.title.toLowerCase().includes(mirip.toLowerCase()));
+  await m.reply(`*${result[0].title}*
+
+${result[0].arabic}
+_${result[0].latin}_
+
+${result[0].translation}`.trim())
+}
+}
+break
             default:
                 if ([">", "eval", "=>"].some(a => m.body?.toLowerCase()?.startsWith(a))) {
                     if (!m.isOwner) return m.reply("owner")
