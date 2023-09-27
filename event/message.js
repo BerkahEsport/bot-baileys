@@ -11,7 +11,7 @@ import { format } from "util"
 import { fileURLToPath } from "url"
 import { createRequire } from "module"
 import { promisify } from 'util'
-
+const api = async (name, options = {}) => new (await import("./lib/api.js")).default(name, options)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const __filename = Func.__filename(import.meta.url)
 const require = createRequire(import.meta.url)
