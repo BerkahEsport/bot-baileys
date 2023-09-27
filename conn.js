@@ -11,7 +11,6 @@ import readline from "readline"
 import { parsePhoneNumber } from "libphonenumber-js"
 import open from "open"
 import path from "path"
-import connect from "./server.js"
 global.api = async (name, options = {}) => new (await import("./lib/api.js")).default(name, options)
 const database = (new (await import("./lib/database.js")).default())
 const store = makeInMemoryStore({ logger: Pino({ level: "fatal" }).child({ level: "fatal" }) })
@@ -258,5 +257,4 @@ async function start() {
 
    return conn
 }
-connect()
 start()
