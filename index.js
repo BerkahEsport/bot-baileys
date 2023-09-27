@@ -6,21 +6,18 @@ import { fileURLToPath } from "url"
 import { platform } from "os"
 import { watchFile, unwatchFile } from "fs"
 import express from 'express'
-import { createServer } from 'http'
 import fetch from 'node-fetch'
-const PORT = process.env.PORT || 8080 || 5000 || 3000
-let server = createServer(express())
-let __path = process.cwd()
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const PORT = process.env.PORT || 8080
+// let __path = process.cwd()
 var app = express(); 
-function connect() {
 app.get('/', (req, res) => {
-    res.sendFile(__path + '/home.html')
+    res.sendFile(__dirname + '/home.html')
 })
-server.listen(PORT, () => {
+app.listen(PORT, () => {
         console.log('App listened on port', PORT)
         keepAlive()
     })
-}
 
 
 function keepAlive() {
@@ -30,7 +27,6 @@ function keepAlive() {
         fetch(url).catch(console.error)
     }, 5 * 1000 * 60)
 }
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 var isRunning = false
 function start(file) {
@@ -62,5 +58,4 @@ function start(file) {
       })
    })
 }
-connect()
 start("conn.js")
