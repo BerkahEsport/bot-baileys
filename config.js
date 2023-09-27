@@ -44,7 +44,7 @@ export default {
       packName: `Sticker Ini Dibuat Oleh :`,
       packPublish: "moexti.",
       packEmail: "berkahesport@gmail.com",
-      packWebsite: "https://apibe.vercel.app",
+      packWebsite: "https://bot-baileys.berkahesport.repl.co/",
       androidApp: "https://play.google.com/store/apps/details?id=com.bitsmedia.android.muslimpro",
       iOSApp: "https://apps.apple.com/id/app/muslim-pro-al-quran-adzan/id388389451?|=id",
       emojis: [],

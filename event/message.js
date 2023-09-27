@@ -15,6 +15,7 @@ const api = async (name, options = {}) => new (await import("./lib/api.js")).def
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const __filename = Func.__filename(import.meta.url)
 const require = createRequire(import.meta.url)
+import didyoumean from "didyoumean"
 
 export default async function Message(conn, m) {
     try {
@@ -24,7 +25,24 @@ export default async function Message(conn, m) {
         if (m.isBaileys) return
 
         (await import("../lib/loadDatabase.js")).default(m)
-        (await import("./before.js")).default(conn, m)
+// DOA
+    conn.doa = conn.doa ? conn.doa : {}
+    if (m.from in conn.doa) {
+        if (m.isQuoted) {
+              if (conn.doa[m.from][0].id === m.quoted.id) {
+                  for (const item of conn.doa[m.from][0].isi) {
+                      if (conn.doa[m.from][0].isi.length > Number(m.text)) {
+                        let hasildoa = conn.doa[m.from][0].isi[(Number(m.text)-1)]
+    m.reply(`*${hasildoa.title}*
+    
+    ${hasildoa.arabic}
+    _${hasildoa.latin}_
+    
+    ${hasildoa.translation}`.trim())
+                      } break
+                  }
+              }
+            } }
         const prefix = m.prefix
         const isCmd = m.body.startsWith(prefix)
         const command = isCmd ? m.command.toLowerCase() : ""
@@ -297,7 +315,7 @@ let data = [ 'Adam', 'Idris', 'Nuh', 'Hud', 'Sholeh',
 'Yusuf', "Syu'aib", 'Ayyub', 'Dzulkifli', 'Musa',
 'Harun', 'Daud','Sulaiman','Ilyas', 'Ilyasa',
 'Yunus', 'Zakariya','Yahya', 'Isa', 'Muhammad']
-let mirip = didYouMean(`${args[0].replace(/[^a-zA-Z]/g, '')}`, data)
+let mirip = didyoumean(`${m.args[0].replace(/[^a-zA-Z]/g, '')}`, data)
 let nomorjson = data.indexOf(mirip)
 let res = await fetch(`https://raw.githubusercontent.com/BerkahEsport/api-be/main/data/islam/kisahnabi/${nomorjson+1}.json`);
 if (!res.ok) return m.reply(await res.text());
@@ -312,29 +330,41 @@ let anu = `*── 「 𝐊𝐈𝐒𝐀𝐇 𝐍𝐀𝐁𝐈 」 ──*
 ▢ *ᴛᴇᴍᴘᴀᴛ*: ${json[0].tmp}
 ${readMore}
 ${json[0].description}`;
-conn.sendFiles(m.chat, gmbr, "nabi.jpg", anu, m);
+conn.sendMessage(m.from, {
+                    text: anu, contextInfo: {
+                        mentionedJid: [ m.sender],
+                        externalAdReply: {
+                            title: conn?.user?.name,
+                            mediaType: 1,
+                            previewType: 0,
+                            renderLargerThumbnail: true,
+                            thumbnail: await (await fetch(gmbr)).arrayBuffer(),
+                            sourceUrl: config.Exif.packWebsite
+                        }
+                    }
+                }, { quoted: m })
 };
 break
 case "doa": {
-    if (!m.body) return conn.reply(m.from, `ʜᴀʀᴀᴘ ᴍᴀꜱᴜᴋᴀɴ ɴᴀᴍᴀ ɴᴀʙɪ\n\nᴄᴏɴᴛᴏʜ: .kisahnabi ᴍᴜʜᴀᴍᴍᴀᴅ`,m);
+    if (!m.text) return conn.sendMessage(m.from, {text: `ʜᴀʀᴀᴘ ᴍᴀꜱᴜᴋᴀɴ ɴᴀᴍᴀ ɴᴀʙɪ\n\nᴄᴏɴᴛᴏʜ: .kisahnabi ᴍᴜʜᴀᴍᴍᴀᴅ`},{quoted: m});
 conn.doa = conn.doa ? conn.doa : {}
 let doaseharihari = await (await fetch("https://raw.githubusercontent.com/BerkahEsport/api-be/main/data/islam/lainya/doaharian.json")).json()
 let data = doaseharihari.data.map(v => v.title)
-let mirip = didyoumean(`Doa ${text}`, data)
+let mirip = didyoumean(`Doa ${m.text}`, data)
 if (mirip == null) {
-  const datas = doaseharihari.data.filter(item => item.title.toLowerCase().match(text));
+  const datas = doaseharihari.data.filter(item => item.title.toLowerCase().match(m.text));
   if (datas.length == 0) throw ('Doa tidak ditemukan!')
-  let id = await m.reply(`★彡[ʜᴀꜱɪʟ ᴅᴏᴀ ʏᴀɴɢ ᴅɪᴛᴇᴍᴜᴋᴀɴ]彡★
+  let id = await conn.sendMessage(m.from, { text: `★彡[ʜᴀꜱɪʟ ᴅᴏᴀ ʏᴀɴɢ ᴅɪᴛᴇᴍᴜᴋᴀɴ]彡★
 
 ${datas.map((v,i) => `\n${i+1}. ${v.title}`)}
 
-_Silahkan balas pesan ini dan ketikkan angkanya yang ingin dipilih!_`.trim())
-  conn.doa[m.chat] = [{isi: datas, id: id.id},
+_Silahkan balas pesan ini dan ketikkan angkanya yang ingin dipilih!_`.trim()}, {quoted: m})
+  conn.doa[m.from] = [{isi: datas, id: id.key.id},
   setTimeout(() => {
-    delete conn.doa[m.chat]
+    delete conn.doa[m.from]
 }, 120000)]
 } else {
-  const result = doaseharihari.filter(item => item.title.toLowerCase().includes(mirip.toLowerCase()));
+  const result = doaseharihari.data.filter(item => item.title.toLowerCase().includes(mirip.toLowerCase()));
   await m.reply(`*${result[0].title}*
 
 ${result[0].arabic}
