@@ -9,15 +9,14 @@ import express from 'express'
 import { createServer } from 'http'
 import fetch from 'node-fetch'
 const PORT = process.env.PORT || 8080 || 5000 || 3000
+let server = createServer(express())
+let __path = process.cwd()
+var app = express(); 
 function connect() {
-    let server = createServer(express())
-    let __path = process.cwd()
-    var app = express(); 
 app.get('/', (req, res) => {
     res.sendFile(__path + '/home.html')
 })
-
-    server.listen(PORT, () => {
+server.listen(PORT, () => {
         console.log('App listened on port', PORT)
         keepAlive()
     })
@@ -63,5 +62,5 @@ function start(file) {
       })
    })
 }
-
+connect()
 start("conn.js")
