@@ -36,21 +36,24 @@ export default async function Message(conn, m, chatUpdate) {
         }
 
         switch (command) {
-            case "menu": case "help": {
+            case "menu": {
                 let text = `
 ┏━━〔 ${config.options.bot} 〕━▣
 ┃❒ *Hai, @${m.sender.split`@`[0]}!*
-┃❒ Total CMD :* ${Object.values(config.menu).map(a => a.length).reduce((total, num) => total + num, 0)}
+┃❒ *Total CMD :* ${Object.values(config.menu).map(a => a.length).reduce((total, num) => total + num, 0)}
+┗━━━━━━▣\n`.trimStart()
+    Object.entries(config.menu).map(([type, command]) => {
+        text += `╔═  *ᴍᴇɴᴜ ${Func.toUpper(type)}*\n`
+        text += `┃\n`
+        text += `┃➠ ${command.map(a => `_${prefix + a}_`).join("\n│➠ ")}\n`
+        text += `┃\n`
+        text += `╚══════▣\n`
+    }).join('\n\n')
+                text += `
+┏━━〔 ${config.options.bot} 〕━▣
 ┃❒ ʙᴏᴛ ꜰᴜʟʟ ꜰɪᴛᴜʀ: 
 ┃❒ _https://wa.me/62857821922892?text=.daftar%20UserBE.20_
 ┗━━━━━━▣\n`.trimStart()
-                Object.entries(config.menu).map(([type, command]) => {
-                    text += `╔═  *ᴍᴇɴᴜ ${Func.toUpper(type)}*\n`
-                    text += `┃\n`
-                    text += `┃➠ ${command.map(a => `_${prefix + a}_`).join("\n│➠ ")}\n`
-                    text += `┃\n`
-                    text += `╚══════▣\n`
-                }).join('\n\n')
                 return conn.sendMessage(m.from, {
                     text, contextInfo: {
                         mentionedJid: conn.parseMention(text),
@@ -78,6 +81,25 @@ export default async function Message(conn, m, chatUpdate) {
                     if (stdout.trim()) m.reply(stdout)
                     if (stderr.trim()) m.reply(stderr)
                         }
+            }
+            break    
+            case "ai": {
+            await m.reply("wait")
+            let ai = await pickRandom(['ᴏᴘᴇɴ ᴀɪ','𓂀 𝕆ℙ𝔼ℕ 𝔸𝕀 𓂀','▄︻デO̷P̷E̷N̷ ̷A̷I̷══━一★','彡[ᴏᴘᴇɴ ᴀɪ]彡★','꧁༒☬𝓞𝓟𝓔𝓝 𝓐𝓘☬༒꧂','꧁𓊈𒆜🅾🅿🅴🅽 🅰🅸𒆜𓊉꧂','▀▄▀▄▀▄🄾🄿🄴🄽 🄰🄸▀▄▀▄▀▄','꧁༺օքɛռ ǟɨ༻꧂','█▓▒­░⡷⠂ФPΞИ ДI⠐⢾░▒▓█'])
+              try {
+              let messages = [{role: 'system', content: 'BerkahEsport'}, {role: 'user', content: `${text}`}]
+              let rres = await (await axios.post(`https://xzn.wtf/api/openai?apikey=berkahesport`, {messages})).data
+              
+            m.reply(`${'❖=『 '+ai+' 』=❖'}
+                
+            ᴀɴᴅᴀ: ${text}
+            
+            <==========>
+            ʀᴇꜱᴘᴏɴ ᴀɪ: ${rres.result}`.trim(),m)
+                    }  catch (err) {
+                console.log(`OpenAI => ${err}`)
+                m.reply('ᴀɪ ᴛɪᴅᴀᴋ ᴍᴇɴɢᴇʀᴛɪ ᴄᴏʙᴀ ᴛᴀɴʏᴀᴋᴀɴ ʏᴀɴɢ ʟᴀɪɴ!')
+                }
             }
             break
             case "owner": {
@@ -173,7 +195,7 @@ export default async function Message(conn, m, chatUpdate) {
                 }
             }
             break
-            case "toimg": case "toimage": {
+            case "toimg": {
                 let { webp2mp4File } = (await import("../lib/sticker.js"))
                 if (!/webp/i.test(quoted.mime)) return m.reply(`Reply Sticker with command ${prefix + command}`)
                 if (quoted.isAnimated) {
@@ -192,7 +214,7 @@ export default async function Message(conn, m, chatUpdate) {
                 conn.sendMessage(m.from, { forward: mod, mentions })
             }
             break
-            case "add": case "+": {
+            case "add": {
                 if (!m.isGroup) return m.reply("group")
                 if (!m.isAdmin) return m.reply("admin")
                 if (!m.isBotAdmin) return m.reply("botAdmin")
