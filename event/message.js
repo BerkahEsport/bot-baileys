@@ -30,19 +30,18 @@ export default async function Message(conn, m) {
     if (m.from in conn.doa) {
         if (m.isQuoted) {
               if (conn.doa[m.from][0].id === m.quoted.id) {
-                  for (const item of conn.doa[m.from][0].isi) {
-                      if (conn.doa[m.from][0].isi.length > Number(m.text)) {
-                        let hasildoa = conn.doa[m.from][0].isi[(Number(m.text)-1)]
+      if (conn.doa[m.from][0].isi.length > Number(m.arg[0] - 1)) {
+let hasildoa = conn.doa[m.from][0].isi[Number(m.arg[0] - 1)]
     m.reply(`*${hasildoa.title}*
     
     ${hasildoa.arabic}
     _${hasildoa.latin}_
     
-    ${hasildoa.translation}`.trim())
-                      } break
+    ${hasildoa.translation}`.trim()) 
+      }
+              }
                   }
               }
-            } }
         const prefix = m.prefix
         const isCmd = m.body.startsWith(prefix)
         const command = isCmd ? m.command.toLowerCase() : ""
@@ -102,19 +101,20 @@ export default async function Message(conn, m) {
             }
             break    
             case "ai": {
-            await m.reply("wait")
-            let ai = await pickRandom(['ᴏᴘᴇɴ ᴀɪ','𓂀 𝕆ℙ𝔼ℕ 𝔸𝕀 𓂀','▄︻デO̷P̷E̷N̷ ̷A̷I̷══━一★','彡[ᴏᴘᴇɴ ᴀɪ]彡★','꧁༒☬𝓞𝓟𝓔𝓝 𝓐𝓘☬༒꧂','꧁𓊈𒆜🅾🅿🅴🅽 🅰🅸𒆜𓊉꧂','▀▄▀▄▀▄🄾🄿🄴🄽 🄰🄸▀▄▀▄▀▄','꧁༺օքɛռ ǟɨ༻꧂','█▓▒­░⡷⠂ФPΞИ ДI⠐⢾░▒▓█'])
+            let ai = 'ᴏᴘᴇɴ ᴀɪ'
               try {
-              let messages = [{role: 'system', content: 'BerkahEsport'}, {role: 'user', content: `${text}`}]
-              let rres = await (await axios.post(`https://xzn.wtf/api/openai?apikey=berkahesport`, {messages})).data
-              
-            m.reply(`${'❖=『 '+ai+' 』=❖'}
-                
-            ᴀɴᴅᴀ: ${text}
-            
-            <==========>
-            ʀᴇꜱᴘᴏɴ ᴀɪ: ${rres.result}`.trim(),m)
-                    }  catch (err) {
+            await m.reply("wait")
+              let messages = [{role: 'system', content: 'BerkahEsport'}, {role: 'user', content: `${m.text}`}]
+              let rres = await(await fetch(`https://vihangayt.me/tools/chatgpt4?q=${m.text}`)).json()
+  
+m.reply(`${'❖=『 '+ai+' 』=❖'}
+    
+ᴀɴᴅᴀ: ${m.text}
+
+<==========>
+ʀᴇꜱᴘᴏɴ ᴀɪ: 
+${rres.data}`.trim())
+        }  catch (err) {
                 console.log(`OpenAI => ${err}`)
                 m.reply('ᴀɪ ᴛɪᴅᴀᴋ ᴍᴇɴɢᴇʀᴛɪ ᴄᴏʙᴀ ᴛᴀɴʏᴀᴋᴀɴ ʏᴀɴɢ ʟᴀɪɴ!')
                 }
@@ -346,32 +346,19 @@ conn.sendMessage(m.from, {
 };
 break
 case "doa": {
-    if (!m.text) return conn.sendMessage(m.from, {text: `ʜᴀʀᴀᴘ ᴍᴀꜱᴜᴋᴀɴ ɴᴀᴍᴀ ɴᴀʙɪ\n\nᴄᴏɴᴛᴏʜ: .kisahnabi ᴍᴜʜᴀᴍᴍᴀᴅ`},{quoted: m});
 conn.doa = conn.doa ? conn.doa : {}
 let doaseharihari = await (await fetch("https://raw.githubusercontent.com/BerkahEsport/api-be/main/data/islam/lainya/doaharian.json")).json()
-let data = doaseharihari.data.map(v => v.title)
-let mirip = didyoumean(`Doa ${m.text}`, data)
-if (mirip == null) {
-  const datas = doaseharihari.data.filter(item => item.title.toLowerCase().match(m.text));
-  if (datas.length == 0) throw ('Doa tidak ditemukan!')
-  let id = await conn.sendMessage(m.from, { text: `★彡[ʜᴀꜱɪʟ ᴅᴏᴀ ʏᴀɴɢ ᴅɪᴛᴇᴍᴜᴋᴀɴ]彡★
+let data = doaseharihari.data.map((v,i) => `\n${i+1}. ${v.title}`)
+  let datas = doaseharihari.data
+  let id = await conn.sendMessage(m.from, { text: `★彡[ᴅᴏᴀ]彡★
 
-${datas.map((v,i) => `\n${i+1}. ${v.title}`)}
+${data}
 
 _Silahkan balas pesan ini dan ketikkan angkanya yang ingin dipilih!_`.trim()}, {quoted: m})
   conn.doa[m.from] = [{isi: datas, id: id.key.id},
   setTimeout(() => {
     delete conn.doa[m.from]
 }, 120000)]
-} else {
-  const result = doaseharihari.data.filter(item => item.title.toLowerCase().includes(mirip.toLowerCase()));
-  await m.reply(`*${result[0].title}*
-
-${result[0].arabic}
-_${result[0].latin}_
-
-${result[0].translation}`.trim())
-}
 }
 break
             default:
