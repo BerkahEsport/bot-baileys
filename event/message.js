@@ -106,10 +106,10 @@ if (m.from in conn.yts) {
                 if (!m.text) return m.reply(`Masukkan pencarian youtube!`)
                 let data = await (await fetch(`https://apibe.berkahesport.repl.co/api/yutub/search?text=${m.text}&apikey=berkahesport`)).json()
                 let hasil = data.map((v,i) => `\n*${i+1}*. *Judul:* ${v?.title}\n▸ *Durasi:* ${v?.timestamp}`)
-                let id = await m.reply("★彡[ʏᴏᴜᴛᴜʙᴇ ꜱᴇᴀʀᴄʜ]彡★\n\n"+hasil+"\nᴮᵃˡᵃˢ ᵈᵃⁿ ᵏⁱʳⁱᵐ ˢᵉˢᵘᵃⁱ ᵃⁿᵍᵏᵃ!")
+                let id = await m.reply("*★彡[ʏᴏᴜᴛᴜʙᴇ ꜱᴇᴀʀᴄʜ]彡★*\n\n"+hasil+"\nᴮᵃˡᵃˢ ᵈᵃⁿ ᵏⁱʳⁱᵐ ˢᵉˢᵘᵃⁱ ᵃⁿᵍᵏᵃ!")
                 conn.yts = conn.yts ? conn.yts : {}
                 conn.yts[m.from] = [{id: id.key.id}, data, setTimeout(() => {
-                    delete conn.yts[m.from]}, 3 * 60000)]
+                    delete conn.yts[m.from]},  120000)]
             }
             case "yta":  {
                 if (!m.text && m.text.startsWith(/https:\/\//gi)) return m.reply(`Masukkan link youtube!`)
