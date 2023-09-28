@@ -160,7 +160,6 @@ if (m.from in conn.yts) {
             let ai = 'ᴏᴘᴇɴ ᴀɪ'
               try {
             await m.reply("wait")
-              let messages = [{role: 'system', content: 'BerkahEsport'}, {role: 'user', content: `${m.text}`}]
               let rres = await(await fetch(`https://vihangayt.me/tools/chatgpt4?q=${m.text}`)).json()
   
 m.reply(`${'❖=『 '+ai+' 』=❖'}
