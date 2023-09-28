@@ -112,36 +112,42 @@ if (m.from in conn.yts) {
                     delete conn.yts[m.from]
                     data = null},  120000)]
             }
+            break
             case "yta":  {
                 if (!m.text && m.text.startsWith(/https:\/\//gi)) return m.reply(`Masukkan link youtube!`)
                 m.reply("wait")
                 let datayta = await (await fetch(`https://apibe.berkahesport.repl.co/api/yutub/audio?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(datayta.link)
             }
+            break
             case "ytv":  {
                 if (!m.text && m.text.startsWith(/https:\/\//gi)) return m.reply(`Masukkan link youtube!`)
                 m.reply("wait")
                 let dataytv = await (await fetch(`https://apibe.berkahesport.repl.co/api/yutub/video?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(dataytv.link)
             }
+            break
             case "ig":  {
                 if (!m.text && m.text.startsWith(/https:\/\//gi)) return m.reply(`Masukkan link instagram!`)
                 m.reply("wait")
                 let dataig = await (await fetch(`https://apibe.berkahesport.repl.co/api/igdl?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(dataig.medias[0].url)
             }
+            break
             case "tt":  {
                 if (!m.text && m.text.startsWith(/https:\/\//gi)) return m.reply(`Masukkan link tiktok!`)
                 m.reply("wait")
                 let datatt = await (await fetch(`https://apibe.berkahesport.repl.co/api/ttdl?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(datatt.video.no_watermark_hd)
             }
+            break
             case "fb":  {
                 if (!m.text && m.text.startsWith(/https:\/\//gi)) return m.reply(`Masukkan link facebook!`)
                 m.reply("wait")
                 let datafb = await (await fetch(`https://apibe.berkahesport.repl.co/api/fbdl?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(datafb.result[0].url)
             }
+            break
             case "speed":  {
                         m.reply('*ꜱᴇᴅᴀɴɢ ᴘʀᴏꜱᴇꜱ ᴋᴇᴄᴇᴘᴀᴛᴀɴ ɪɴᴛᴇʀɴᴇᴛ...*')
                         let exec = promisify(cp.exec).bind(cp)
