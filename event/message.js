@@ -109,37 +109,38 @@ if (m.from in conn.yts) {
                 let id = await m.reply("*★彡[ʏᴏᴜᴛᴜʙᴇ ꜱᴇᴀʀᴄʜ]彡★*\n\n"+hasil+"\nᴮᵃˡᵃˢ ᵈᵃⁿ ᵏⁱʳⁱᵐ ˢᵉˢᵘᵃⁱ ᵃⁿᵍᵏᵃ!")
                 conn.yts = conn.yts ? conn.yts : {}
                 conn.yts[m.from] = [{id: id.key.id}, data, setTimeout(() => {
-                    delete conn.yts[m.from]},  120000)]
+                    delete conn.yts[m.from]
+                    data = null},  120000)]
             }
             case "yta":  {
                 if (!m.text && m.text.startsWith(/https:\/\//gi)) return m.reply(`Masukkan link youtube!`)
                 m.reply("wait")
-                let data = await (await fetch(`https://apibe.berkahesport.repl.co/api/yutub/audio?url=${m.text}&apikey=berkahesport`)).json()
-                await m.reply(data.link)
+                let datayta = await (await fetch(`https://apibe.berkahesport.repl.co/api/yutub/audio?url=${m.text}&apikey=berkahesport`)).json()
+                await m.reply(datayta.link)
             }
             case "ytv":  {
                 if (!m.text && m.text.startsWith(/https:\/\//gi)) return m.reply(`Masukkan link youtube!`)
                 m.reply("wait")
-                let data = await (await fetch(`https://apibe.berkahesport.repl.co/api/yutub/video?url=${m.text}&apikey=berkahesport`)).json()
-                await m.reply(data.link)
+                let dataytv = await (await fetch(`https://apibe.berkahesport.repl.co/api/yutub/video?url=${m.text}&apikey=berkahesport`)).json()
+                await m.reply(dataytv.link)
             }
             case "ig":  {
                 if (!m.text && m.text.startsWith(/https:\/\//gi)) return m.reply(`Masukkan link instagram!`)
                 m.reply("wait")
-                let data = await (await fetch(`https://apibe.berkahesport.repl.co/api/igdl?url=${m.text}&apikey=berkahesport`)).json()
-                await m.reply(data.medias[0].url)
+                let dataig = await (await fetch(`https://apibe.berkahesport.repl.co/api/igdl?url=${m.text}&apikey=berkahesport`)).json()
+                await m.reply(dataig.medias[0].url)
             }
             case "tt":  {
                 if (!m.text && m.text.startsWith(/https:\/\//gi)) return m.reply(`Masukkan link tiktok!`)
                 m.reply("wait")
-                let data = await (await fetch(`https://apibe.berkahesport.repl.co/api/ttdl?url=${m.text}&apikey=berkahesport`)).json()
-                await m.reply(data.video.no_watermark_hd)
+                let datatt = await (await fetch(`https://apibe.berkahesport.repl.co/api/ttdl?url=${m.text}&apikey=berkahesport`)).json()
+                await m.reply(datatt.video.no_watermark_hd)
             }
             case "fb":  {
                 if (!m.text && m.text.startsWith(/https:\/\//gi)) return m.reply(`Masukkan link facebook!`)
                 m.reply("wait")
-                let data = await (await fetch(`https://apibe.berkahesport.repl.co/api/fbdl?url=${m.text}&apikey=berkahesport`)).json()
-                await m.reply(data.result[0].url)
+                let datafb = await (await fetch(`https://apibe.berkahesport.repl.co/api/fbdl?url=${m.text}&apikey=berkahesport`)).json()
+                await m.reply(datafb.result[0].url)
             }
             case "speed":  {
                         m.reply('*ꜱᴇᴅᴀɴɢ ᴘʀᴏꜱᴇꜱ ᴋᴇᴄᴇᴘᴀᴛᴀɴ ɪɴᴛᴇʀɴᴇᴛ...*')
