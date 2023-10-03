@@ -138,7 +138,7 @@ if (m.from in conn.yts) {
                             mediaType: 1,
                             previewType: 0,
                             renderLargerThumbnail: true,
-                            thumbnail: pp,
+                            thumbnail: (await Func.getFile(pp)).data,
                             sourceUrl: config.Exif.packWebsite
                         }
                     }
