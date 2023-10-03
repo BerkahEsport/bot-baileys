@@ -25,9 +25,13 @@ export default async function Message(conn, m) {
         if (m.isBaileys) return
         (await import("../lib/loadDatabase.js")).default(m)
 function limit(sender, number) {
-    if ( global.db.users[sender].limit < number) throw m.reply("limit")
+    try {
+    if ( global.db.users[sender].limit < number) throw
 global.db.users[sender].limit -= number
 return m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ ${number}, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
+    } catch(e) {
+        m.reply("limit")
+    }
 }
 // DOA
     conn.doa = conn.doa ? conn.doa : {}
