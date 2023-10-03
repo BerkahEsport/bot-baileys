@@ -329,12 +329,12 @@ ${rres.data}`.trim())
             }
             break
             case "sticker": case "s": case "stiker": {
+                if ( global.db.users[m.sender].limit < 1) return m.reply("limit")
+                if ( global.db.users[m.sender].limit > 1) {
+                    global.db.users[m.sender].limit -= 1
+                    m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 1, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
+                }
                 if (/image|video|webp/i.test(quoted.mime)) {
-                    if ( global.db.users[m.sender].limit < 1) return m.reply("limit")
-                    if ( global.db.users[m.sender].limit > 1) {
-                        global.db.users[m.sender].limit -= 1
-                        m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 1, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
-                    }
                     m.reply("wait")
                     const buffer = await quoted.download()
                     if (quoted?.msg?.seconds > 10) return m.reply(`Max video 9 second`)
@@ -347,24 +347,14 @@ ${rres.data}`.trim())
                     }
                     m.reply(buffer, { asSticker: true, ...exif })
                 } else if (m.mentionedJid[0]) {
-                    if ( global.db.users[m.sender].limit < 2) return m.reply("limit")
-                    if ( global.db.users[m.sender].limit > 2) {
-                        global.db.users[m.sender].limit -= 2
-                        m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 2, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
-                    }
                     m.reply("wait")
                     let url = await conn.profilePictureUrl(m.mentionedJid[0], "image");
                     m.reply(url, { asSticker: true, ...config.Exif })
                 } else if (/(https?:\/\/.*\.(?:png|jpg|jpeg|webp|mov|mp4|webm|gif))/i.test(m.text)) {
-                    if ( global.db.users[m.sender].limit < 1) return m.reply("limit")
-                    if ( global.db.users[m.sender].limit > 1) {
-                        global.db.users[m.sender].limit -= 1
-                        m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 1, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
-                    }
                     m.reply("wait")
                     m.reply(Func.isUrl(m.text)[0], { asSticker: true, ...config.Exif })
                 } else {
-                    m.reply(`Method Not Support`)
+                    m.reply(`Metode salah, balas pesan gambar ketik .s atau kirim gambar caption .s !!!`)
                 }
             }
             break
