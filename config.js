@@ -32,6 +32,7 @@ export default {
    },
    options: {
       bot: "ʙᴇʀᴋᴀʜᴇꜱᴘᴏʀᴛ.ɪᴅ",
+      author: "★彡[ᴍᴏᴇxᴛɪ]彡★",
       public: true,
       antiCall: true, // reject call
       database: "database.json", // End .json when using JSON database or use Mongo URI

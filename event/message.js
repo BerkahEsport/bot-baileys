@@ -113,6 +113,38 @@ if (m.from in conn.yts) {
                     }
                 }, { quoted: m })
             }
+            case "profile": {
+                let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
+                let pp = await conn.profilePictureUrl(who, 'image').catch(() => fs.readFileSync("./tmp/qrbe.jpg"))
+                let sender = global.db.users[who]
+                let text = `
+┏━━〔 ${config.options.bot} 〕━▣
+┃❒ *ɴᴀᴍᴀ:* ${"@"+m.sender.split`@`[0] || sender.name}
+┃❒ *ʟɪᴍɪᴛ:* ${sender.limit}
+┃❒ *ᴘʀᴇᴍɪᴜᴍ:* ${sender.premium ? "ɪʏᴀ" : "ᴛɪᴅᴀᴋ"}
+┃❒ *ᴠɪᴘ:* ${sender.VIP ? "ɪʏᴀ" : "ᴛɪᴅᴀᴋ"}
+┃❒ *ʙᴀɴɴᴇᴅ:* ${sender.banned ? "ɪʏᴀ" : "ᴛɪᴅᴀᴋ"}
+┗━━━━━━▣
+
+┏━━〔 ${config.options.author} 〕━▣
+┃❒ ʙᴏᴛ ꜰᴜʟʟ ꜰɪᴛᴜʀ: 
+┃❒ _https://wa.me/62857821922892?text=.daftar%20UserBE.20_
+┗━━━━━━▣\n`.trimStart()
+                conn.sendMessage(m.from, {
+                    text, contextInfo: {
+                        mentionedJid: conn.parseMention(text),
+                        externalAdReply: {
+                            title: conn?.user?.name,
+                            mediaType: 1,
+                            previewType: 0,
+                            renderLargerThumbnail: true,
+                            thumbnail: pp,
+                            sourceUrl: config.Exif.packWebsite
+                        }
+                    }
+                }, { quoted: m })
+            }
+            break
             case "yts":  {
                 if ( global.db.users[m.sender].limit < 1) return m.reply("limit")
                 if ( global.db.users[m.sender].limit > 1) {
