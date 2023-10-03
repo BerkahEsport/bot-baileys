@@ -24,15 +24,6 @@ export default async function Message(conn, m) {
         if (m.from && db.groups[m.from]?.mute && !m.isOwner) return
         if (m.isBaileys) return
         (await import("../lib/loadDatabase.js")).default(m)
-function limit(sender, number) {
-    try {
-    if ( global.db.users[sender].limit < number) throw
-global.db.users[sender].limit -= number
-return m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ ${number}, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
-    } catch(e) {
-        m.reply("limit")
-    }
-}
 // DOA
     conn.doa = conn.doa ? conn.doa : {}
     if (m.from in conn.doa) {
@@ -55,7 +46,11 @@ conn.yts = conn.yts ? conn.yts : {}
 if (m.from in conn.yts) {
     if (m.hasQuotedMsg) {
           if (conn.yts[m.from][0].id === m.quoted.id) {
-            limit(m.sender, 4)
+            if ( global.db.users[sender].limit < 4) return m.reply("limit")
+            if ( global.db.users[sender].limit > 4) {
+                global.db.users[sender].limit -= 4
+                m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 4, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
+            }
             if (!m.arg[1]) return m.reply("Silahkan balas pesan, masukkan angka dan tipe! \nContoh: 1 mp3 ")
             if (m.arg[1] == "mp3" || m.arg[1] == "audio") {
                 await m.reply("wait")
@@ -63,7 +58,11 @@ if (m.from in conn.yts) {
             m.reply(data.link)
         }
           if (m.arg[1] == "mp4" || m.arg[1] == "video") {
-            limit(m.sender, 5)
+            if ( global.db.users[sender].limit < 5) return m.reply("limit")
+            if ( global.db.users[sender].limit > 5) {
+                global.db.users[sender].limit -= 5
+                m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 5, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
+            }
             await m.reply("wait")
             let data = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/video?url=${conn.yts[m.from][1][Number(m.arg[0])].url}&apikey=berkahesport`)).json()
             m.reply(data.link)
@@ -115,7 +114,11 @@ if (m.from in conn.yts) {
                 }, { quoted: m })
             }
             case "yts":  {
-                limit(m.sender, 1)
+                if ( global.db.users[sender].limit < 1) return m.reply("limit")
+                if ( global.db.users[sender].limit > 1) {
+                    global.db.users[sender].limit -= 1
+                    m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 1, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
+                }
                 if (!m.args[0]) return m.reply(`Masukkan pencarian youtube!`)
                 let data = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/search?text=${m.text}&apikey=berkahesport`)).json()
                 let hasil = data.map((v,i) => `\n*${i+1}*. *Judul:* ${v?.title}\n▸ *Durasi:* ${v?.timestamp}\n▸ *Link:* ${v?.url}\n\n`)
@@ -127,7 +130,11 @@ if (m.from in conn.yts) {
             }
             break
             case "yta":  {
-                limit(m.sender, 4)
+                if ( global.db.users[sender].limit < 4) return m.reply("limit")
+                if ( global.db.users[sender].limit > 4) {
+                    global.db.users[sender].limit -= 4
+                    m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 4, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
+                }
                 if (!m.args[0]) return m.reply(`Masukkan link youtube!`)
                 m.reply("wait")
                 let datayta = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/audio?url=${m.text}&apikey=berkahesport`)).json()
@@ -135,7 +142,11 @@ if (m.from in conn.yts) {
             }
             break
             case "ytv":  {
-                limit(m.sender, 5)
+                if ( global.db.users[sender].limit < 5) return m.reply("limit")
+                if ( global.db.users[sender].limit > 5) {
+                    global.db.users[sender].limit -= 5
+                    m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 5, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
+                }
                 if (!m.args[0]) return m.reply(`Masukkan link youtube!`)
                 m.reply("wait")
                 let dataytv = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/video?url=${m.text}&apikey=berkahesport`)).json()
@@ -144,7 +155,11 @@ if (m.from in conn.yts) {
             break
             case "ig":  {
                 if (!m.args[0]) return m.reply(`Masukkan link instagram!`)
-                limit(m.sender, 4)
+                if ( global.db.users[sender].limit < 4) return m.reply("limit")
+                if ( global.db.users[sender].limit > 4) {
+                    global.db.users[sender].limit -= 4
+                    m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 4, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
+                }
                 m.reply("wait")
                 let dataig = await (await fetch(`https://api-be.berkahesport.repl.co/api/igdl?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(dataig.medias[0].url)
@@ -152,7 +167,11 @@ if (m.from in conn.yts) {
             break
             case "tt":  {
                 if (!m.args[0]) return m.reply(`Masukkan link tiktok!`)
-                limit(m.sender, 4)
+                if ( global.db.users[sender].limit < 4) return m.reply("limit")
+                if ( global.db.users[sender].limit > 4) {
+                    global.db.users[sender].limit -= 4
+                    m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 4, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
+                }
                 m.reply("wait")
                 let datatt = await (await fetch(`https://api-be.berkahesport.repl.co/api/ttdl?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(datatt.video.no_watermark_hd)
@@ -160,7 +179,11 @@ if (m.from in conn.yts) {
             break
             case "fb":  {
                 if (!m.args[0]) return m.reply(`Masukkan link facebook!`)
-                limit(m.sender, 4)
+                if ( global.db.users[sender].limit < 4) return m.reply("limit")
+                if ( global.db.users[sender].limit > 4) {
+                    global.db.users[sender].limit -= 4
+                    m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 4, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
+                }
                 m.reply("wait")
                 let datafb = await (await fetch(`https://api-be.berkahesport.repl.co/api/fbdl?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(datafb.result[0].url)
@@ -182,7 +205,11 @@ if (m.from in conn.yts) {
             }
             break    
             case "ai": {
-            limit(m.sender, 3)
+                if ( global.db.users[sender].limit < 3) return m.reply("limit")
+                if ( global.db.users[sender].limit > 3) {
+                    global.db.users[sender].limit -= 3
+                    m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 3, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
+                }
             let ai = 'ᴏᴘᴇɴ ᴀɪ'
               try {
             await m.reply("wait")
@@ -271,7 +298,11 @@ ${rres.data}`.trim())
             break
             case "sticker": case "s": case "stiker": {
                 if (/image|video|webp/i.test(quoted.mime)) {
-                    limit(m.sender, 1)
+                    if ( global.db.users[sender].limit < 1) return m.reply("limit")
+                    if ( global.db.users[sender].limit > 1) {
+                        global.db.users[sender].limit -= 1
+                        m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 1, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
+                    }
                     m.reply("wait")
                     const buffer = await quoted.download()
                     if (quoted?.msg?.seconds > 10) return m.reply(`Max video 9 second`)
@@ -284,12 +315,20 @@ ${rres.data}`.trim())
                     }
                     m.reply(buffer, { asSticker: true, ...exif })
                 } else if (m.mentionedJid[0]) {
-                    limit(m.sender, 1)
+                    if ( global.db.users[sender].limit < 2) return m.reply("limit")
+                    if ( global.db.users[sender].limit > 2) {
+                        global.db.users[sender].limit -= 2
+                        m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 2, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
+                    }
                     m.reply("wait")
                     let url = await conn.profilePictureUrl(m.mentionedJid[0], "image");
                     m.reply(url, { asSticker: true, ...config.Exif })
                 } else if (/(https?:\/\/.*\.(?:png|jpg|jpeg|webp|mov|mp4|webm|gif))/i.test(m.text)) {
-                    limit(m.sender, 1)
+                    if ( global.db.users[sender].limit < 1) return m.reply("limit")
+                    if ( global.db.users[sender].limit > 1) {
+                        global.db.users[sender].limit -= 1
+                        m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 1, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
+                    }
                     m.reply("wait")
                     m.reply(Func.isUrl(m.text)[0], { asSticker: true, ...config.Exif })
                 } else {
@@ -298,7 +337,11 @@ ${rres.data}`.trim())
             }
             break
             case "toimg": {
-                limit(m.sender, 2)
+                if ( global.db.users[sender].limit < 2) return m.reply("limit")
+                if ( global.db.users[sender].limit > 2) {
+                    global.db.users[sender].limit -= 2
+                    m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 2, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
+                }
                 let { webp2mp4File } = (await import("../lib/sticker.js"))
                 if (!/webp/i.test(quoted.mime)) return m.reply(`Reply Sticker with command ${prefix + command}`)
                 if (quoted.isAnimated) {
@@ -375,15 +418,23 @@ ${rres.data}`.trim())
                 let mime = (await import("mime-types"))
                 const res = await axios.get(Func.isUrl(m.text)[0], { responseType: "arraybuffer" })
                 if (!/utf-8|json|html|plain/.test(res?.headers?.get("content-type"))) {
+                    if ( global.db.users[sender].limit < 4) return m.reply("limit")
+                    if ( global.db.users[sender].limit > 4) {
+                        global.db.users[sender].limit -= 4
+                        m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 4, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
+                    }
                     let fileName = /filename/i.test(res.headers?.get("content-disposition")) ? res.headers?.get("content-disposition")?.match(/filename=(.*)/)?.[1]?.replace(/["';]/g, '') : ''
-                    limit(m.sender, 3)
                     return m.reply(res.data, { fileName, mimetype: mime.lookup(fileName) })
                 }
                 let text = res?.data?.toString() || res?.data
                 text = format(text)
                 try {
+                    if ( global.db.users[sender].limit < 1) return m.reply("limit")
+                    if ( global.db.users[sender].limit > 1) {
+                        global.db.users[sender].limit -= 1
+                        m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 1, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
+                    }
                     m.reply(text.slice(0, 65536) + '')
-                    limit(m.sender, 1)
                 } catch (e) {
                     m.reply(format(e))
                 }
@@ -391,9 +442,13 @@ ${rres.data}`.trim())
             break
             case "rvo": {
                 if (!quoted.msg.viewOnce) return m.reply(`Reply view once with command ${prefix + command}`)
+                if ( global.db.users[sender].limit < 1) return m.reply("limit")
+                if ( global.db.users[sender].limit > 1) {
+                    global.db.users[sender].limit -= 1
+                    m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 1, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
+                }
                 quoted.msg.viewOnce = false
                 await conn.sendMessage(m.from, { forward: quoted }, { quoted: m })
-                limit(m.sender, 1)
             }
             break
             case "kisahnabi": {
