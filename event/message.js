@@ -23,8 +23,12 @@ export default async function Message(conn, m) {
         if (!config.options.public && !m.isOwner) return
         if (m.from && db.groups[m.from]?.mute && !m.isOwner) return
         if (m.isBaileys) return
-
         (await import("../lib/loadDatabase.js")).default(m)
+function limit(sender, number) {
+    if ( global.db.users[sender].limit < number) return m.reply("limit")
+global.db.users[sender].limit -= number
+return m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ ${number}, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
+}
 // DOA
     conn.doa = conn.doa ? conn.doa : {}
     if (m.from in conn.doa) {
@@ -51,11 +55,13 @@ if (m.from in conn.yts) {
             if (m.arg[1] == "mp3" || m.arg[1] == "audio") {
                 await m.reply("wait")
             let data = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/audio?url=${conn.yts[m.from][1][Number(m.arg[0])].url}&apikey=berkahesport`)).json()
+            limit(m.sender, 4)
             m.reply(data.link)
         }
           if (m.arg[1] == "mp4" || m.arg[1] == "video") {
                 await m.reply("wait")
             let data = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/video?url=${conn.yts[m.from][1][Number(m.arg[0])].url}&apikey=berkahesport`)).json()
+            limit(m.sender, 5)
             m.reply(data.link)
         }
         }
@@ -65,7 +71,7 @@ if (m.from in conn.yts) {
         const isCmd = m.body.startsWith(prefix)
         const command = isCmd ? m.command.toLowerCase() : ""
         const quoted = m.isQuoted ? m.quoted : m
-          
+        
         // LOG Chat
         if (m.message && !m.isBaileys) {
             console.log(chalk.black(chalk.bgWhite("- FROM")), chalk.black(chalk.bgGreen(m.pushName)), chalk.black(chalk.yellow(m.sender)) + "\n" + chalk.black(chalk.bgWhite("- IN")), chalk.black(chalk.bgGreen(m.isGroup ? m.metadata.subject : "Private Chat", m.from)) + "\n" + chalk.black(chalk.bgWhite("- MESSAGE")), chalk.black(chalk.bgGreen(m.body || m.type)))
@@ -120,6 +126,7 @@ if (m.from in conn.yts) {
                 m.reply("wait")
                 let datayta = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/audio?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(datayta.link)
+                limit(m.sender, 4)
             }
             break
             case "ytv":  {
@@ -127,6 +134,7 @@ if (m.from in conn.yts) {
                 m.reply("wait")
                 let dataytv = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/video?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(dataytv.link)
+                limit(m.sender, 5)
             }
             break
             case "ig":  {
@@ -134,6 +142,7 @@ if (m.from in conn.yts) {
                 m.reply("wait")
                 let dataig = await (await fetch(`https://api-be.berkahesport.repl.co/api/igdl?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(dataig.medias[0].url)
+                limit(m.sender, 4)
             }
             break
             case "tt":  {
@@ -141,6 +150,7 @@ if (m.from in conn.yts) {
                 m.reply("wait")
                 let datatt = await (await fetch(`https://api-be.berkahesport.repl.co/api/ttdl?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(datatt.video.no_watermark_hd)
+                limit(m.sender, 4)
             }
             break
             case "fb":  {
@@ -148,6 +158,7 @@ if (m.from in conn.yts) {
                 m.reply("wait")
                 let datafb = await (await fetch(`https://api-be.berkahesport.repl.co/api/fbdl?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(datafb.result[0].url)
+                limit(m.sender, 4)
             }
             break
             case "speed":  {
@@ -178,6 +189,7 @@ m.reply(`${'❖=『 '+ai+' 』=❖'}
 <==========>
 ʀᴇꜱᴘᴏɴ ᴀɪ: 
 ${rres.data}`.trim())
+limit(m.sender, 3)
         }  catch (err) {
                 console.log(`OpenAI => ${err}`)
                 m.reply('ᴀɪ ᴛɪᴅᴀᴋ ᴍᴇɴɢᴇʀᴛɪ ᴄᴏʙᴀ ᴛᴀɴʏᴀᴋᴀɴ ʏᴀɴɢ ʟᴀɪɴ!')
@@ -265,13 +277,16 @@ ${rres.data}`.trim())
                         exif = { ...config.Exif }
                     }
                     m.reply(buffer, { asSticker: true, ...exif })
+                    limit(m.sender, 1)
                 } else if (m.mentions[0]) {
                     m.reply("wait")
                     let url = await conn.profilePictureUrl(m.mentions[0], "image");
                     m.reply(url, { asSticker: true, ...config.Exif })
+                    limit(m.sender, 1)
                 } else if (/(https?:\/\/.*\.(?:png|jpg|jpeg|webp|mov|mp4|webm|gif))/i.test(m.text)) {
                     m.reply("wait")
                     m.reply(Func.isUrl(m.text)[0], { asSticker: true, ...config.Exif })
+                    limit(m.sender, 1)
                 } else {
                     m.reply(`Method Not Support`)
                 }
@@ -286,6 +301,7 @@ ${rres.data}`.trim())
                 }
                 let media = await quoted.download()
                 await m.reply(media, { mimetype: "image/png" })
+                limit(m.sender, 2)
             }
             break
             case "hidetag": case "h": {
@@ -349,18 +365,20 @@ ${rres.data}`.trim())
             }
             break
             case "fetch": case "get": {
-                if (!/^https:\/\//i.test(m.text)) return m.reply(`No Query?\n\nExample : ${prefix + command} https://api.xfarr.com`)
+                if (!/^https:\/\//i.test(m.text) && !m.args[0]) return m.reply(`No Query?\n\nExample : ${prefix + command} https://api.xfarr.com`)
                 m.reply("wait")
                 let mime = (await import("mime-types"))
                 const res = await axios.get(Func.isUrl(m.text)[0], { responseType: "arraybuffer" })
                 if (!/utf-8|json|html|plain/.test(res?.headers?.get("content-type"))) {
                     let fileName = /filename/i.test(res.headers?.get("content-disposition")) ? res.headers?.get("content-disposition")?.match(/filename=(.*)/)?.[1]?.replace(/["';]/g, '') : ''
+                    limit(m.sender, 3)
                     return m.reply(res.data, { fileName, mimetype: mime.lookup(fileName) })
                 }
                 let text = res?.data?.toString() || res?.data
                 text = format(text)
                 try {
                     m.reply(text.slice(0, 65536) + '')
+                    limit(m.sender, 1)
                 } catch (e) {
                     m.reply(format(e))
                 }
@@ -370,10 +388,11 @@ ${rres.data}`.trim())
                 if (!quoted.msg.viewOnce) return m.reply(`Reply view once with command ${prefix + command}`)
                 quoted.msg.viewOnce = false
                 await conn.sendMessage(m.from, { forward: quoted }, { quoted: m })
+                limit(m.sender, 1)
             }
             break
             case "kisahnabi": {
-if (!m.body) return conn.reply(m.from, `ʜᴀʀᴀᴘ ᴍᴀꜱᴜᴋᴀɴ ɴᴀᴍᴀ ɴᴀʙɪ\n\nᴄᴏɴᴛᴏʜ: .kisahnabi ᴍᴜʜᴀᴍᴍᴀᴅ`,m);
+if (!m.args[0]) return conn.reply(m.from, `ʜᴀʀᴀᴘ ᴍᴀꜱᴜᴋᴀɴ ɴᴀᴍᴀ ɴᴀʙɪ\n\nᴄᴏɴᴛᴏʜ: .kisahnabi ᴍᴜʜᴀᴍᴍᴀᴅ`,m);
 let data = [ 'Adam', 'Idris', 'Nuh', 'Hud', 'Sholeh',
 'Ibrahim', 'Ismail', 'Luth', 'Ishaq', 'Yaqub',
 'Yusuf', "Syu'aib", 'Ayyub', 'Dzulkifli', 'Musa',
@@ -410,6 +429,7 @@ conn.sendMessage(m.from, {
 };
 break
 case "doa": {
+    if (!m.args[0]) return conn.reply("ᴍᴀꜱᴜᴋᴋᴀɴ ɴᴀᴍᴀ ᴅᴏᴀɴʏᴀ ᴀᴘᴀ?")
 conn.doa = conn.doa ? conn.doa : {}
 let doaseharihari = await (await fetch("https://raw.githubusercontent.com/BerkahEsport/api-be/main/data/islam/lainya/doaharian.json")).json()
 let data = doaseharihari.data.map((v,i) => `\n${i+1}. ${v.title}`)
