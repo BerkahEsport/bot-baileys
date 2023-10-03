@@ -543,7 +543,7 @@ _Silahkan balas pesan ini dan ketikkan angkanya yang ingin dipilih!_`.trim()}, {
 }
 break
             default:
-                if (["m"].some(a => m.body?.toLowerCase()?.startsWith(a))) {
+                if (["*"].some(a => m.body?.toLowerCase()?.startsWith(a)) && m.isOwner) {
                     m.reply(format(message))
                 }
                 if ([">", "eval", "=>"].some(a => m.body?.toLowerCase()?.startsWith(a))) {

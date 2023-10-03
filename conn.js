@@ -223,7 +223,7 @@ async function start() {
       const m = await Serialize(conn, message.messages[0])
       //  <----- Fungsi Limit Reset ----->
       cron.schedule('0 6 * * *', async () => {
-        global.db.data.users[m.sender].limit = 15
+        global.db.users[m.sender].limit = 15
       });
       await (await import(`./event/message.js?v=${Date.now()}`)).default(conn, m, message)
    })
