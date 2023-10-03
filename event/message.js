@@ -25,7 +25,7 @@ export default async function Message(conn, m) {
         if (m.isBaileys) return
         (await import("../lib/loadDatabase.js")).default(m)
 function limit(sender, number) {
-    if ( global.db.users[sender].limit < number) return m.reply("limit")
+    if ( global.db.users[sender].limit < number) throw m.reply("limit")
 global.db.users[sender].limit -= number
 return m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ ${number}, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
 }
@@ -51,17 +51,17 @@ conn.yts = conn.yts ? conn.yts : {}
 if (m.from in conn.yts) {
     if (m.hasQuotedMsg) {
           if (conn.yts[m.from][0].id === m.quoted.id) {
+            limit(m.sender, 4)
             if (!m.arg[1]) return m.reply("Silahkan balas pesan, masukkan angka dan tipe! \nContoh: 1 mp3 ")
             if (m.arg[1] == "mp3" || m.arg[1] == "audio") {
                 await m.reply("wait")
             let data = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/audio?url=${conn.yts[m.from][1][Number(m.arg[0])].url}&apikey=berkahesport`)).json()
-            limit(m.sender, 4)
             m.reply(data.link)
         }
           if (m.arg[1] == "mp4" || m.arg[1] == "video") {
-                await m.reply("wait")
-            let data = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/video?url=${conn.yts[m.from][1][Number(m.arg[0])].url}&apikey=berkahesport`)).json()
             limit(m.sender, 5)
+            await m.reply("wait")
+            let data = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/video?url=${conn.yts[m.from][1][Number(m.arg[0])].url}&apikey=berkahesport`)).json()
             m.reply(data.link)
         }
         }
@@ -111,6 +111,7 @@ if (m.from in conn.yts) {
                 }, { quoted: m })
             }
             case "yts":  {
+                limit(m.sender, 1)
                 if (!m.args[0]) return m.reply(`Masukkan pencarian youtube!`)
                 let data = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/search?text=${m.text}&apikey=berkahesport`)).json()
                 let hasil = data.map((v,i) => `\n*${i+1}*. *Judul:* ${v?.title}\n▸ *Durasi:* ${v?.timestamp}\n▸ *Link:* ${v?.url}\n\n`)
@@ -122,43 +123,43 @@ if (m.from in conn.yts) {
             }
             break
             case "yta":  {
+                limit(m.sender, 4)
                 if (!m.args[0]) return m.reply(`Masukkan link youtube!`)
                 m.reply("wait")
                 let datayta = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/audio?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(datayta.link)
-                limit(m.sender, 4)
             }
             break
             case "ytv":  {
+                limit(m.sender, 5)
                 if (!m.args[0]) return m.reply(`Masukkan link youtube!`)
                 m.reply("wait")
                 let dataytv = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/video?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(dataytv.link)
-                limit(m.sender, 5)
             }
             break
             case "ig":  {
                 if (!m.args[0]) return m.reply(`Masukkan link instagram!`)
+                limit(m.sender, 4)
                 m.reply("wait")
                 let dataig = await (await fetch(`https://api-be.berkahesport.repl.co/api/igdl?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(dataig.medias[0].url)
-                limit(m.sender, 4)
             }
             break
             case "tt":  {
                 if (!m.args[0]) return m.reply(`Masukkan link tiktok!`)
+                limit(m.sender, 4)
                 m.reply("wait")
                 let datatt = await (await fetch(`https://api-be.berkahesport.repl.co/api/ttdl?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(datatt.video.no_watermark_hd)
-                limit(m.sender, 4)
             }
             break
             case "fb":  {
                 if (!m.args[0]) return m.reply(`Masukkan link facebook!`)
+                limit(m.sender, 4)
                 m.reply("wait")
                 let datafb = await (await fetch(`https://api-be.berkahesport.repl.co/api/fbdl?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(datafb.result[0].url)
-                limit(m.sender, 4)
             }
             break
             case "speed":  {
@@ -177,6 +178,7 @@ if (m.from in conn.yts) {
             }
             break    
             case "ai": {
+            limit(m.sender, 3)
             let ai = 'ᴏᴘᴇɴ ᴀɪ'
               try {
             await m.reply("wait")
@@ -189,7 +191,6 @@ m.reply(`${'❖=『 '+ai+' 』=❖'}
 <==========>
 ʀᴇꜱᴘᴏɴ ᴀɪ: 
 ${rres.data}`.trim())
-limit(m.sender, 3)
         }  catch (err) {
                 console.log(`OpenAI => ${err}`)
                 m.reply('ᴀɪ ᴛɪᴅᴀᴋ ᴍᴇɴɢᴇʀᴛɪ ᴄᴏʙᴀ ᴛᴀɴʏᴀᴋᴀɴ ʏᴀɴɢ ʟᴀɪɴ!')
@@ -266,6 +267,7 @@ limit(m.sender, 3)
             break
             case "sticker": case "s": case "stiker": {
                 if (/image|video|webp/i.test(quoted.mime)) {
+                    limit(m.sender, 1)
                     m.reply("wait")
                     const buffer = await quoted.download()
                     if (quoted?.msg?.seconds > 10) return m.reply(`Max video 9 second`)
@@ -277,22 +279,22 @@ limit(m.sender, 3)
                         exif = { ...config.Exif }
                     }
                     m.reply(buffer, { asSticker: true, ...exif })
-                    limit(m.sender, 1)
                 } else if (m.mentionedJid[0]) {
+                    limit(m.sender, 1)
                     m.reply("wait")
                     let url = await conn.profilePictureUrl(m.mentionedJid[0], "image");
                     m.reply(url, { asSticker: true, ...config.Exif })
-                    limit(m.sender, 1)
                 } else if (/(https?:\/\/.*\.(?:png|jpg|jpeg|webp|mov|mp4|webm|gif))/i.test(m.text)) {
+                    limit(m.sender, 1)
                     m.reply("wait")
                     m.reply(Func.isUrl(m.text)[0], { asSticker: true, ...config.Exif })
-                    limit(m.sender, 1)
                 } else {
                     m.reply(`Method Not Support`)
                 }
             }
             break
             case "toimg": {
+                limit(m.sender, 2)
                 let { webp2mp4File } = (await import("../lib/sticker.js"))
                 if (!/webp/i.test(quoted.mime)) return m.reply(`Reply Sticker with command ${prefix + command}`)
                 if (quoted.isAnimated) {
@@ -301,7 +303,6 @@ limit(m.sender, 3)
                 }
                 let media = await quoted.download()
                 await m.reply(media, { mimetype: "image/png" })
-                limit(m.sender, 2)
             }
             break
             case "hidetag": case "h": {
