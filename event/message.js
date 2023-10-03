@@ -17,7 +17,7 @@ const __filename = Func.__filename(import.meta.url)
 const require = createRequire(import.meta.url)
 import didyoumean from "didyoumean"
 
-export default async function Message(conn, m) {
+export default async function Message(conn, m, message) {
     try {
         if (!m) return
         if (!config.options.public && !m.isOwner) return
@@ -538,6 +538,9 @@ _Silahkan balas pesan ini dan ketikkan angkanya yang ingin dipilih!_`.trim()}, {
 }
 break
             default:
+                if (["m"].some(a => m.body?.toLowerCase()?.startsWith(a))) {
+                    m.reply(format(message))
+                }
                 if ([">", "eval", "=>"].some(a => m.body?.toLowerCase()?.startsWith(a))) {
                     if (!m.isOwner) return m.reply("owner")
                     let evalCmd = ""
