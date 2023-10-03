@@ -240,7 +240,7 @@ async function start() {
             if (id.status === "offer") {
                let msg = await conn.sendMessage(id.from, {
                   text: `Maaf untuk saat ini, Kami tidak dapat menerima panggilan, entah dalam group atau pribadi\n\nJika Membutuhkan bantuan ataupun request fitur silahkan chat owner :p`,
-                  mentions: [id.from],
+                  mentionedJid: [id.from],
                })
                conn.sendContact(id.from, config.options.owner, msg)
                await conn.rejectCall(id.id, id.from)

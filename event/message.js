@@ -32,7 +32,7 @@ return m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ ${number}, ꜱɪ
 // DOA
     conn.doa = conn.doa ? conn.doa : {}
     if (m.from in conn.doa) {
-        if (m.isQuoted) {
+        if (m.hasQuotedMsg) {
               if (conn.doa[m.from][0].id === m.quoted.id) {
       if (conn.doa[m.from][0].isi.length > Number(m.arg[0] - 1)) {
 let hasildoa = conn.doa[m.from][0].isi[Number(m.arg[0] - 1)]
@@ -49,7 +49,7 @@ let hasildoa = conn.doa[m.from][0].isi[Number(m.arg[0] - 1)]
 // YT
 conn.yts = conn.yts ? conn.yts : {}
 if (m.from in conn.yts) {
-    if (m.isQuoted) {
+    if (m.hasQuotedMsg) {
           if (conn.yts[m.from][0].id === m.quoted.id) {
             if (!m.arg[1]) return m.reply("Silahkan balas pesan, masukkan angka dan tipe! \nContoh: 1 mp3 ")
             if (m.arg[1] == "mp3" || m.arg[1] == "audio") {
@@ -70,7 +70,7 @@ if (m.from in conn.yts) {
         const prefix = m.prefix
         const isCmd = m.body.startsWith(prefix)
         const command = isCmd ? m.command.toLowerCase() : ""
-        const quoted = m.isQuoted ? m.quoted : m
+        const quoted = m.hasQuotedMsg ? m.quoted : m
         
         // LOG Chat
         if (m.message && !m.isBaileys) {
@@ -122,7 +122,7 @@ if (m.from in conn.yts) {
             }
             break
             case "yta":  {
-                if (!m.args[0] && m.text.startsWith("https://")) return m.reply(`Masukkan link youtube!`)
+                if (!m.args[0]) return m.reply(`Masukkan link youtube!`)
                 m.reply("wait")
                 let datayta = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/audio?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(datayta.link)
@@ -130,7 +130,7 @@ if (m.from in conn.yts) {
             }
             break
             case "ytv":  {
-                if (!m.args[0] && m.text.startsWith("https://")) return m.reply(`Masukkan link youtube!`)
+                if (!m.args[0]) return m.reply(`Masukkan link youtube!`)
                 m.reply("wait")
                 let dataytv = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/video?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(dataytv.link)
@@ -138,7 +138,7 @@ if (m.from in conn.yts) {
             }
             break
             case "ig":  {
-                if (!m.args[0] && m.text.startsWith("https://")) return m.reply(`Masukkan link instagram!`)
+                if (!m.args[0]) return m.reply(`Masukkan link instagram!`)
                 m.reply("wait")
                 let dataig = await (await fetch(`https://api-be.berkahesport.repl.co/api/igdl?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(dataig.medias[0].url)
@@ -146,7 +146,7 @@ if (m.from in conn.yts) {
             }
             break
             case "tt":  {
-                if (!m.args[0] && m.text.startsWith("https://")) return m.reply(`Masukkan link tiktok!`)
+                if (!m.args[0]) return m.reply(`Masukkan link tiktok!`)
                 m.reply("wait")
                 let datatt = await (await fetch(`https://api-be.berkahesport.repl.co/api/ttdl?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(datatt.video.no_watermark_hd)
@@ -154,7 +154,7 @@ if (m.from in conn.yts) {
             }
             break
             case "fb":  {
-                if (!m.args[0] && m.text.startsWith("https://")) return m.reply(`Masukkan link facebook!`)
+                if (!m.args[0]) return m.reply(`Masukkan link facebook!`)
                 m.reply("wait")
                 let datafb = await (await fetch(`https://api-be.berkahesport.repl.co/api/fbdl?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(datafb.result[0].url)
@@ -210,10 +210,10 @@ limit(m.sender, 3)
             break
             case "quoted": case "q": {
                 const { Serialize } = (await import("../lib/serialize.js"))
-                if (!m.isQuoted) m.reply("quoted")
+                if (!m.hasQuotedMsg) m.reply("quoted")
                 try {
                     const message = await Serialize(conn, (await conn.loadMessage(m.from, m.quoted.id)))
-                    if (!message.isQuoted) return m.reply("Quoted Not Found 🙄")
+                    if (!message.hasQuotedMsg) return m.reply("Quoted Not Found 🙄")
                     conn.sendMessage(m.from, { forward: message.quoted })
                 } catch {
                     m.reply("Quoted Not Found 🙄")
@@ -258,9 +258,9 @@ limit(m.sender, 3)
             break
             case "setname": {
                 if (m.isOwner && !m.isGroup) {
-                    await conn.updateProfileName(m.isQuoted ? quoted.body : quoted.text)
+                    await conn.updateProfileName(m.hasQuotedMsg ? quoted.body : quoted.text)
                 } else if (m.isGroup && m.isAdmin && m.isBotAdmin) {
-                    await conn.groupUpdateSubject(m.from, m.isQuoted ? quoted.body : quoted.text)
+                    await conn.groupUpdateSubject(m.from, m.hasQuotedMsg ? quoted.body : quoted.text)
                 }
             }
             break
@@ -278,9 +278,9 @@ limit(m.sender, 3)
                     }
                     m.reply(buffer, { asSticker: true, ...exif })
                     limit(m.sender, 1)
-                } else if (m.mentions[0]) {
+                } else if (m.mentionedJid[0]) {
                     m.reply("wait")
-                    let url = await conn.profilePictureUrl(m.mentions[0], "image");
+                    let url = await conn.profilePictureUrl(m.mentionedJid[0], "image");
                     m.reply(url, { asSticker: true, ...config.Exif })
                     limit(m.sender, 1)
                 } else if (/(https?:\/\/.*\.(?:png|jpg|jpeg|webp|mov|mp4|webm|gif))/i.test(m.text)) {
@@ -307,16 +307,16 @@ limit(m.sender, 3)
             case "hidetag": case "h": {
                 if (!m.isGroup) return m.reply("group")
                 if (!m.isAdmin) return m.reply("admin")
-                let mentions = m.metadata.participants.map(a => a.id)
+                let mentionedJid = m.metadata.participants.map(a => a.id)
                 let mod = await conn.cMod(m.from, quoted, /hidetag|tag|ht|h|totag/i.test(quoted.body.toLowerCase()) ? quoted.body.toLowerCase().replace(prefix + command, "") : quoted.body)
-                conn.sendMessage(m.from, { forward: mod, mentions })
+                conn.sendMessage(m.from, { forward: mod, mentionedJid })
             }
             break
             case "add": {
                 if (!m.isGroup) return m.reply("group")
                 if (!m.isAdmin) return m.reply("admin")
                 if (!m.isBotAdmin) return m.reply("botAdmin")
-                let users = m.mentions.length !== 0 ? m.mentions.slice(0, 2) : m.isQuoted ? [m.quoted.sender] : m.text.split(",").map(v => v.replace(/[^0-9]/g, '') + "@s.whatsapp.net").slice(0, 2)
+                let users = m.mentionedJid.length !== 0 ? m.mentionedJid.slice(0, 2) : m.hasQuotedMsg ? [m.quoted.sender] : m.text.split(",").map(v => v.replace(/[^0-9]/g, '') + "@s.whatsapp.net").slice(0, 2)
                 if (users.length == 0) return m.reply('Fuck You 🖕')
                 await conn.groupParticipantsUpdate(m.from, users, "add")
                     .then(async (res) => {

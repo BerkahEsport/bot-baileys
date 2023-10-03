@@ -43,7 +43,7 @@ export default {
    Exif: {
       packId: "https://moexti.jw.lt/",
       packName: `Sticker Ini Dibuat Oleh :`,
-      packPublish: "moexti.",
+      packPublish: "ʙᴇʀᴋᴀʜᴇꜱᴘᴏʀᴛ.ɪᴅ",
       packEmail: "berkahesport@gmail.com",
       packWebsite: "https://bot-baileys.berkahesport.repl.co/",
       androidApp: "https://play.google.com/store/apps/details?id=com.bitsmedia.android.muslimpro",
