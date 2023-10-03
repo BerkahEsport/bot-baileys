@@ -46,9 +46,9 @@ conn.yts = conn.yts ? conn.yts : {}
 if (m.from in conn.yts) {
     if (m.hasQuotedMsg) {
           if (conn.yts[m.from][0].id === m.quoted.id) {
-            if ( global.db.users[sender].limit < 4) return m.reply("limit")
-            if ( global.db.users[sender].limit > 4) {
-                global.db.users[sender].limit -= 4
+            if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
+            if ( global.db.users[m.sender].limit > 4) {
+                global.db.users[m.sender].limit -= 4
                 m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 4, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
             }
             if (!m.arg[1]) return m.reply("Silahkan balas pesan, masukkan angka dan tipe! \nContoh: 1 mp3 ")
@@ -58,9 +58,9 @@ if (m.from in conn.yts) {
             m.reply(data.link)
         }
           if (m.arg[1] == "mp4" || m.arg[1] == "video") {
-            if ( global.db.users[sender].limit < 5) return m.reply("limit")
-            if ( global.db.users[sender].limit > 5) {
-                global.db.users[sender].limit -= 5
+            if ( global.db.users[m.sender].limit < 5) return m.reply("limit")
+            if ( global.db.users[m.sender].limit > 5) {
+                global.db.users[m.sender].limit -= 5
                 m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 5, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
             }
             await m.reply("wait")
@@ -114,9 +114,9 @@ if (m.from in conn.yts) {
                 }, { quoted: m })
             }
             case "yts":  {
-                if ( global.db.users[sender].limit < 1) return m.reply("limit")
-                if ( global.db.users[sender].limit > 1) {
-                    global.db.users[sender].limit -= 1
+                if ( global.db.users[m.sender].limit < 1) return m.reply("limit")
+                if ( global.db.users[m.sender].limit > 1) {
+                    global.db.users[m.sender].limit -= 1
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 1, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }
                 if (!m.args[0]) return m.reply(`Masukkan pencarian youtube!`)
@@ -130,9 +130,9 @@ if (m.from in conn.yts) {
             }
             break
             case "yta":  {
-                if ( global.db.users[sender].limit < 4) return m.reply("limit")
-                if ( global.db.users[sender].limit > 4) {
-                    global.db.users[sender].limit -= 4
+                if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
+                if ( global.db.users[m.sender].limit > 4) {
+                    global.db.users[m.sender].limit -= 4
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 4, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }
                 if (!m.args[0]) return m.reply(`Masukkan link youtube!`)
@@ -142,9 +142,9 @@ if (m.from in conn.yts) {
             }
             break
             case "ytv":  {
-                if ( global.db.users[sender].limit < 5) return m.reply("limit")
-                if ( global.db.users[sender].limit > 5) {
-                    global.db.users[sender].limit -= 5
+                if ( global.db.users[m.sender].limit < 5) return m.reply("limit")
+                if ( global.db.users[m.sender].limit > 5) {
+                    global.db.users[m.sender].limit -= 5
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 5, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }
                 if (!m.args[0]) return m.reply(`Masukkan link youtube!`)
@@ -155,9 +155,9 @@ if (m.from in conn.yts) {
             break
             case "ig":  {
                 if (!m.args[0]) return m.reply(`Masukkan link instagram!`)
-                if ( global.db.users[sender].limit < 4) return m.reply("limit")
-                if ( global.db.users[sender].limit > 4) {
-                    global.db.users[sender].limit -= 4
+                if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
+                if ( global.db.users[m.sender].limit > 4) {
+                    global.db.users[m.sender].limit -= 4
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 4, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }
                 m.reply("wait")
@@ -167,9 +167,9 @@ if (m.from in conn.yts) {
             break
             case "tt":  {
                 if (!m.args[0]) return m.reply(`Masukkan link tiktok!`)
-                if ( global.db.users[sender].limit < 4) return m.reply("limit")
-                if ( global.db.users[sender].limit > 4) {
-                    global.db.users[sender].limit -= 4
+                if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
+                if ( global.db.users[m.sender].limit > 4) {
+                    global.db.users[m.sender].limit -= 4
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 4, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }
                 m.reply("wait")
@@ -179,9 +179,9 @@ if (m.from in conn.yts) {
             break
             case "fb":  {
                 if (!m.args[0]) return m.reply(`Masukkan link facebook!`)
-                if ( global.db.users[sender].limit < 4) return m.reply("limit")
-                if ( global.db.users[sender].limit > 4) {
-                    global.db.users[sender].limit -= 4
+                if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
+                if ( global.db.users[m.sender].limit > 4) {
+                    global.db.users[m.sender].limit -= 4
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 4, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }
                 m.reply("wait")
@@ -205,9 +205,9 @@ if (m.from in conn.yts) {
             }
             break    
             case "ai": {
-                if ( global.db.users[sender].limit < 3) return m.reply("limit")
-                if ( global.db.users[sender].limit > 3) {
-                    global.db.users[sender].limit -= 3
+                if ( global.db.users[m.sender].limit < 3) return m.reply("limit")
+                if ( global.db.users[m.sender].limit > 3) {
+                    global.db.users[m.sender].limit -= 3
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 3, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }
             let ai = 'ᴏᴘᴇɴ ᴀɪ'
@@ -298,9 +298,9 @@ ${rres.data}`.trim())
             break
             case "sticker": case "s": case "stiker": {
                 if (/image|video|webp/i.test(quoted.mime)) {
-                    if ( global.db.users[sender].limit < 1) return m.reply("limit")
-                    if ( global.db.users[sender].limit > 1) {
-                        global.db.users[sender].limit -= 1
+                    if ( global.db.users[m.sender].limit < 1) return m.reply("limit")
+                    if ( global.db.users[m.sender].limit > 1) {
+                        global.db.users[m.sender].limit -= 1
                         m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 1, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                     }
                     m.reply("wait")
@@ -315,18 +315,18 @@ ${rres.data}`.trim())
                     }
                     m.reply(buffer, { asSticker: true, ...exif })
                 } else if (m.mentionedJid[0]) {
-                    if ( global.db.users[sender].limit < 2) return m.reply("limit")
-                    if ( global.db.users[sender].limit > 2) {
-                        global.db.users[sender].limit -= 2
+                    if ( global.db.users[m.sender].limit < 2) return m.reply("limit")
+                    if ( global.db.users[m.sender].limit > 2) {
+                        global.db.users[m.sender].limit -= 2
                         m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 2, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                     }
                     m.reply("wait")
                     let url = await conn.profilePictureUrl(m.mentionedJid[0], "image");
                     m.reply(url, { asSticker: true, ...config.Exif })
                 } else if (/(https?:\/\/.*\.(?:png|jpg|jpeg|webp|mov|mp4|webm|gif))/i.test(m.text)) {
-                    if ( global.db.users[sender].limit < 1) return m.reply("limit")
-                    if ( global.db.users[sender].limit > 1) {
-                        global.db.users[sender].limit -= 1
+                    if ( global.db.users[m.sender].limit < 1) return m.reply("limit")
+                    if ( global.db.users[m.sender].limit > 1) {
+                        global.db.users[m.sender].limit -= 1
                         m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 1, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                     }
                     m.reply("wait")
@@ -337,9 +337,9 @@ ${rres.data}`.trim())
             }
             break
             case "toimg": {
-                if ( global.db.users[sender].limit < 2) return m.reply("limit")
-                if ( global.db.users[sender].limit > 2) {
-                    global.db.users[sender].limit -= 2
+                if ( global.db.users[m.sender].limit < 2) return m.reply("limit")
+                if ( global.db.users[m.sender].limit > 2) {
+                    global.db.users[m.sender].limit -= 2
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 2, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }
                 let { webp2mp4File } = (await import("../lib/sticker.js"))
@@ -418,9 +418,9 @@ ${rres.data}`.trim())
                 let mime = (await import("mime-types"))
                 const res = await axios.get(Func.isUrl(m.text)[0], { responseType: "arraybuffer" })
                 if (!/utf-8|json|html|plain/.test(res?.headers?.get("content-type"))) {
-                    if ( global.db.users[sender].limit < 4) return m.reply("limit")
-                    if ( global.db.users[sender].limit > 4) {
-                        global.db.users[sender].limit -= 4
+                    if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
+                    if ( global.db.users[m.sender].limit > 4) {
+                        global.db.users[m.sender].limit -= 4
                         m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 4, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                     }
                     let fileName = /filename/i.test(res.headers?.get("content-disposition")) ? res.headers?.get("content-disposition")?.match(/filename=(.*)/)?.[1]?.replace(/["';]/g, '') : ''
@@ -429,9 +429,9 @@ ${rres.data}`.trim())
                 let text = res?.data?.toString() || res?.data
                 text = format(text)
                 try {
-                    if ( global.db.users[sender].limit < 1) return m.reply("limit")
-                    if ( global.db.users[sender].limit > 1) {
-                        global.db.users[sender].limit -= 1
+                    if ( global.db.users[m.sender].limit < 1) return m.reply("limit")
+                    if ( global.db.users[m.sender].limit > 1) {
+                        global.db.users[m.sender].limit -= 1
                         m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 1, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                     }
                     m.reply(text.slice(0, 65536) + '')
@@ -442,9 +442,9 @@ ${rres.data}`.trim())
             break
             case "rvo": {
                 if (!quoted.msg.viewOnce) return m.reply(`Reply view once with command ${prefix + command}`)
-                if ( global.db.users[sender].limit < 1) return m.reply("limit")
-                if ( global.db.users[sender].limit > 1) {
-                    global.db.users[sender].limit -= 1
+                if ( global.db.users[m.sender].limit < 1) return m.reply("limit")
+                if ( global.db.users[m.sender].limit > 1) {
+                    global.db.users[m.sender].limit -= 1
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 1, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }
                 quoted.msg.viewOnce = false
