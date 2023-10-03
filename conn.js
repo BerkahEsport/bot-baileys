@@ -11,6 +11,7 @@ import readline from "readline"
 import { parsePhoneNumber } from "libphonenumber-js"
 import open from "open"
 import path from "path"
+import cron from "node-cron"
 const database = (new (await import("./lib/database.js")).default())
 const store = makeInMemoryStore({ logger: Pino({ level: "fatal" }).child({ level: "fatal" }) })
 const pairingCode = !!config.options.pairingNumber || process.argv.includes("--pairing-code")
