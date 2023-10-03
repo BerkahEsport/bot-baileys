@@ -105,7 +105,7 @@ if (m.from in conn.yts) {
                 }, { quoted: m })
             }
             case "yts":  {
-                if (!m.text) return m.reply(`Masukkan pencarian youtube!`)
+                if (!m.args[0]) return m.reply(`Masukkan pencarian youtube!`)
                 let data = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/search?text=${m.text}&apikey=berkahesport`)).json()
                 let hasil = data.map((v,i) => `\n*${i+1}*. *Judul:* ${v?.title}\n▸ *Durasi:* ${v?.timestamp}\n▸ *Link:* ${v?.url}\n\n`)
                 let id = await m.reply("*★彡[ʏᴏᴜᴛᴜʙᴇ ꜱᴇᴀʀᴄʜ]彡★*\n\n"+hasil+"\nᴮᵃˡᵃˢ ᵈᵃⁿ ᵏⁱʳⁱᵐ ˢᵉˢᵘᵃⁱ ᵃⁿᵍᵏᵃ!")
@@ -116,35 +116,35 @@ if (m.from in conn.yts) {
             }
             break
             case "yta":  {
-                if (!m.text && m.text.startsWith("https://")) return m.reply(`Masukkan link youtube!`)
+                if (!m.args[0] && m.text.startsWith("https://")) return m.reply(`Masukkan link youtube!`)
                 m.reply("wait")
                 let datayta = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/audio?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(datayta.link)
             }
             break
             case "ytv":  {
-                if (!m.text && m.text.startsWith("https://")) return m.reply(`Masukkan link youtube!`)
+                if (!m.args[0] && m.text.startsWith("https://")) return m.reply(`Masukkan link youtube!`)
                 m.reply("wait")
                 let dataytv = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/video?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(dataytv.link)
             }
             break
             case "ig":  {
-                if (!m.text && m.text.startsWith("https://")) return m.reply(`Masukkan link instagram!`)
+                if (!m.args[0] && m.text.startsWith("https://")) return m.reply(`Masukkan link instagram!`)
                 m.reply("wait")
                 let dataig = await (await fetch(`https://api-be.berkahesport.repl.co/api/igdl?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(dataig.medias[0].url)
             }
             break
             case "tt":  {
-                if (!m.text && m.text.startsWith("https://")) return m.reply(`Masukkan link tiktok!`)
+                if (!m.args[0] && m.text.startsWith("https://")) return m.reply(`Masukkan link tiktok!`)
                 m.reply("wait")
                 let datatt = await (await fetch(`https://api-be.berkahesport.repl.co/api/ttdl?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(datatt.video.no_watermark_hd)
             }
             break
             case "fb":  {
-                if (!m.text && m.text.startsWith("https://")) return m.reply(`Masukkan link facebook!`)
+                if (!m.args[0] && m.text.startsWith("https://")) return m.reply(`Masukkan link facebook!`)
                 m.reply("wait")
                 let datafb = await (await fetch(`https://api-be.berkahesport.repl.co/api/fbdl?url=${m.text}&apikey=berkahesport`)).json()
                 await m.reply(datafb.result[0].url)
