@@ -760,7 +760,7 @@ conn.quran = conn.quran ? conn.quran : {}
 if (!m.args[0]) return m.reply(`${list}\n\n*Contoh:* _.alquran An Naas_`)
 let json = JSON.parse(fs.readFileSync("./lib/alquran.json"))
 let data = json.map(v => v.nama)
-let mirip = didyoumean(text, data)
+let mirip = didyoumean(m.text, data)
 if (mirip == null) {
   const datas = json.filter(item => item.nama.toLowerCase().match(text));
   if (datas.length == 0) throw ('Surat tidak ditemukan!')
@@ -775,14 +775,14 @@ _Silahkan balas pesan ini dan ketikkan angkanya yang ingin dipilih!_`.trim())
 }, 120000)]
 } else {
   const result = json.filter(item => item.nama.toLowerCase().includes(mirip.toLowerCase()));
-  await m.reply(`
+  await conn.reply(m.from, `
 ꜱᴜʀᴀᴛ : ${result[0].asma}
 ʟᴀᴛɪɴ : ${result[0].nama}
 ᴀʀᴛɪ : ${result[0].arti}
 ᴊᴜᴍʟᴀʜ ᴀʏᴀᴛ : ${result[0].ayat}
 ᴅɪᴛᴜʀᴜɴᴋᴀɴ ᴅɪ : ${result[0].type}
 ᴋᴇᴛᴇʀᴀɴɢᴀɴ: _${result[0].keterangan}_
-ʟɪɴᴋ ᴀᴜᴅɪᴏ : ${result[0].audio}`.trim())
+ʟɪɴᴋ ᴀᴜᴅɪᴏ : ${result[0].audio}`.trim(), m)
 }
 }
 break
