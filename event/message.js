@@ -782,7 +782,7 @@ _Silahkan balas pesan ini dan ketikkan angkanya yang ingin dipilih!_`.trim())
 ᴊᴜᴍʟᴀʜ ᴀʏᴀᴛ : ${result[0].ayat}
 ᴅɪᴛᴜʀᴜɴᴋᴀɴ ᴅɪ : ${result[0].type}
 ᴋᴇᴛᴇʀᴀɴɢᴀɴ: _${result[0].keterangan}_`.trim(), m)
-await conn.sendFile(m.from, result[0].audio, "Al-Quran", "", m)
+await conn.sendFile(m.from, result[0].audio, m)
 }
 }
 break
