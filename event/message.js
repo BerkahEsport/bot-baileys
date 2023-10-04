@@ -590,17 +590,7 @@ break
         m.reply(format(e))
     } finally {
         if (m.plugin) {
-            if (!isNumber(stats.total)) stats.total = 0
-            if (!isNumber(stats.success)) stats.success = 0
-            if (!isNumber(stats.failed)) stats.failed = 0
-            if (!isNumber(stats.today)) stats.today = 0
-              } else {
-              stats = {
-                total: 0,
-                success: 0,
-                failed: 0,
-                today: 0 
-            } }
+            let stats = global.db.stats
                 stats.today += 1
                 stats.total += 1
               if (m.error == null) {
@@ -609,4 +599,5 @@ break
                 stats.failed += 1
         }
     }
+}
 }
