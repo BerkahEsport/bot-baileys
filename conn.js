@@ -220,6 +220,7 @@ async function start() {
    conn.ev.on("messages.upsert", async (message) => {
       if (!message.messages) return
       const m = await Serialize(conn, message.messages[0])
+      await (await import(`../lib/loadDatabase.js?v=${Date.now()}`)).default(conn, m)
       await (await import(`./event/message.js?v=${Date.now()}`)).default(conn, m, message)
    })
 
