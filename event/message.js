@@ -21,11 +21,16 @@ import didyoumean from "didyoumean"
 
 export default async function Message(conn, m, message) {
     (await import("../lib/loadDatabase.js")).default(conn, m)
+    const prefix = m.prefix
+    const isCmd = m.body.startsWith(prefix)
+    const command = isCmd ? m.command.toLowerCase() : ""
+    const quoted = m.hasQuotedMsg ? m.quoted : m
+    
     try {
         if (!m) return
         if (!config.options.public && !m.isOwner) return
         if (m.from && db.groups[m.from]?.mute && !m.isOwner) return
-        if (m.isBaileys) return
+        if (m.isBot) return
         //  <----- Fungsi Limit Reset ----->
         cron.schedule('0 6 * * *', async () => {
           global.db.users[m.sender].limit = 15
@@ -78,13 +83,8 @@ if (m.from in conn.yts) {
         }
     }
 }
-        const prefix = m.prefix
-        const isCmd = m.body.startsWith(prefix)
-        const command = isCmd ? m.command.toLowerCase() : ""
-        const quoted = m.hasQuotedMsg ? m.quoted : m
-        
         // LOG Chat
-        if (m.message && !m.isBaileys) {
+        if (m.message && !m.isBot) {
             console.log(chalk.black(chalk.bgWhite("- FROM")), chalk.black(chalk.bgGreen(m.pushName)), chalk.black(chalk.yellow(m.sender)) + "\n" + chalk.black(chalk.bgWhite("- IN")), chalk.black(chalk.bgGreen(m.isGroup ? m.metadata.subject : "Private Chat", m.from)) + "\n" + chalk.black(chalk.bgWhite("- MESSAGE")), chalk.black(chalk.bgGreen(m.body || m.type)))
         }
 
@@ -589,7 +589,7 @@ break
         m.error = e
         m.reply(format(e))
     } finally {
-        if (m.plugin) {
+        if (isCmd) {
             let stats = global.db.stats
                 stats.today += 1
                 stats.total += 1
