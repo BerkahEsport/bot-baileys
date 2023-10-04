@@ -11,6 +11,8 @@ import { format } from "util"
 import { fileURLToPath } from "url"
 import { createRequire } from "module"
 import { promisify } from 'util'
+import cron from "node-cron"
+const isNumber = x => typeof x === 'number' && !isNaN(x);
 const api = async (name, options = {}) => new (await import("./lib/api.js")).default(name, options)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const __filename = Func.__filename(import.meta.url)
@@ -18,12 +20,16 @@ const require = createRequire(import.meta.url)
 import didyoumean from "didyoumean"
 
 export default async function Message(conn, m, message) {
+    (await import("../lib/loadDatabase.js")).default(conn, m)
     try {
         if (!m) return
         if (!config.options.public && !m.isOwner) return
         if (m.from && db.groups[m.from]?.mute && !m.isOwner) return
         if (m.isBaileys) return
-        (await import("../lib/loadDatabase.js")).default(m)
+        //  <----- Fungsi Limit Reset ----->
+        cron.schedule('0 6 * * *', async () => {
+          global.db.users[m.sender].limit = 15
+        });
 // DOA
     conn.doa = conn.doa ? conn.doa : {}
     if (m.from in conn.doa) {
@@ -580,6 +586,27 @@ break
                 }
         }
     } catch (e) {
+        m.error = e
         m.reply(format(e))
+    } finally {
+        if (m.plugin) {
+            if (!isNumber(stats.total)) stats.total = 0
+            if (!isNumber(stats.success)) stats.success = 0
+            if (!isNumber(stats.failed)) stats.failed = 0
+            if (!isNumber(stats.today)) stats.today = 0
+              } else {
+              stats = {
+                total: 0,
+                success: 0,
+                failed: 0,
+                today: 0 
+            } }
+                stats.today += 1
+                stats.total += 1
+              if (m.error == null) {
+                stats.success += 1
+              } else {
+                stats.failed += 1
+        }
     }
 }
