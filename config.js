@@ -2,7 +2,7 @@
 // setting your list menu on here
 const menu = {
    main: ["profile", "speed", "owner", "ping", "quoted"],
-   islam: ["doa", "kisahnabi"],
+   islam: ["alquran", "doa", "kisahnabi"],
    owner: ["eval", "exec", "mute", "public", "setprofile", "setname"],
    convert: ["sticker", "toimage"],
    group: ["hidetag", "add", "welcome", "leaving", "setprofile", "setname", "linkgroup"],

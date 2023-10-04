@@ -47,8 +47,8 @@ if (m.from in conn.quran) {
 ᴀʀᴛɪ : ${result.arti}
 ᴊᴜᴍʟᴀʜ ᴀʏᴀᴛ : ${result.ayat}
 ᴅɪᴛᴜʀᴜɴᴋᴀɴ ᴅɪ : ${result.type}
-ᴋᴇᴛᴇʀᴀɴɢᴀɴ: _${result.keterangan}_
-ʟɪɴᴋ ᴀᴜᴅɪᴏ : ${result.audio}`.trim(), m)
+ᴋᴇᴛᴇʀᴀɴɢᴀɴ: _${result.keterangan}_`.trim(), m)
+await conn.sendFile(m.from, result[0].audio, "Al-Quran", "", m)
                   } break
               }
           }
@@ -781,8 +781,8 @@ _Silahkan balas pesan ini dan ketikkan angkanya yang ingin dipilih!_`.trim())
 ᴀʀᴛɪ : ${result[0].arti}
 ᴊᴜᴍʟᴀʜ ᴀʏᴀᴛ : ${result[0].ayat}
 ᴅɪᴛᴜʀᴜɴᴋᴀɴ ᴅɪ : ${result[0].type}
-ᴋᴇᴛᴇʀᴀɴɢᴀɴ: _${result[0].keterangan}_
-ʟɪɴᴋ ᴀᴜᴅɪᴏ : ${result[0].audio}`.trim(), m)
+ᴋᴇᴛᴇʀᴀɴɢᴀɴ: _${result[0].keterangan}_`.trim(), m)
+await conn.sendFile(m.from, result[0].audio, "Al-Quran", "", m)
 }
 }
 break
