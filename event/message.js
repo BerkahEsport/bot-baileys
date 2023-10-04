@@ -13,17 +13,18 @@ import cron from "node-cron"
 import didyoumean from "didyoumean"
 
 export default async function Message(conn, m, message) {
-    await (await import(`../lib/loadDatabase.js?v=${Date.now()}`)).default(conn, m)
-    
     try {
-        const prefix = m.prefix
-        const isCmd = m.body.startsWith(prefix)
-        const command = isCmd ? m.command.toLowerCase() : ""
-        const quoted = m.hasQuotedMsg ? m.quoted : m
         if (!m) return
         if (!config.options.public && !m.isOwner) return
         if (m.from && db.groups[m.from]?.mute && !m.isOwner) return
         if (m.isBot) return
+
+        (await import("../lib/loadDatabase.js")).default(m)
+
+        const prefix = m.prefix
+        const isCmd = m.body.startsWith(prefix)
+        const command = isCmd ? m.command.toLowerCase() : ""
+        const quoted = m.isQuoted ? m.quoted : m
         //  <----- Fungsi Limit Reset ----->
         cron.schedule('0 6 * * *', async () => {
           global.db.users[m.sender].limit = 15
