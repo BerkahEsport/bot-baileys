@@ -757,7 +757,7 @@ conn.quran = conn.quran ? conn.quran : {}
 112. Al Ikhlash,
 113. Al Falaq,
 114. An Naas`.trim()
-if (!m.args[0]) return m.reply(`${list}\n\n*Contoh:* _${usedPrefix+command} An Naas_`)
+if (!m.args[0]) return m.reply(`${list}\n\n*Contoh:* _.alquran An Naas_`)
 let json = JSON.parse(fs.readFileSync("./lib/alquran.json"))
 let data = json.map(v => v.nama)
 let mirip = didyoumean(text, data)
