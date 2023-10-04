@@ -52,7 +52,7 @@ if (m.from in conn.quran) {
                   } break
               }
           }
-        } } else return
+        } }
 // DOA
     conn.doa = conn.doa ? conn.doa : {}
     if (m.from in conn.doa) {
