@@ -334,29 +334,29 @@ ${rres.data}`.trim())
                   let neww = performance.now()
                   let speed = neww - old
                   await conn.reply(m.from,`*𝐒 𝐏 𝐄 𝐄 𝐃*
-                ${Math.round(neww - old)} ms
-                ${speed} ms
-                
-                *ʀ ᴜ ɴ ᴛ ɪ ᴍ ᴇ*
-                ${muptime}
-                ${readMore}
-                
-                *ꜱᴇʀᴠᴇʀ*
-                *🛑 ʀᴀᴍ:* ${format(totalmem() - freemem())} / ${format(totalmem())}
-                *🔵 ꜰʀᴇᴇʀᴀᴍ:* ${format(freemem())}
-                
-                *💻 ᴘʟᴀᴛꜰᴏʀᴍ:* ${os.platform()}
-                *🧿 ꜱᴇʀᴠᴇʀ:* ${os.hostname()}
-                ${readMore}
-                *ɴᴏᴅᴇ-ᴊꜱ ᴍᴇᴍᴏʀʏ ᴜꜱᴀɢᴇ*
-                ${'```' + Object.keys(used).map((key, _, arr) => `${key.padEnd(Math.max(...arr.map(v => v.length)), ' ')}: ${format(used[key])}`).join('\n') + '```'}
-                
-                ${cpus[0] ? `_ᴛᴏᴛᴀʟ ᴄᴘᴜ ᴜꜱᴀɢᴇ_
-                ${cpus[0].model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- *${(type + '*').padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}
-                
-                _ᴄᴘᴜ ᴄᴏʀᴇ(ꜱ) ᴜꜱᴀɢᴇ (${cpus.length} ᴄᴏʀᴇ ᴄᴘᴜ)_
-                ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- *${(type + '*').padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}`).join('\n\n')}` : ''}
-                `, m)
+${Math.round(neww - old)} ms
+${speed} ms
+
+*ʀ ᴜ ɴ ᴛ ɪ ᴍ ᴇ*
+${muptime}
+${readMore}
+
+*ꜱᴇʀᴠᴇʀ*
+*🛑 ʀᴀᴍ:* ${format(totalmem() - freemem())} / ${format(totalmem())}
+*🔵 ꜰʀᴇᴇʀᴀᴍ:* ${format(freemem())}
+
+*💻 ᴘʟᴀᴛꜰᴏʀᴍ:* ${os.platform()}
+*🧿 ꜱᴇʀᴠᴇʀ:* ${os.hostname()}
+${readMore}
+*ɴᴏᴅᴇ-ᴊꜱ ᴍᴇᴍᴏʀʏ ᴜꜱᴀɢᴇ*
+${'```' + Object.keys(used).map((key, _, arr) => `${key.padEnd(Math.max(...arr.map(v => v.length)), ' ')}: ${format(used[key])}`).join('\n') + '```'}
+
+${cpus[0] ? `_ᴛᴏᴛᴀʟ ᴄᴘᴜ ᴜꜱᴀɢᴇ_
+${cpus[0].model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- *${(type + '*').padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}
+
+_ᴄᴘᴜ ᴄᴏʀᴇ(ꜱ) ᴜꜱᴀɢᴇ (${cpus.length} ᴄᴏʀᴇ ᴄᴘᴜ)_
+${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- *${(type + '*').padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}`).join('\n\n')}` : ''}
+`, m)
                 }
             break
             case "quoted": case "q": {
