@@ -39,8 +39,8 @@ if (m.from in conn.quran) {
     if (m.hasQuotedMsg) {
           if (conn.quran[m.from][0].id === m.quoted.id) {
               for (const item of conn.quran[m.from][0].isi) {
-                  if (conn.quran[m.from][0].isi.length > Number(m.text)) {
-                    let result = conn.quran[m.from][0].isi[Number(m.text)-1]
+                  if (conn.quran[m.from][0].isi.length > Number(m.arg[0])) {
+                    let result = conn.quran[m.from][0].isi[Number(m.arg[0])-1]
                     await conn.reply(m.from, `
 ꜱᴜʀᴀᴛ : ${result.asma}
 ʟᴀᴛɪɴ : *${result.nama}*
@@ -782,7 +782,7 @@ _Silahkan balas pesan ini dan ketikkan angkanya yang ingin dipilih!_`.trim())
 ᴊᴜᴍʟᴀʜ ᴀʏᴀᴛ : ${result[0].ayat}
 ᴅɪᴛᴜʀᴜɴᴋᴀɴ ᴅɪ : ${result[0].type}
 ᴋᴇᴛᴇʀᴀɴɢᴀɴ: _${result[0].keterangan}_`.trim(), m)
-await conn.sendFile(m.from, result[0].audio, m, {asDocument: true})
+await conn.sendFile(m.from, result[0].audio, m, {asDocument: true, fileName: result[0].nama})
 }
 }
 break
