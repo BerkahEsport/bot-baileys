@@ -8,25 +8,18 @@ import path from "path"
 import { getBinaryNodeChildren } from "@whiskeysockets/baileys"
 import cp, { exec } from "child_process"
 import { format } from "util"
-import { fileURLToPath } from "url"
-import { createRequire } from "module"
 import { promisify } from 'util'
 import cron from "node-cron"
-const isNumber = x => typeof x === 'number' && !isNaN(x);
-const api = async (name, options = {}) => new (await import("./lib/api.js")).default(name, options)
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const __filename = Func.__filename(import.meta.url)
-const require = createRequire(import.meta.url)
 import didyoumean from "didyoumean"
 
 export default async function Message(conn, m, message) {
     await (await import(`../lib/loadDatabase.js?v=${Date.now()}`)).default(conn, m)
-    const prefix = m.prefix
-    const isCmd = m.body.startsWith(prefix)
-    const command = isCmd ? m.command.toLowerCase() : ""
-    const quoted = m.hasQuotedMsg ? m.quoted : m
     
     try {
+        const prefix = m.prefix
+        const isCmd = m.body.startsWith(prefix)
+        const command = isCmd ? m.command.toLowerCase() : ""
+        const quoted = m.hasQuotedMsg ? m.quoted : m
         if (!m) return
         if (!config.options.public && !m.isOwner) return
         if (m.from && db.groups[m.from]?.mute && !m.isOwner) return
@@ -587,18 +580,6 @@ break
                 }
         }
     } catch (e) {
-        m.error = e
         m.reply(format(e))
-    } finally {
-        if (isCmd) {
-            let stats = global.db.stats
-                stats.today += 1
-                stats.total += 1
-              if (m.error == null) {
-                stats.success += 1
-              } else {
-                stats.failed += 1
-        }
     }
-}
 }
