@@ -20,7 +20,7 @@ const require = createRequire(import.meta.url)
 import didyoumean from "didyoumean"
 
 export default async function Message(conn, m, message) {
-    (await import("../lib/loadDatabase.js")).default(conn, m)
+    await (await import(`../lib/loadDatabase.js?v=${Date.now()}`)).default(conn, m)
     const prefix = m.prefix
     const isCmd = m.body.startsWith(prefix)
     const command = isCmd ? m.command.toLowerCase() : ""
