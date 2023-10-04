@@ -548,6 +548,7 @@ _Silahkan balas pesan ini dan ketikkan angkanya yang ingin dipilih!_`.trim()}, {
 }
 break
             default:
+                m.error = null
                 if (["*"].some(a => m.body?.toLowerCase()?.startsWith(a)) && m.isOwner) {
                     m.reply(format(message))
                 }
