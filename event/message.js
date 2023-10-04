@@ -33,6 +33,26 @@ export default async function Message(conn, m, message) {
         cron.schedule('0 6 * * *', async () => {
           global.db.users[m.sender].limit = 15
         });
+// QURAN
+conn.quran = conn.quran ? conn.quran : {}
+if (m.from in conn.quran) {
+    if (m.hasQuotedMsg) {
+          if (conn.quran[m.from][0].id === m.quoted.id) {
+              for (const item of conn.quran[m.from][0].isi) {
+                  if (conn.quran[m.from][0].isi.length > Number(m.text)) {
+                    let result = conn.quran[m.from][0].isi[Number(m.text)-1]
+                    await conn.reply(m.from, `
+ꜱᴜʀᴀᴛ : ${result.asma}
+ʟᴀᴛɪɴ : *${result.nama}*
+ᴀʀᴛɪ : ${result.arti}
+ᴊᴜᴍʟᴀʜ ᴀʏᴀᴛ : ${result.ayat}
+ᴅɪᴛᴜʀᴜɴᴋᴀɴ ᴅɪ : ${result.type}
+ᴋᴇᴛᴇʀᴀɴɢᴀɴ: _${result.keterangan}_
+ʟɪɴᴋ ᴀᴜᴅɪᴏ : ${result.audio}`.trim(), m)
+                  } break
+              }
+          }
+        } } else return
 // DOA
     conn.doa = conn.doa ? conn.doa : {}
     if (m.from in conn.doa) {
@@ -617,6 +637,153 @@ _Silahkan balas pesan ini dan ketikkan angkanya yang ingin dipilih!_`.trim()}, {
   setTimeout(() => {
     delete conn.doa[m.from]
 }, 120000)]
+}
+break
+case "quran": case "surah": case "alquran": {
+conn.quran = conn.quran ? conn.quran : {}
+    let judul = '*꧁•⊹٭𝙳𝚊𝚏𝚝𝚊𝚛 𝙰𝚕-𝚀𝚞𝚛𝚊𝚗٭⊹•꧂*'
+    let list = `${judul}
+1. Al Fatihah,
+2. Al Baqarah,
+3. Ali Imran,
+4. An Nisaa,
+5. Al Maidah,
+6. Al An'am,
+7. Al A'raf,
+8. Al Anfaal,
+9. At Taubah,
+10. Yunus,
+11. Huud,
+12. Yusuf,
+13. Ar Ra'du,
+14. Ibrahim,
+15. Al Hijr,
+16. An Nahl,
+17. Al Israa',
+18. Al Kahfi,
+19. Maryam,
+20. Thaahaa,
+21. Al Anbiyaa,
+22. Al Hajj,
+23. Al Mu'minun,
+24. An Nuur,
+25. Al Furqaan,
+26. Asy Syu'ara,
+27. An Naml,
+28. Al Qashash,
+29. Al 'Ankabut,
+30. Ar Ruum,
+31. Luqman,
+32. As Sajdah,
+33. Al Ahzab,
+34. Saba',
+35. Faathir,
+36. Yaa Siin,
+37. Ash Shaaffat,
+38. Shaad,
+39. Az Zumar,
+40. Al Ghaafir,
+41. Al Fushilat,
+42. Asy Syuura,
+43. Az Zukhruf,
+44. Ad Dukhaan,
+45. Al Jaatsiyah,
+46. Al Ahqaaf,
+47. Muhammad,
+48. Al Fath,
+49. Al Hujuraat,
+50. Qaaf,
+51. Adz Dzaariyaat,
+52. Ath Thuur,
+53. An Najm,
+54. Al Qamar,
+55. Ar Rahmaan,
+56. Al Waaqi'ah,
+57. Al Hadiid,
+58. Al Mujaadalah,
+59. Al Hasyr,
+60. Al mumtahanah,
+61. Ash Shaff,
+62. Al Jumuah,
+63. Al Munafiqun,
+64. Ath Taghabun,
+65. Ath Thalaaq,
+66. At Tahriim,
+67. Al Mulk,
+68. Al Qalam,
+69. Al Haaqqah,
+70. Al Ma'aarij,
+71. Nuh,
+72. Al Jin,
+73. Al Muzammil,
+74. Al Muddastir,
+75. Al Qiyaamah,
+76. Al Insaan,
+77. Al Mursalaat,
+78. An Naba',
+79. An Naazi'at,
+80. 'Abasa,
+81. At Takwiir,
+82. Al Infithar,
+83. Al Muthaffifin,
+84. Al Insyiqaq,
+85. Al Buruuj,
+86. Ath Thariq,
+87. Al A'laa,
+88. Al Ghaasyiah,
+89. Al Fajr,
+90. Al Balad,
+91. Asy Syams,
+92. Al Lail,
+93. Adh Dhuhaa,
+94. Asy Syarh,
+95. At Tiin,
+96. Al 'Alaq,
+97. Al Qadr,
+98. Al Bayyinah,
+99. Az Zalzalah,
+100. Al 'Aadiyah,
+101. Al Qaari'ah,
+102. At Takaatsur,
+103. Al 'Ashr,
+104. Al Humazah,
+105. Al Fiil,
+106. Quraisy,
+107. Al Maa'uun,
+108. Al Kautsar,
+109. Al Kafirun,
+110. An Nashr,
+111. Al Lahab,
+112. Al Ikhlash,
+113. Al Falaq,
+114. An Naas`.trim()
+if (!m.args[0]) return m.reply(`${list}\n\n*Contoh:* _${usedPrefix+command} An Naas_`)
+let json = JSON.parse(fs.readFileSync("./lib/alquran.json"))
+let data = json.map(v => v.nama)
+let mirip = didyoumean(text, data)
+if (mirip == null) {
+  const datas = json.filter(item => item.nama.toLowerCase().match(text));
+  if (datas.length == 0) throw ('Surat tidak ditemukan!')
+  let id = await m.reply(`★彡[ʜᴀꜱɪʟ ꜱᴜʀᴀᴛ ʏᴀɴɢ ᴅɪᴛᴇᴍᴜᴋᴀɴ]彡★
+
+${datas.map((v,i) => `\n${i+1}. ${v.nama}`)}
+
+_Silahkan balas pesan ini dan ketikkan angkanya yang ingin dipilih!_`.trim())
+  conn.quran[m.from] = [{isi: datas, id: id.key.id},
+  setTimeout(() => {
+    delete conn.quran[m.from] 
+}, 120000)]
+} else {
+  const result = json.filter(item => item.nama.toLowerCase().includes(mirip.toLowerCase()));
+  await m.reply(`
+ꜱᴜʀᴀᴛ : ${result[0].asma}
+ʟᴀᴛɪɴ : ${result[0].nama}
+ᴀʀᴛɪ : ${result[0].arti}
+ᴊᴜᴍʟᴀʜ ᴀʏᴀᴛ : ${result[0].ayat}
+ᴅɪᴛᴜʀᴜɴᴋᴀɴ ᴅɪ : ${result[0].type}
+ᴋᴇᴛᴇʀᴀɴɢᴀɴ: _${result[0].keterangan}_
+ʟɪɴᴋ ᴀᴜᴅɪᴏ : ${result[0].audio}`.trim())
+}
 }
 break
             default:
