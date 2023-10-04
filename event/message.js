@@ -762,7 +762,7 @@ let json = JSON.parse(fs.readFileSync("./lib/alquran.json"))
 let data = json.map(v => v.nama)
 let mirip = didyoumean(m.text, data)
 if (mirip == null) {
-  const datas = json.filter(item => item.nama.toLowerCase().match(text));
+  const datas = json.filter(item => item.nama.toLowerCase().match(m.text));
   if (datas.length == 0) throw ('Surat tidak ditemukan!')
   let id = await m.reply(`★彡[ʜᴀꜱɪʟ ꜱᴜʀᴀᴛ ʏᴀɴɢ ᴅɪᴛᴇᴍᴜᴋᴀɴ]彡★
 
