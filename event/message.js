@@ -48,7 +48,7 @@ if (m.from in conn.quran) {
 ᴊᴜᴍʟᴀʜ ᴀʏᴀᴛ : ${result.ayat}
 ᴅɪᴛᴜʀᴜɴᴋᴀɴ ᴅɪ : ${result.type}
 ᴋᴇᴛᴇʀᴀɴɢᴀɴ: _${result.keterangan}_`.trim(), m)
-await conn.sendFile(m.from, result[0].audio, m, {asDocument: true})
+await conn.sendFile(m.from, result.audio, m, {asDocument: true, fileName: result.nama})
                   } break
               }
           }
