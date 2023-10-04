@@ -39,8 +39,8 @@ if (m.from in conn.quran) {
     if (m.hasQuotedMsg) {
           if (conn.quran[m.from][0].id === m.quoted.id) {
               for (const item of conn.quran[m.from][0].isi) {
-                  if (conn.quran[m.from][0].isi.length > Number(m.arg[0])) {
-                    let result = conn.quran[m.from][0].isi[Number(m.arg[0])-1]
+                  if (conn.quran[m.from][0].isi.length > Number(m.arg[0] - 1)) {
+                    let result = conn.quran[m.from][0].isi[Number(m.arg[0] - 1)]
                     await conn.reply(m.from, `
 ꜱᴜʀᴀᴛ : ${result.asma}
 ʟᴀᴛɪɴ : *${result.nama}*
