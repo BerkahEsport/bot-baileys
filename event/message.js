@@ -48,19 +48,17 @@ export default async function Message(conn, m, message) {
             return data;
           }
           setTimeout(() => {
-            if (sender.simi === true) m.reply('Waktu auto Simi telah berakhir! >_<');
+            if (sender.simi == true) m.reply('Waktu auto Simi telah berakhir! >_<');
               sender.simi = false
               }, (10 * 60000));
-          if (/out/i.test(m.text)) {
+          if (/out|Out/i.test(m.text)) {
               sender.simi = false
               return m.reply('Fitur auto simi berhasil dimatikan.')
           }
           if (!m.text) return
-          if (m.isCommand) return
           try {
               let api = await simtalk(m.text);
               m.reply(`${api.message} \n\n_Ketik *out* untuk mematikan fitur auto simi!_`);
-            api = null
             } catch(e) {
               console.log(e)
               m.reply("Simi tidak mengerti, coba tanyakan yang lainya. 🙁")
