@@ -33,23 +33,20 @@ export default async function Message(conn, m, message) {
         cron.schedule('0 6 * * *', async () => {
           global.db.users[m.sender].limit = 15
         });
-// SIMI
-if (m.text == ".on simi") {
-    global.db.users[m.sender].simi = true
-}
-async function simtalk(text) {
-    const params = new URLSearchParams();
-    params.append("text", text);
-    params.append("lc", "id");
-    const { data } = await axios({
-      method: "POST",
-      url: "https://api.simsimi.vn/v2/simtalk",
-      data: params,
-    });
-    return data;
-  }
+
       let sender = global.db.users[m.sender]
       if (sender.simi && !sender.banned ) {
+        async function simtalk(text) {
+            const params = new URLSearchParams();
+            params.append("text", text);
+            params.append("lc", "id");
+            const { data } = await axios({
+              method: "POST",
+              url: "https://api.simsimi.vn/v2/simtalk",
+              data: params,
+            });
+            return data;
+          }
           setTimeout(() => {
             if (sender.simi === true) m.reply('Waktu auto Simi telah berakhir! >_<');
               sender.simi = false
@@ -144,6 +141,11 @@ if (m.from in conn.yts) {
         }
 
         switch (command) {
+            case "simi": {
+                global.db.users[m.sender].simi = true
+                m.reply("Fitur simi diaktifkan!")
+            }
+            break
             case "menu": {
                 let text = `
 ┏━━〔 ${config.options.bot} 〕━▣

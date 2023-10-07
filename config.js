@@ -1,7 +1,7 @@
 
 // setting your list menu on here
 const menu = {
-   main: ["profile", "speed", "owner", "ping", "quoted"],
+   main: ["simi", "profile", "speed", "owner", "ping", "quoted"],
    islam: ["alquran", "doa", "kisahnabi"],
    owner: ["eval", "exec", "mute", "public", "setprofile", "setname"],
    convert: ["sticker", "toimage"],
