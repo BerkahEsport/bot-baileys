@@ -33,6 +33,42 @@ export default async function Message(conn, m, message) {
         cron.schedule('0 6 * * *', async () => {
           global.db.users[m.sender].limit = 15
         });
+// SIMI
+if (m.text == ".on simi") {
+    global.db.users[m.sender].simi = true
+}
+async function simtalk(text) {
+    const params = new URLSearchParams();
+    params.append("text", text);
+    params.append("lc", "id");
+    const { data } = await axios({
+      method: "POST",
+      url: "https://api.simsimi.vn/v2/simtalk",
+      data: params,
+    });
+    return data;
+  }
+      let sender = global.db.users[m.sender]
+      if (sender.simi && !sender.banned ) {
+          setTimeout(() => {
+            if (sender.simi === true) m.reply('Waktu auto Simi telah berakhir! >_<');
+              sender.simi = false
+              }, (10 * 60000));
+          if (/out/i.test(m.text)) {
+              sender.simi = false
+              return m.reply('Fitur auto simi berhasil dimatikan.')
+          }
+          if (!m.text) return
+          if (m.isCommand) return
+          try {
+              let api = await simtalk(m.text);
+              m.reply(`${api.message} \n\n_Ketik *out* untuk mematikan fitur auto simi!_`);
+            api = null
+            } catch(e) {
+              console.log(e)
+              m.reply("Simi tidak mengerti, coba tanyakan yang lainya. 🙁")
+            }
+      }
 // QURAN
 conn.quran = conn.quran ? conn.quran : {}
 if (m.from in conn.quran) {
