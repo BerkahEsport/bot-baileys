@@ -137,7 +137,10 @@ if (m.from in conn.yts) {
         if (m.message && !m.isBot) {
             console.log(chalk.black(chalk.bgWhite("- FROM")), chalk.black(chalk.bgGreen(m.pushName)), chalk.black(chalk.yellow(m.sender)) + "\n" + chalk.black(chalk.bgWhite("- IN")), chalk.black(chalk.bgGreen(m.isGroup ? m.metadata.subject : "Private Chat", m.from)) + "\n" + chalk.black(chalk.bgWhite("- MESSAGE")), chalk.black(chalk.bgGreen(m.body || m.type)))
         }
-
+        if (isCmd) {
+            m.react("⏳")
+            m.error = false
+    }
         switch (command) {
             case "simi": {
                 global.db.users[m.sender].simi = true
@@ -862,6 +865,10 @@ break
                 }
         }
     } catch (e) {
+        m.error = true
+        m.react("❌")
         m.reply(format(e))
+    } finally {
+        if (m.error == false) m.react("✅")
     }
 }
