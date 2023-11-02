@@ -28,7 +28,8 @@ export default async function Message(conn, m, message) {
         const prefix = m.prefix
         const isCmd = m.body.startsWith(prefix)
         const command = isCmd ? m.command.toLowerCase() : ""
-        const quoted = m.isQuoted ? m.quoted : m
+        const quoted = m.hasQuotedMsg ? m.quoted : m
+        const allMenuItems = [].concat(...Object.values(config.menu));
         //  <----- Fungsi Limit Reset ----->
         cron.schedule('0 6 * * *', async () => {
           global.db.users[m.sender].limit = 15
@@ -137,7 +138,7 @@ if (m.from in conn.yts) {
         if (m.message && !m.isBot) {
             console.log(chalk.black(chalk.bgWhite("- FROM")), chalk.black(chalk.bgGreen(m.pushName)), chalk.black(chalk.yellow(m.sender)) + "\n" + chalk.black(chalk.bgWhite("- IN")), chalk.black(chalk.bgGreen(m.isGroup ? m.metadata.subject : "Private Chat", m.from)) + "\n" + chalk.black(chalk.bgWhite("- MESSAGE")), chalk.black(chalk.bgGreen(m.body || m.type)))
         }
-        if (isCmd) {
+        if (isCmd && allMenuItems.includes(command)) {
             m.react("⏳")
             m.error = false
     }
@@ -827,7 +828,7 @@ await conn.sendFile(m.from, result[0].audio, m, {asDocument: true, fileName: res
 }
 break
             default:
-                m.error = null
+                m.error = false
                 if (["*"].some(a => m.body?.toLowerCase()?.startsWith(a)) && m.isOwner) {
                     m.reply(format(message))
                 }
@@ -864,6 +865,16 @@ break
                     m.reply(`ɪʏᴀ "${m.pushName}" ᴀᴅᴀ ᴀᴘᴀ?`)
                 }
         }
+        function getSwitchCases(switchFunction) {
+            const caseRegex = /case\s+['"](.+?)['"]/g;
+            const cases = [];
+            let match;
+            while ((match = caseRegex.exec(switchFunction.toString())) !== null) {
+              cases.push(match[1]);
+            }
+            return cases;
+          }
+        let arrayCase = getSwitchCases
     } catch (e) {
         m.error = true
         m.react("❌")
