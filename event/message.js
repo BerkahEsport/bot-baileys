@@ -160,7 +160,7 @@ if (m.from in conn.yts) {
                 text += `
 ┏━━〔 ${config.options.bot} 〕━▣
 ┃❒ ʙᴏᴛ ꜰᴜʟʟ ꜰɪᴛᴜʀ: 
-┃❒ _https://wa.me/62857821922892?text=.daftar%20UserBE.20_
+┃❒ _https://wa.me/${config.options.bot}?text=.daftar%20UserBE.20_
 ┗━━━━━━▣\n`.trimStart()
                 return conn.sendMessage(m.from, {
                     text, contextInfo: {

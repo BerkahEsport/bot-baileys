@@ -39,7 +39,8 @@ export default {
       owner: ["62895375950107"], // set owner number on here
       sessionName: "session", // for name session
       prefix: /^[°•π÷×¶∆£¢€¥®™+✓_=|/~!?@#%^&.©^]/i,
-      pairingNumber: "6289649672623" // Example Input : 62xxx
+      pairingNumber: "6289654279897", // Example Input : 62xxx
+      mybot: "6289649672623"
    },
    Exif: {
       packId: "https://moexti.jw.lt/",
