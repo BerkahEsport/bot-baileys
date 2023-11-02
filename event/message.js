@@ -108,7 +108,7 @@ if (m.from in conn.yts) {
           if (conn.yts[m.from][0].id === m.quoted.id) {
             if (!m.arg[1]) return m.reply("Silahkan balas pesan, masukkan angka dan tipe! \nContoh: 1 mp3 ")
             if (Number(m.arg[0]) > conn.yts[m.from][1].length) return m.reply("Pilihan angka tidak ada! \nContoh: 1 mp3 ")
-            if ( global.db.users[m.sender].premium || global.db.users[m.sender].VIP || global.db.users[m.sender].limit < 4) return m.reply("limit")
+            if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
             if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                 if ( global.db.users[m.sender].limit > 4) {
                 global.db.users[m.sender].limit -= 4
@@ -120,7 +120,7 @@ if (m.from in conn.yts) {
             m.reply(data.link)
         }
           if (m.arg[1] == "mp4" || m.arg[1] == "video") {
-            if ( global.db.users[m.sender].premium || global.db.users[m.sender].VIP || global.db.users[m.sender].limit < 5) return m.reply("limit")
+            if ( global.db.users[m.sender].limit < 5) return m.reply("limit")
             if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                 if ( global.db.users[m.sender].limit > 5) {
                 global.db.users[m.sender].limit -= 5
@@ -210,7 +210,7 @@ if (m.from in conn.yts) {
             break
             case "yts":  {
                 if (!m.args[0]) return m.reply(`Masukkan pencarian youtube!`)
-                if ( global.db.users[m.sender].premium || global.db.users[m.sender].VIP || global.db.users[m.sender].limit < 1) return m.reply("limit")
+                if ( global.db.users[m.sender].limit < 1) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 1) {
                     global.db.users[m.sender].limit -= 1
@@ -227,7 +227,7 @@ if (m.from in conn.yts) {
             break
             case "yta":  {
                 if (!m.args[0]) return m.reply(`Masukkan link youtube!`)
-                if ( global.db.users[m.sender].premium || global.db.users[m.sender].VIP || global.db.users[m.sender].limit < 4) return m.reply("limit")
+                if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 4) {
                     global.db.users[m.sender].limit -= 4
@@ -240,7 +240,7 @@ if (m.from in conn.yts) {
             break
             case "ytv":  {
                 if (!m.args[0]) return m.reply(`Masukkan link youtube!`)
-                if ( global.db.users[m.sender].premium || global.db.users[m.sender].VIP || global.db.users[m.sender].limit < 5) return m.reply("limit")
+                if ( global.db.users[m.sender].limit < 5) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 5) {
                     global.db.users[m.sender].limit -= 5
@@ -253,7 +253,7 @@ if (m.from in conn.yts) {
             break
             case "ig":  {
                 if (!m.args[0]) return m.reply(`Masukkan link instagram!`)
-                if ( global.db.users[m.sender].premium || global.db.users[m.sender].VIP || global.db.users[m.sender].limit < 4) return m.reply("limit")
+                if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 4) {
                     global.db.users[m.sender].limit -= 4
@@ -266,7 +266,7 @@ if (m.from in conn.yts) {
             break
             case "tt":  {
                 if (!m.args[0]) return m.reply(`Masukkan link tiktok!`)
-                if ( global.db.users[m.sender].premium || global.db.users[m.sender].VIP || global.db.users[m.sender].limit < 4) return m.reply("limit")
+                if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 4) {
                     global.db.users[m.sender].limit -= 4
@@ -279,7 +279,7 @@ if (m.from in conn.yts) {
             break
             case "fb":  {
                 if (!m.args[0]) return m.reply(`Masukkan link facebook!`)
-                if ( global.db.users[m.sender].premium || global.db.users[m.sender].VIP || global.db.users[m.sender].limit < 4) return m.reply("limit")
+                if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 4) {
                     global.db.users[m.sender].limit -= 4
@@ -307,7 +307,7 @@ if (m.from in conn.yts) {
             break    
             case "ai": {
                 if (!m.args[0]) return m.reply("Mau tanya apa ya? Contoh: .ai Halo siapa kamu?")
-                if ( global.db.users[m.sender].premium || global.db.users[m.sender].VIP || global.db.users[m.sender].limit < 3) return m.reply("limit")
+                if ( global.db.users[m.sender].limit < 3) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 3) {
                     global.db.users[m.sender].limit -= 3
@@ -473,7 +473,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             }
             break
             case "sticker": case "s": case "stiker": {
-                if ( global.db.users[m.sender].premium || global.db.users[m.sender].VIP || global.db.users[m.sender].limit < 1) return m.reply("limit")
+                if ( global.db.users[m.sender].limit < 1) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 1) {
                     global.db.users[m.sender].limit -= 1
@@ -504,7 +504,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             }
             break
             case "toimg": {
-                if ( global.db.users[m.sender].premium || global.db.users[m.sender].VIP || global.db.users[m.sender].limit < 2) return m.reply("limit")
+                if ( global.db.users[m.sender].limit < 2) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 2) {
                     global.db.users[m.sender].limit -= 2
@@ -586,7 +586,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                 let mime = (await import("mime-types"))
                 const res = await axios.get(Func.isUrl(m.text)[0], { responseType: "arraybuffer" })
                 if (!/utf-8|json|html|plain/.test(res?.headers?.get("content-type"))) {
-                    if ( global.db.users[m.sender].premium || global.db.users[m.sender].VIP || global.db.users[m.sender].limit < 3) return m.reply("limit")
+                    if ( global.db.users[m.sender].limit < 3) return m.reply("limit")
                     if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                         if ( global.db.users[m.sender].limit > 3) {
                         global.db.users[m.sender].limit -= 3
@@ -598,7 +598,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                 let text = res?.data?.toString() || res?.data
                 text = format(text)
                 try {
-                    if ( global.db.users[m.sender].premium || global.db.users[m.sender].VIP || global.db.users[m.sender].limit < 1) return m.reply("limit")
+                    if ( global.db.users[m.sender].limit < 1) return m.reply("limit")
                     if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                         if ( global.db.users[m.sender].limit > 1) {
                         global.db.users[m.sender].limit -= 1
@@ -611,7 +611,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             }
             break
             case "rvo": {
-                if ( global.db.users[m.sender].premium || global.db.users[m.sender].VIP || global.db.users[m.sender].limit < 1) return m.reply("limit")
+                if ( global.db.users[m.sender].limit < 1) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 1) {
                     global.db.users[m.sender].limit -= 1
