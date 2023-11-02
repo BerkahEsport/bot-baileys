@@ -140,6 +140,7 @@ if (m.from in conn.yts) {
         }
         if (isCmd && allMenuItems.includes(command)) {
             m.react("⏳")
+            m.error = false
     }
         switch (command) {
             case "simi": {
@@ -827,7 +828,6 @@ await conn.sendFile(m.from, result[0].audio, m, {asDocument: true, fileName: res
 }
 break
             default:
-                m.error = false
                 if (["*"].some(a => m.body?.toLowerCase()?.startsWith(a)) && m.isOwner) {
                     m.reply(format(message))
                 }
