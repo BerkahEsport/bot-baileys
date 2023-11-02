@@ -116,7 +116,7 @@ if (m.from in conn.yts) {
             }}
             if (m.arg[1] == "mp3" || m.arg[1] == "audio") {
                 await m.reply("wait")
-            let data = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/audio?url=${conn.yts[m.from][1][Number(m.arg[0])].url}&apikey=berkahesport`)).json()
+            let data = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/audio?url=${conn.yts[m.from][1][Number(m.arg[0])].url}&apikey=${config.options.apikey}`)).json()
             m.reply(data.link)
         }
           if (m.arg[1] == "mp4" || m.arg[1] == "video") {
@@ -127,7 +127,7 @@ if (m.from in conn.yts) {
                 m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 5, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
             }}
             await m.reply("wait")
-            let data = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/video?url=${conn.yts[m.from][1][Number(m.arg[0])].url}&apikey=berkahesport`)).json()
+            let data = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/video?url=${conn.yts[m.from][1][Number(m.arg[0])].url}&apikey=${config.options.apikey}`)).json()
             m.reply(data.link)
         }
         }
@@ -160,7 +160,7 @@ if (m.from in conn.yts) {
                 text += `
 ┏━━〔 ${config.options.bot} 〕━▣
 ┃❒ ʙᴏᴛ ꜰᴜʟʟ ꜰɪᴛᴜʀ: 
-┃❒ _https://wa.me/${config.options.bot}?text=.daftar%20UserBE.20_
+┃❒ _https://wa.me/${config.options.mybot}?text=.daftar%20UserBE.20_
 ┗━━━━━━▣\n`.trimStart()
                 return conn.sendMessage(m.from, {
                     text, contextInfo: {
@@ -191,7 +191,7 @@ if (m.from in conn.yts) {
 
 ┏━━〔 ${config.options.author} 〕━▣
 ┃❒ ʙᴏᴛ ꜰᴜʟʟ ꜰɪᴛᴜʀ: 
-┃❒ _https://wa.me/62857821922892?text=.daftar%20UserBE.20_
+┃❒ _https://wa.me/${config.options.mybot}?text=.daftar%20UserBE.20_
 ┗━━━━━━▣\n`.trimStart()
                 conn.sendMessage(m.from, {
                     text, contextInfo: {
@@ -216,7 +216,7 @@ if (m.from in conn.yts) {
                     global.db.users[m.sender].limit -= 1
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 1, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }}
-                let data = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/search?text=${m.text}&apikey=berkahesport`)).json()
+                let data = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/search?text=${m.text}&apikey=${config.options.apikey}`)).json()
                 let hasil = data.map((v,i) => `\n*${i+1}*. *Judul:* ${v?.title}\n▸ *Durasi:* ${v?.timestamp}\n▸ *Link:* ${v?.url}\n\n`)
                 let id = await m.reply("*★彡[ʏᴏᴜᴛᴜʙᴇ ꜱᴇᴀʀᴄʜ]彡★*\n\n"+hasil+"\nᴮᵃˡᵃˢ ᵈᵃⁿ ᵏⁱʳⁱᵐ ˢᵉˢᵘᵃⁱ ᵃⁿᵍᵏᵃ!")
                 conn.yts = conn.yts ? conn.yts : {}
@@ -234,7 +234,7 @@ if (m.from in conn.yts) {
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 4, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }}
                 m.reply("wait")
-                let datayta = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/audio?url=${m.text}&apikey=berkahesport`)).json()
+                let datayta = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/audio?url=${m.text}&apikey=${config.options.apikey}`)).json()
                 await m.reply(datayta.link)
             }
             break
@@ -247,7 +247,7 @@ if (m.from in conn.yts) {
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 5, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }}
                 m.reply("wait")
-                let dataytv = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/video?url=${m.text}&apikey=berkahesport`)).json()
+                let dataytv = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/video?url=${m.text}&apikey=${config.options.apikey}`)).json()
                 await m.reply(dataytv.link)
             }
             break
@@ -260,7 +260,7 @@ if (m.from in conn.yts) {
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 4, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }}
                 m.reply("wait")
-                let dataig = await (await fetch(`https://api-be.berkahesport.repl.co/api/igdl?url=${m.text}&apikey=berkahesport`)).json()
+                let dataig = await (await fetch(`https://api-be.berkahesport.repl.co/api/igdl?url=${m.text}&apikey=${config.options.apikey}`)).json()
                 await m.reply(dataig.medias[0].url)
             }
             break
@@ -273,7 +273,7 @@ if (m.from in conn.yts) {
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 4, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }}
                 m.reply("wait")
-                let datatt = await (await fetch(`https://api-be.berkahesport.repl.co/api/ttdl?url=${m.text}&apikey=berkahesport`)).json()
+                let datatt = await (await fetch(`https://api-be.berkahesport.repl.co/api/ttdl?url=${m.text}&apikey=${config.options.apikey}`)).json()
                 await m.reply(datatt.video.no_watermark_hd)
             }
             break
@@ -286,7 +286,7 @@ if (m.from in conn.yts) {
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 4, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }}
                 m.reply("wait")
-                let datafb = await (await fetch(`https://api-be.berkahesport.repl.co/api/fbdl?url=${m.text}&apikey=berkahesport`)).json()
+                let datafb = await (await fetch(`https://api-be.berkahesport.repl.co/api/fbdl?url=${m.text}&apikey=${config.options.apikey}`)).json()
                 await m.reply(datafb.result[0].url)
             }
             break
