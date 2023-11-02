@@ -1,7 +1,7 @@
 
 // setting your list menu on here
 const menu = {
-   main: ["simi", "profile", "speed", "owner", "ping", "quoted"],
+   main: ["menu", "simi", "profile", "speed", "owner", "ping", "quoted"],
    islam: ["alquran", "doa", "kisahnabi"],
    owner: ["eval", "exec", "mute", "public", "setprofile", "setname"],
    convert: ["sticker", "toimage"],
@@ -25,8 +25,12 @@ export default {
    limit,
    menu,
    APIs: {
+      apibe: {
+         baseURL: 'https://api-be.berkahesport.repl.co/',
+         Key: "beta" // Mau beli apikey di wa.me/62895375950107
+      },
       xzn: {
-         baseURL: 'https://xzn.wtf/',
+         baseURL: 'https://skizo.tech/',
          Key: "beta"
       }
    },

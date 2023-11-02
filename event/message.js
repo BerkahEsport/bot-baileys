@@ -140,7 +140,6 @@ if (m.from in conn.yts) {
         }
         if (isCmd && allMenuItems.includes(command)) {
             m.react("⏳")
-            m.error = false
     }
         switch (command) {
             case "simi": {
@@ -865,16 +864,6 @@ break
                     m.reply(`ɪʏᴀ "${m.pushName}" ᴀᴅᴀ ᴀᴘᴀ?`)
                 }
         }
-        function getSwitchCases(switchFunction) {
-            const caseRegex = /case\s+['"](.+?)['"]/g;
-            const cases = [];
-            let match;
-            while ((match = caseRegex.exec(switchFunction.toString())) !== null) {
-              cases.push(match[1]);
-            }
-            return cases;
-          }
-        let arrayCase = getSwitchCases
     } catch (e) {
         m.error = true
         m.react("❌")
