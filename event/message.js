@@ -456,7 +456,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             }
             break
             case "setpp": case "setprofile": case "seticon": {
-                const media = await quoted.download()
+                const media = await quoted.downloadMedia()
                 if (m.isOwner && !m.isGroup) {
                     if (/full/i.test(m.text)) await conn.setProfilePicture(conn?.user?.id, media, "full")
                     else if (/(de(l)?(ete)?|remove)/i.test(m.text)) await conn.removeProfilePicture(conn.decodeJid(conn?.user?.id))
@@ -485,7 +485,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                 }}
                 if (/image|video|webp/i.test(quoted.mime)) {
                     m.reply("wait")
-                    const buffer = await quoted.download()
+                    const buffer = await quoted.downloadMedia()
                     if (quoted?.msg?.seconds > 10) return m.reply(`Max video 9 second`)
                     let exif
                     if (m.text) {
@@ -517,10 +517,10 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                 let { webp2mp4File } = (await import("../lib/sticker.js"))
                 if (!/webp/i.test(quoted.mime)) return m.reply(`Reply Sticker with command ${prefix + command}`)
                 if (quoted.isAnimated) {
-                    let media = await webp2mp4File((await quoted.download()))
+                    let media = await webp2mp4File((await quoted.downloadMedia()))
                     await m.reply(media)
                 }
-                let media = await quoted.download()
+                let media = await quoted.downloadMedia()
                 await m.reply(media, { mimetype: "image/png" })
             }
             break
