@@ -116,7 +116,7 @@ if (m.from in conn.yts) {
                 await m.reply("wait")
             let data = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/audio?url=${conn.yts[m.from][1][Number(m.arg[0])].url}&apikey=${config.options.apikey}`)).json()
             let datas = await Func.getFiles(data.link, true)
-            m.reply(datas.res)
+            m.reply(datas.res, {asDocument: true, fileName: data.title})
         }
           if (m.arg[1] == "mp4" || m.arg[1] == "video") {
             if ( global.db.users[m.sender].limit < 5) return m.reply("limit")
@@ -128,7 +128,7 @@ if (m.from in conn.yts) {
             await m.reply("wait")
             let data = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/video?url=${conn.yts[m.from][1][Number(m.arg[0])].url}&apikey=${config.options.apikey}`)).json()
             let datas = await Func.getFiles(data.link, true)
-            m.reply(datas.res)
+            m.reply(datas.res, {asDocument: true, fileName: data.title})
         }
         }
     }
