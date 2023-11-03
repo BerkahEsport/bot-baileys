@@ -77,7 +77,7 @@ if (m.from in conn.quran) {
 ᴊᴜᴍʟᴀʜ ᴀʏᴀᴛ : ${result.ayat}
 ᴅɪᴛᴜʀᴜɴᴋᴀɴ ᴅɪ : ${result.type}
 ᴋᴇᴛᴇʀᴀɴɢᴀɴ: _${result.keterangan}_`.trim(), m)
-await conn.sendFile(m.from, result.audio, "Quran-", m, {asDocument: true, fileName: result.nama})
+await conn.sendFile(m.from, result.audio, result.nama, m, {asDocument: true})
                   } break
               }
           }
@@ -115,7 +115,7 @@ if (m.from in conn.yts) {
             if (m.arg[1] == "mp3" || m.arg[1] == "audio") {
                 await m.reply("wait")
             let data = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/audio?url=${conn.yts[m.from][1][Number(m.arg[0])].url}&apikey=${config.options.apikey}`)).json()
-            m.reply(await data.link)
+            m.reply(data.link)
         }
           if (m.arg[1] == "mp4" || m.arg[1] == "video") {
             if ( global.db.users[m.sender].limit < 5) return m.reply("limit")
@@ -126,7 +126,7 @@ if (m.from in conn.yts) {
             }}
             await m.reply("wait")
             let data = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/video?url=${conn.yts[m.from][1][Number(m.arg[0])].url}&apikey=${config.options.apikey}`)).json()
-            m.reply(await data.link)
+            m.reply(data.link)
         }
         }
     }
@@ -820,7 +820,7 @@ _Silahkan balas pesan ini dan ketikkan angkanya yang ingin dipilih!_`.trim())
 ᴊᴜᴍʟᴀʜ ᴀʏᴀᴛ : ${result[0].ayat}
 ᴅɪᴛᴜʀᴜɴᴋᴀɴ ᴅɪ : ${result[0].type}
 ᴋᴇᴛᴇʀᴀɴɢᴀɴ: _${result[0].keterangan}_`.trim(), m)
-await conn.sendFile(m.from, result[0].audio, "Quran-", m, {asDocument: true, fileName: result[0].nama})
+await conn.sendFile(m.from, result[0].audio, result[0].nama, m, {asDocument: true})
 }
 }
 break
