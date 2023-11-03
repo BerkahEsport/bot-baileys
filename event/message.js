@@ -1,21 +1,18 @@
-
-import config from "../config.js"
-import Func from "../lib/function.js"
-import fs from "fs"
-import chalk from "chalk"
-import axios from "axios"
-import path from "path"
-import { getBinaryNodeChildren } from "@whiskeysockets/baileys"
-import cp, { exec } from "child_process"
-import { format } from "util"
-import { promisify } from 'util'
+import config from "../config.js";
+import Func from "../lib/function.js";
+import fs from "fs";
+import chalk from "chalk";
+import axios from "axios";
+import { getBinaryNodeChildren } from "@whiskeysockets/baileys";
+import cp, { exec } from "child_process";
+import { format } from "util";
+import { promisify } from "util";
 import cron from "node-cron"
-import didyoumean from "didyoumean"
-import { cpus as _cpus, totalmem, freemem } from 'os'
-import os from 'os'
-import { performance } from 'perf_hooks'
-import { sizeFormatter } from 'human-readable'
-
+import didyoumean from "didyoumean";
+import { cpus as _cpus, totalmem, freemem } from "os";
+import os from "os";
+import { performance } from "perf_hooks";
+import { sizeFormatter } from "human-readable";
 export default async function Message(conn, m, message) {
     try {
         if (!m) return
@@ -31,7 +28,7 @@ export default async function Message(conn, m, message) {
         const quoted = m.hasQuotedMsg ? m.quoted : m
         const allMenuItems = [].concat(...Object.values(config.menu));
         //  <----- Fungsi Limit Reset ----->
-        cron.schedule('0 6 * * *', async () => {
+        cron.schedule("0 6 * * *", async () => {
           global.db.users[m.sender].limit = 15
         });
 
@@ -49,12 +46,12 @@ export default async function Message(conn, m, message) {
             return data;
           }
           setTimeout(() => {
-            if (sender.simi == true) m.reply('Waktu auto Simi telah berakhir! >_<');
+            if (sender.simi == true) m.reply("Waktu auto Simi telah berakhir! >_<");
               sender.simi = false
               }, (10 * 60000));
           if (/out|Out/i.test(m.text)) {
               sender.simi = false
-              return m.reply('Fitur auto simi berhasil dimatikan.')
+              return m.reply("Fitur auto simi berhasil dimatikan.")
           }
           if (!m.text) return
           try {
@@ -80,7 +77,7 @@ if (m.from in conn.quran) {
 ᴊᴜᴍʟᴀʜ ᴀʏᴀᴛ : ${result.ayat}
 ᴅɪᴛᴜʀᴜɴᴋᴀɴ ᴅɪ : ${result.type}
 ᴋᴇᴛᴇʀᴀɴɢᴀɴ: _${result.keterangan}_`.trim(), m)
-await conn.sendFile(m.from, result.audio, m, {asDocument: true, fileName: result.nama})
+await conn.sendFile(m.from, result.audio, "Quran-", m, {asDocument: true, fileName: result.nama})
                   } break
               }
           }
@@ -160,7 +157,7 @@ if (m.from in conn.yts) {
         text += `┃➠ ${command.map(a => `_${prefix + a}_`).join("\n│➠ ")}\n`
         text += `┃\n`
         text += `╚══════▣\n`
-    }).join('\n\n')
+    }).join("\n\n")
                 text += `
 ┏━━〔 ${config.options.bot} 〕━▣
 ┃❒ ʙᴏᴛ ꜰᴜʟʟ ꜰɪᴛᴜʀ: 
@@ -182,7 +179,7 @@ if (m.from in conn.yts) {
             }
             case "profile": {
                 let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
-                let pp = await conn.profilePictureUrl(who, 'image').catch(() => fs.readFileSync("./tmp/qrbe.jpg"))
+                let pp = await conn.profilePictureUrl(who, "image").catch(() => fs.readFileSync("./tmp/qrbe.jpg"))
                 let sender = global.db.users[who]
                 let text = `
 ┏━━〔 ${config.options.bot} 〕━▣
@@ -295,11 +292,11 @@ if (m.from in conn.yts) {
             }
             break
             case "speed":  {
-                        m.reply('*ꜱᴇᴅᴀɴɢ ᴘʀᴏꜱᴇꜱ ᴋᴇᴄᴇᴘᴀᴛᴀɴ ɪɴᴛᴇʀɴᴇᴛ...*')
+                        m.reply("*ꜱᴇᴅᴀɴɢ ᴘʀᴏꜱᴇꜱ ᴋᴇᴄᴇᴘᴀᴛᴀɴ ɪɴᴛᴇʀɴᴇᴛ...*")
                         let exec = promisify(cp.exec).bind(cp)
                       let o
                       try {
-                      o = await exec('python speed.py')
+                      o = await exec("python speed.py")
                       } catch (e) {
                       o = e
                      } finally {
@@ -317,12 +314,12 @@ if (m.from in conn.yts) {
                     global.db.users[m.sender].limit -= 3
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 3, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }}
-            let ai = 'ᴏᴘᴇɴ ᴀɪ'
+            let ai = "ᴏᴘᴇɴ ᴀɪ"
               try {
             await m.reply("wait")
               let rres = await(await fetch(`https://vihangayt.me/tools/chatgpt4?q=${m.text}`)).json()
   
-m.reply(`${'❖=『 '+ai+' 』=❖'}
+m.reply(`${"❖=『 "+ai+" 』=❖"}
     
 ᴀɴᴅᴀ: ${m.text}
 
@@ -331,7 +328,7 @@ m.reply(`${'❖=『 '+ai+' 』=❖'}
 ${rres.data}`.trim())
         }  catch (err) {
                 console.log(`OpenAI => ${err}`)
-                m.reply('ᴀɪ ᴛɪᴅᴀᴋ ᴍᴇɴɢᴇʀᴛɪ ᴄᴏʙᴀ ᴛᴀɴʏᴀᴋᴀɴ ʏᴀɴɢ ʟᴀɪɴ!')
+                m.reply("ᴀɪ ᴛɪᴅᴀᴋ ᴍᴇɴɢᴇʀᴛɪ ᴄᴏʙᴀ ᴛᴀɴʏᴀᴋᴀɴ ʏᴀɴɢ ʟᴀɪɴ!")
                 }
             }
             break
@@ -343,23 +340,23 @@ ${rres.data}`.trim())
                 const more = String.fromCharCode(8206)
                 const readMore = more.repeat(4001)
                 function clockString(ms) {
-                  let d = isNaN(ms) ? '--' : Math.floor(ms / 86400000)
-                  let h = isNaN(ms) ? '--' : Math.floor(ms / 3600000) % 24
-                  let m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60
-                  let s = isNaN(ms) ? '--' : Math.floor(ms / 1000) % 60
-                  return [d, ' *Days ☀️*\n ', h, ' *Hours 🕐*\n ', m, ' *Minute ⏰*\n ', s, ' *Second ⏱️* '].map(v => v.toString().padStart(2, 0)).join('')
+                  let d = isNaN(ms) ? "--" : Math.floor(ms / 86400000)
+                  let h = isNaN(ms) ? "--" : Math.floor(ms / 3600000) % 24
+                  let m = isNaN(ms) ? "--" : Math.floor(ms / 60000) % 60
+                  let s = isNaN(ms) ? "--" : Math.floor(ms / 1000) % 60
+                  return [d, " *Days ☀️*\n ", h, " *Hours 🕐*\n ", m, " *Minute ⏰*\n ", s, " *Second ⏱️* "].map(v => v.toString().padStart(2, 0)).join("")
                 }
                 let format = sizeFormatter({
-                  std: 'JEDEC', // 'SI' (default) | 'IEC' | 'JEDEC'
+                  std: "JEDEC", // "SI" (default) | "IEC" | "JEDEC"
                   decimalPlaces: 2,
                   keepTrailingZeroes: false,
                   render: (literal, symbol) => `${literal} ${symbol}B`,
                 })
                     let _muptime
                     if (process.send) {
-                      process.send('uptime')
+                      process.send("uptime")
                       _muptime = await new Promise(resolve => {
-                        process.once('message', resolve)
+                        process.once("message", resolve)
                         setTimeout(resolve, 1000)
                       }) * 1000
                     }
@@ -410,13 +407,13 @@ ${readMore}
 *🧿 ꜱᴇʀᴠᴇʀ:* ${os.hostname()}
 ${readMore}
 *ɴᴏᴅᴇ-ᴊꜱ ᴍᴇᴍᴏʀʏ ᴜꜱᴀɢᴇ*
-${'```' + Object.keys(used).map((key, _, arr) => `${key.padEnd(Math.max(...arr.map(v => v.length)), ' ')}: ${format(used[key])}`).join('\n') + '```'}
+${"```" + Object.keys(used).map((key, _, arr) => `${key.padEnd(Math.max(...arr.map(v => v.length)), " ")}: ${format(used[key])}`).join("\n") + "```"}
 
 ${cpus[0] ? `_ᴛᴏᴛᴀʟ ᴄᴘᴜ ᴜꜱᴀɢᴇ_
-${cpus[0].model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- *${(type + '*').padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}
+${cpus[0].model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- *${(type + "*").padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join("\n")}
 
 _ᴄᴘᴜ ᴄᴏʀᴇ(ꜱ) ᴜꜱᴀɢᴇ (${cpus.length} ᴄᴏʀᴇ ᴄᴘᴜ)_
-${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- *${(type + '*').padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join('\n')}`).join('\n\n')}` : ''}
+${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Object.keys(cpu.times).map(type => `- *${(type + "*").padEnd(6)}: ${(100 * cpu.times[type] / cpu.total).toFixed(2)}%`).join("\n")}`).join("\n\n")}` : ""}
 `, m)
                 }
             break
@@ -436,10 +433,10 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                 if (!m.isOwner) return m.reply("owner")
                 if (config.options.public) {
                     config.options.public = false
-                    m.reply('Switch Bot To Self Mode')
+                    m.reply("Switch Bot To Self Mode")
                 } else {
                     config.options.public = true
-                    m.reply('Switch Bot To Public Mode')
+                    m.reply("Switch Bot To Public Mode")
                 }
             }
             break
@@ -536,18 +533,18 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                 if (!m.isGroup) return m.reply("group")
                 if (!m.isAdmin) return m.reply("admin")
                 if (!m.isBotAdmin) return m.reply("botAdmin")
-                let users = m.mentionedJid.length !== 0 ? m.mentionedJid.slice(0, 2) : m.hasQuotedMsg ? [m.quoted.sender] : m.text.split(",").map(v => v.replace(/[^0-9]/g, '') + "@s.whatsapp.net").slice(0, 2)
-                if (users.length == 0) return m.reply('Fuck You 🖕')
+                let users = m.mentionedJid.length !== 0 ? m.mentionedJid.slice(0, 2) : m.hasQuotedMsg ? [m.quoted.sender] : m.text.split(",").map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net").slice(0, 2)
+                if (users.length == 0) return m.reply("Fuck You 🖕")
                 await conn.groupParticipantsUpdate(m.from, users, "add")
                     .then(async (res) => {
                         for (let i of res) {
                             if (i.status == 403) {
                                 let node = getBinaryNodeChildren(i.content, "add_request")
-                                await m.reply(`Can't add @${i.jid.split('@')[0]}, send invitation...`)
+                                await m.reply(`Can"t add @${i.jid.split("@")[0]}, send invitation...`)
                                 let url = await conn.profilePictureUrl(m.from, "image").catch(_ => "https://lh3.googleusercontent.com/proxy/esjjzRYoXlhgNYXqU8Gf_3lu6V-eONTnymkLzdwQ6F6z0MWAqIwIpqgq_lk4caRIZF_0Uqb5U8NWNrJcaeTuCjp7xZlpL48JDx-qzAXSTh00AVVqBoT7MJ0259pik9mnQ1LldFLfHZUGDGY=w1200-h630-p-k-no-nu")
                                 await conn.sendGroupV4Invite(i.jid, m.from, node[0]?.attrs?.code || node.attrs.code, node[0]?.attrs?.expiration || node.attrs.expiration, m.metadata.subject, url, "Invitation to join my WhatsApp Group")
                             }
-                            else if (i.status == 409) return m.reply(`@${i.jid?.split('@')[0]} already in this group`)
+                            else if (i.status == 409) return m.reply(`@${i.jid?.split("@")[0]} already in this group`)
                             else m.reply(Func.format(i))
                         }
                     })
@@ -596,7 +593,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                         global.db.users[m.sender].limit -= 3
                         m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 3, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                     }}
-                    let fileName = /filename/i.test(res.headers?.get("content-disposition")) ? res.headers?.get("content-disposition")?.match(/filename=(.*)/)?.[1]?.replace(/["';]/g, '') : ''
+                    let fileName = /filename/i.test(res.headers?.get("content-disposition")) ? res.headers?.get("content-disposition")?.match(/filename=(.*)/)?.[1]?.replace(/["";]/g, "") : ""
                     return m.reply(res.data, { fileName, mimetype: mime.lookup(fileName) })
                 }
                 let text = res?.data?.toString() || res?.data
@@ -608,7 +605,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                         global.db.users[m.sender].limit -= 1
                         m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 1, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                     }}
-                    m.reply(text.slice(0, 65536) + '')
+                    m.reply(text.slice(0, 65536) + "")
                 } catch (e) {
                     m.reply(format(e))
                 }
@@ -628,12 +625,12 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             break
             case "kisahnabi": {
 if (!m.args[0]) return m.reply(m.from, `ʜᴀʀᴀᴘ ᴍᴀꜱᴜᴋᴀɴ ɴᴀᴍᴀ ɴᴀʙɪ\n\nᴄᴏɴᴛᴏʜ: .kisahnabi ᴍᴜʜᴀᴍᴍᴀᴅ`,m);
-let data = [ 'Adam', 'Idris', 'Nuh', 'Hud', 'Sholeh',
-'Ibrahim', 'Ismail', 'Luth', 'Ishaq', 'Yaqub',
-'Yusuf', "Syu'aib", 'Ayyub', 'Dzulkifli', 'Musa',
-'Harun', 'Daud','Sulaiman','Ilyas', 'Ilyasa',
-'Yunus', 'Zakariya','Yahya', 'Isa', 'Muhammad']
-let mirip = didyoumean(`${m.args[0].replace(/[^a-zA-Z]/g, '')}`, data)
+let data = [ "Adam", "Idris", "Nuh", "Hud", "Sholeh",
+"Ibrahim", "Ismail", "Luth", "Ishaq", "Yaqub",
+"Yusuf", "Syuaib", "Ayyub", "Dzulkifli", "Musa",
+"Harun", "Daud","Sulaiman","Ilyas", "Ilyasa",
+"Yunus", "Zakariya","Yahya", "Isa", "Muhammad"]
+let mirip = didyoumean(`${m.args[0].replace(/[^a-zA-Z]/g, "")}`, data)
 let nomorjson = data.indexOf(mirip)
 let res = await fetch(`https://raw.githubusercontent.com/BerkahEsport/api-be/main/data/islam/kisahnabi/${nomorjson+1}.json`);
 if (!res.ok) return m.reply(await res.text());
@@ -682,42 +679,42 @@ _Silahkan balas pesan ini dan ketikkan angkanya yang ingin dipilih!_`.trim()}, {
 break
 case "quran": case "surah": case "alquran": {
 conn.quran = conn.quran ? conn.quran : {}
-    let judul = '*꧁•⊹٭𝙳𝚊𝚏𝚝𝚊𝚛 𝙰𝚕-𝚀𝚞𝚛𝚊𝚗٭⊹•꧂*'
+    let judul = "*꧁•⊹٭𝙳𝚊𝚏𝚝𝚊𝚛 𝙰𝚕-𝚀𝚞𝚛𝚊𝚗٭⊹•꧂*"
     let list = `${judul}
 1. Al Fatihah,
 2. Al Baqarah,
 3. Ali Imran,
 4. An Nisaa,
 5. Al Maidah,
-6. Al An'am,
-7. Al A'raf,
+6. Al An"am,
+7. Al A"raf,
 8. Al Anfaal,
 9. At Taubah,
 10. Yunus,
 11. Huud,
 12. Yusuf,
-13. Ar Ra'du,
+13. Ar Ra"du,
 14. Ibrahim,
 15. Al Hijr,
 16. An Nahl,
-17. Al Israa',
+17. Al Israa",
 18. Al Kahfi,
 19. Maryam,
 20. Thaahaa,
 21. Al Anbiyaa,
 22. Al Hajj,
-23. Al Mu'minun,
+23. Al Mu"minun,
 24. An Nuur,
 25. Al Furqaan,
-26. Asy Syu'ara,
+26. Asy Syu"ara,
 27. An Naml,
 28. Al Qashash,
-29. Al 'Ankabut,
+29. Al "Ankabut,
 30. Ar Ruum,
 31. Luqman,
 32. As Sajdah,
 33. Al Ahzab,
-34. Saba',
+34. Saba",
 35. Faathir,
 36. Yaa Siin,
 37. Ash Shaaffat,
@@ -739,7 +736,7 @@ conn.quran = conn.quran ? conn.quran : {}
 53. An Najm,
 54. Al Qamar,
 55. Ar Rahmaan,
-56. Al Waaqi'ah,
+56. Al Waaqi"ah,
 57. Al Hadiid,
 58. Al Mujaadalah,
 59. Al Hasyr,
@@ -753,7 +750,7 @@ conn.quran = conn.quran ? conn.quran : {}
 67. Al Mulk,
 68. Al Qalam,
 69. Al Haaqqah,
-70. Al Ma'aarij,
+70. Al Ma"aarij,
 71. Nuh,
 72. Al Jin,
 73. Al Muzammil,
@@ -761,16 +758,16 @@ conn.quran = conn.quran ? conn.quran : {}
 75. Al Qiyaamah,
 76. Al Insaan,
 77. Al Mursalaat,
-78. An Naba',
-79. An Naazi'at,
-80. 'Abasa,
+78. An Naba",
+79. An Naazi"at,
+80. "Abasa,
 81. At Takwiir,
 82. Al Infithar,
 83. Al Muthaffifin,
 84. Al Insyiqaq,
 85. Al Buruuj,
 86. Ath Thariq,
-87. Al A'laa,
+87. Al A"laa,
 88. Al Ghaasyiah,
 89. Al Fajr,
 90. Al Balad,
@@ -779,18 +776,18 @@ conn.quran = conn.quran ? conn.quran : {}
 93. Adh Dhuhaa,
 94. Asy Syarh,
 95. At Tiin,
-96. Al 'Alaq,
+96. Al "Alaq,
 97. Al Qadr,
 98. Al Bayyinah,
 99. Az Zalzalah,
-100. Al 'Aadiyah,
-101. Al Qaari'ah,
+100. Al "Aadiyah,
+101. Al Qaari"ah,
 102. At Takaatsur,
-103. Al 'Ashr,
+103. Al "Ashr,
 104. Al Humazah,
 105. Al Fiil,
 106. Quraisy,
-107. Al Maa'uun,
+107. Al Maa"uun,
 108. Al Kautsar,
 109. Al Kafirun,
 110. An Nashr,
@@ -804,7 +801,7 @@ let data = json.map(v => v.nama)
 let mirip = didyoumean(m.text, data)
 if (mirip == null) {
   const datas = json.filter(item => item.nama.toLowerCase().match(m.text));
-  if (datas.length == 0) throw ('Surat tidak ditemukan!')
+  if (datas.length == 0) throw ("Surat tidak ditemukan!")
   let id = await m.reply(`★彡[ʜᴀꜱɪʟ ꜱᴜʀᴀᴛ ʏᴀɴɢ ᴅɪᴛᴇᴍᴜᴋᴀɴ]彡★
 
 ${datas.map((v,i) => `\n${i+1}. ${v.nama}`)}
@@ -823,7 +820,7 @@ _Silahkan balas pesan ini dan ketikkan angkanya yang ingin dipilih!_`.trim())
 ᴊᴜᴍʟᴀʜ ᴀʏᴀᴛ : ${result[0].ayat}
 ᴅɪᴛᴜʀᴜɴᴋᴀɴ ᴅɪ : ${result[0].type}
 ᴋᴇᴛᴇʀᴀɴɢᴀɴ: _${result[0].keterangan}_`.trim(), m)
-await conn.sendFile(m.from, result[0].audio, m, {asDocument: true, fileName: result[0].nama})
+await conn.sendFile(m.from, result[0].audio, "Quran-", m, {asDocument: true, fileName: result[0].nama})
 }
 }
 break

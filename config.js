@@ -26,11 +26,11 @@ export default {
    menu,
    APIs: {
       apibe: {
-         baseURL: 'https://api-be.berkahesport.repl.co/',
+         baseURL: "https://api-be.berkahesport.repl.co/",
          Key: "beta" // Mau beli apikey di wa.me/62895375950107
       },
       xzn: {
-         baseURL: 'https://skizo.tech/',
+         baseURL: "https://skizo.tech/",
          Key: "beta"
       }
    },
@@ -69,7 +69,7 @@ export default {
       query: "ᴹᵃˢᵘᵏᵏᵃⁿ ᵗᵉᵏˢ...",
       error: "'```404 error```'",
       quoted: "ᴿᵉᵖˡʸ ᵖᵉˢᵃⁿ...",
-      wait: '```「▰▰▰▰▱▱▱▱▱▱」Loading...```',
+      wait: "```「▰▰▰▰▱▱▱▱▱▱」Loading...```",
       urlInvalid: "ᵁʳˡ ˢᵃˡᵃʰ...",
       notFound: "ᴴᵃˢⁱˡ ᵗⁱᵈᵃᵏ ᵈⁱᵗᵉᵐᵘᵏᵃⁿ...",
       premium: "ᴷʰᵘˢᵘˢ ᵖᵉⁿᵍᵍᵘⁿᵃ ᴾᴿᴱᴹᴵᵁᴹ...",

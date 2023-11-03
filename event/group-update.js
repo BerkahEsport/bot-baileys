@@ -1,5 +1,4 @@
 import config from "../config.js"
-
 export default async function GroupUpdate(conn, update) {
    try {
       for (const action of update) {

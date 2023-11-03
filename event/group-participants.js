@@ -1,5 +1,4 @@
 import config from "../config.js"
-
 export default async function GroupParticipants(conn, { id, participants, action }) {
    try {
       const metadata = await conn.groupMetadata(id)

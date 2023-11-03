@@ -42,7 +42,7 @@ async function start() {
          creds: state.creds,
          keys: makeCacheableSignalKeyStore(state.keys, Pino({ level: "fatal" }).child({ level: "fatal" })),
       },
-      browser: ['Chrome (Linux)', '', ''], // for this issues https://github.com/WhiskeySockets/Baileys/issues/328
+      browser: ["Chrome (Linux)", "", ""], // for this issues https://github.com/WhiskeySockets/Baileys/issues/328
       markOnlineOnConnect: true, // set false for offline
       generateHighQualityLinkPreview: true, // make high preview link
       getMessage: async (key) => {
@@ -68,22 +68,22 @@ async function start() {
    // login use pairing code
    // source code https://github.com/WhiskeySockets/Baileys/blob/master/Example/example.ts#L61
    if (pairingCode && !conn.authState.creds.registered) {
-      if (useMobile) throw new Error('Cannot use pairing code with mobile api')
+      if (useMobile) throw new Error("Cannot use pairing code with mobile api")
       let phoneNumber
       if (!!config.options.pairingNumber) {
-         phoneNumber = config.options.pairingNumber.replace(/[^0-9]/g, '')
+         phoneNumber = config.options.pairingNumber.replace(/[^0-9]/g, "")
          if (!Object.keys(PHONENUMBER_MCC).some(v => phoneNumber.startsWith(v))) {
             console.log(chalk.bgBlack(chalk.redBright("Start with your country's WhatsApp code, Example : 62xxx")))
             process.exit(0)
          }
       } else {
          phoneNumber = await question(chalk.bgBlack(chalk.greenBright(`Please type your WhatsApp number : `)))
-         phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
+         phoneNumber = phoneNumber.replace(/[^0-9]/g, "")
          // Ask again when entering the wrong number
          if (!Object.keys(PHONENUMBER_MCC).some(v => phoneNumber.startsWith(v))) {
             console.log(chalk.bgBlack(chalk.redBright("Start with your country's WhatsApp code, Example : 62xxx")))
             phoneNumber = await question(chalk.bgBlack(chalk.greenBright(`Please type your WhatsApp number : `)))
-            phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
+            phoneNumber = phoneNumber.replace(/[^0-9]/g, "")
             rl.close()
          }
       }
@@ -99,17 +99,17 @@ async function start() {
       const { registration } = conn.authState.creds || { registration: {} }
       if (!registration.phoneNumber) {
          let phoneNumber = await question(chalk.bgBlack(chalk.greenBright(`Please type your WhatsApp number : `)))
-         phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
+         phoneNumber = phoneNumber.replace(/[^0-9]/g, "")
          // Ask again when entering the wrong number
          if (!Object.keys(PHONENUMBER_MCC).some(v => phoneNumber.startsWith(v))) {
             console.log(chalk.bgBlack(chalk.redBright("Start with your country's WhatsApp code, Example : 62xxx")))
             phoneNumber = await question(chalk.bgBlack(chalk.greenBright(`Please type your WhatsApp number : `)))
-            phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
+            phoneNumber = phoneNumber.replace(/[^0-9]/g, "")
          }
          registration.phoneNumber = "+" + phoneNumber
       }
       const phoneNumber = parsePhoneNumber(registration.phoneNumber)
-      if (!phoneNumber.isValid()) throw new Error('Invalid phone number: ' + registration.phoneNumber)
+      if (!phoneNumber.isValid()) throw new Error("Invalid phone number: " + registration.phoneNumber)
 
       registration.phoneNumber = phoneNumber.format("E.164")
       registration.phoneNumberCountryCode = phoneNumber.countryCallingCode
@@ -121,33 +121,33 @@ async function start() {
       async function enterCode() {
          try {
             const code = await question(chalk.bgBlack(chalk.greenBright(`Please Enter Your OTP Code : `)))
-            const response = await conn.register(code.replace(/[^0-9]/g, '').trim().toLowerCase())
+            const response = await conn.register(code.replace(/[^0-9]/g, "").trim().toLowerCase())
             console.log(chalk.bgBlack(chalk.greenBright("Successfully registered your phone number.")))
             console.log(response)
             rl.close()
          } catch (e) {
-            console.error('Failed to register your phone number. Please try again.\n', e)
+            console.error("Failed to register your phone number. Please try again.\n", e)
             await askOTP()
          }
       }
 
       // from this : https://github.com/WhiskeySockets/Baileys/blob/master/Example/example.ts#L110
       async function enterCaptcha() {
-         const response = await sock.requestRegistrationCode({ ...registration, method: 'captcha' })
+         const response = await sock.requestRegistrationCode({ ...registration, method: "captcha" })
          const pathFile = path.join(process.cwd(), "tmp", "captcha.png")
-         fs.writeFileSync(pathFile, Buffer.from(response.image_blob, 'base64'))
+         fs.writeFileSync(pathFile, Buffer.from(response.image_blob, "base64"))
          await open(pathFile)
          const code = await question(chalk.bgBlack(chalk.greenBright(`Please Enter Your Captcha Code : `)))
          fs.unlinkSync(pathFile)
-         registration.captcha = code.replace(/["']/g, '').trim().toLowerCase()
+         registration.captcha = code.replace(/[""]/g, "").trim().toLowerCase()
       }
 
       async function askOTP() {
          if (!registration.method) {
-            let code = await question(chalk.bgBlack(chalk.greenBright('What method do you want to use? "sms" or "voice" : ')))
-            code = code.replace(/["']/g, '').trim().toLowerCase()
+            let code = await question(chalk.bgBlack(chalk.greenBright("What method do you want to use? 'sms' or 'voice' : ")))
+            code = code.replace(/[""]/g, "").trim().toLowerCase()
 
-            if (code !== 'sms' && code !== 'voice') return await askOTP()
+            if (code !== "sms" && code !== "voice") return await askOTP()
 
             registration.method = code
          }
@@ -156,8 +156,8 @@ async function start() {
             await conn.requestRegistrationCode(registration)
             await enterCode()
          } catch (e) {
-            console.error('Failed to request registration code. Please try again.\n', e)
-            if (e?.reason === 'code_checkpoint') {
+            console.error("Failed to request registration code. Please try again.\n", e)
+            if (e?.reason === "code_checkpoint") {
                await enterCaptcha()
             }
             await askOTP()
@@ -178,7 +178,7 @@ async function start() {
          let reason = new Boom(lastDisconnect?.error)?.output.statusCode
          if (reason === DisconnectReason.badSession) {
             console.log(`Bad Session File, Please Delete Session and Scan Again`)
-            process.send('reset')
+            process.send("reset")
          } else if (reason === DisconnectReason.connectionClosed) {
             console.log("Connection closed, reconnecting....")
             await start()
@@ -196,13 +196,13 @@ async function start() {
             await start()
          } else if (reason === DisconnectReason.timedOut) {
             console.log("Connection TimedOut, Reconnecting...")
-            process.send('reset')
+            process.send("reset")
          } else if (reason === DisconnectReason.multideviceMismatch) {
             console.log("Multi device mismatch, please scan again")
             process.exit(0)
          } else {
             console.log(reason)
-            process.send('reset')
+            process.send("reset")
          }
       }
 

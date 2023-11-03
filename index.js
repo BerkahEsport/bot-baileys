@@ -5,17 +5,17 @@ import path from "path"
 import { fileURLToPath } from "url"
 import { platform } from "os"
 import { watchFile, unwatchFile } from "fs"
-import express from 'express'
-import fetch from 'node-fetch'
+import express from "express"
+import fetch from "node-fetch"
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const PORT = process.env.PORT || 8080
 // let __path = process.cwd()
 var app = express(); 
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/home.html')
+app.get("/", (req, res) => {
+    res.sendFile(__dirname + "/home.html")
 })
 app.listen(PORT, () => {
-        console.log('App listened on port', PORT)
+        console.log("App listened on port", PORT)
         keepAlive()
     })
 
