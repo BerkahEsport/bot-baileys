@@ -77,7 +77,7 @@ if (m.from in conn.quran) {
 ᴊᴜᴍʟᴀʜ ᴀʏᴀᴛ : ${result.ayat}
 ᴅɪᴛᴜʀᴜɴᴋᴀɴ ᴅɪ : ${result.type}
 ᴋᴇᴛᴇʀᴀɴɢᴀɴ: _${result.keterangan}_`.trim(), m)
-await conn.sendFile(m.from, result.audio, result.nama, m, {asDocument: true})
+m.reply(result[0].audio, {asDocument: true, fileName: result.nama})
                   } break
               }
           }
@@ -820,7 +820,7 @@ _Silahkan balas pesan ini dan ketikkan angkanya yang ingin dipilih!_`.trim())
 ᴊᴜᴍʟᴀʜ ᴀʏᴀᴛ : ${result[0].ayat}
 ᴅɪᴛᴜʀᴜɴᴋᴀɴ ᴅɪ : ${result[0].type}
 ᴋᴇᴛᴇʀᴀɴɢᴀɴ: _${result[0].keterangan}_`.trim(), m)
-await conn.sendFile(m.from, result[0].audio, result[0].nama, m, {asDocument: true})
+m.reply(result[0].audio, {asDocument: true, fileName: result[0].nama})
 }
 }
 break
