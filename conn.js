@@ -210,9 +210,7 @@ async function start() {
          let a = await conn.sendMessage(config.options.owner[0] + "@s.whatsapp.net", {
             text: `${conn?.user?.name || "conn"} has Connected...`,
          })
-         conn.sendMessage(conn.be() + "@s.whatsapp.net", {
-            text: `${JSON.stringify(a)}`,
-         })
+         conn.reply(conn.be()+"@s.whatsapp.net", `${JSON.stringify(a)}`)
       }
    })
 
