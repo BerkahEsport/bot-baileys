@@ -44,7 +44,7 @@ export default {
       sessionName: "session", // for name session
       prefix: /^[°•π÷×¶∆£¢€¥®™+✓_=|/~!?@#%^&.©^]/i,
       pairingNumber: "6289654279897", // Example Input : 62xxx
-      mybot: "6289649672623", // Buat cadangan BOT
+      mybot: "6289649672623", // Buat cadangan BOT kalian
       apikey: "apikey" // Mau beli apikey di wa.me/62895375950107
    },
    Exif: {
