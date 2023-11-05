@@ -859,7 +859,7 @@ break
                         m.reply(Func.format(e))
                     }
                 }
-                if (/^bot/i.test(m.body)) {
+                if (/^bot|Bot|Boti|Botbe/i.test(m.body)) {
                     m.reply(`ɪʏᴀ "${m.pushname}" ᴀᴅᴀ ᴀᴘᴀ?\n\n${config.options.info}`)
                 }
                 if ( !m.fromMe && m.body.match( /(bot|berkahesport|berkahesportbot|botberkah|berkahesport.id)/gi ) ) {
