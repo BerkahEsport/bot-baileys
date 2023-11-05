@@ -863,7 +863,7 @@ break
                     m.reply(`ɪʏᴀ "${m.pushname}" ᴀᴅᴀ ᴀᴘᴀ?\n\n${config.options.info}`)
                 }
                 if ( !m.fromMe && m.body.match( /(bot|berkahesport|berkahesportbot|botberkah|berkahesport.id)/gi ) ) {
-                    let res = JSON.parse(readFileSync('./lib/emoji.json'))
+                    let res = JSON.parse(fs.readFileSync('./lib/emoji.json'))
                     let em = res.emoji
                     let emot = Func.random(em)
                     m.react(`${emot}`)
