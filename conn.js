@@ -1,4 +1,3 @@
-// Ini SC recode dari Hisoka-Baileys (Dika Ardnt)
 import config from "./config.js"
 import { Client, Serialize } from "./lib/serialize.js"
 import baileys from "@whiskeysockets/baileys"

@@ -135,7 +135,7 @@ if (m.from in conn.yts) {
 }
         // LOG Chat
         if (m.message && !m.isBot) {
-            console.log(chalk.black(chalk.bgWhite("- FROM")), chalk.black(chalk.bgGreen(m.pushName)), chalk.black(chalk.yellow(m.sender)) + "\n" + chalk.black(chalk.bgWhite("- IN")), chalk.black(chalk.bgGreen(m.isGroup ? m.metadata.subject : "Private Chat", m.from)) + "\n" + chalk.black(chalk.bgWhite("- MESSAGE")), chalk.black(chalk.bgGreen(m.body || m.type)))
+            console.log(chalk.black(chalk.bgWhite("- FROM")), chalk.black(chalk.bgGreen(m.pushname)), chalk.black(chalk.yellow(m.sender)) + "\n" + chalk.black(chalk.bgWhite("- IN")), chalk.black(chalk.bgGreen(m.isGroup ? m.metadata.subject : "Private Chat", m.from)) + "\n" + chalk.black(chalk.bgWhite("- MESSAGE")), chalk.black(chalk.bgGreen(m.body || m.type)))
         }
         if (isCmd && allMenuItems.includes(command)) {
             m.react("⏳")
@@ -860,8 +860,14 @@ break
                     }
                 }
                 if (/^bot/i.test(m.body)) {
-                    m.reply(`ɪʏᴀ "${m.pushName}" ᴀᴅᴀ ᴀᴘᴀ?`)
+                    m.reply(`ɪʏᴀ "${m.pushname}" ᴀᴅᴀ ᴀᴘᴀ?\n\n${config.options.info}`)
                 }
+                if ( !m.fromMe && m.body.match( /(bot|berkahesport|berkahesportbot|botberkah|berkahesport.id)/gi ) ) {
+                    let res = JSON.parse(readFileSync('./lib/emoji.json'))
+                    let em = res.emoji
+                    let emot = Func.random(em)
+                    m.react(`${emot}`)
+                  }
         }
     } catch (e) {
         m.error = true
