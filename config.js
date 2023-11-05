@@ -10,28 +10,12 @@ const menu = {
    download: ["yts", "ytv", "yta", "ig", "tt", "fb"]
 }
 
-const limit = {
-   free: 15,
-   premium: 150,
-   VIP: "Infinity",
-   download: {
-      free: 50000000, // use byte
-      premium: 350000000, // use byte
-      VIP: 1130000000, // use byte
-   }
-}
-
 export default {
-   limit,
    menu,
    APIs: {
       apibe: {
-         baseURL: "https://api-be.berkahesport.repl.co/",
+         baseURL: "https://api-be.berkahesport.repl.co/", // Rest API BerkahEsport.ID
          Key: "beta" // Mau beli apikey di wa.me/62895375950107
-      },
-      xzn: {
-         baseURL: "https://skizo.tech/",
-         Key: "beta"
       }
    },
    options: {
@@ -45,7 +29,6 @@ export default {
       prefix: /^[°•π÷×¶∆£¢€¥®™+✓_=|/~!?@#%^&.©^]/i,
       pairingNumber: "6289654279897", // Example Input : 62xxx
       mybot: "6289649672623", // Buat cadangan BOT kalian
-      apikey: "apikey", // Mau beli apikey di wa.me/62895375950107
       info: "Ini bot simpel ʙᴇʀᴋᴀʜᴇꜱᴘᴏʀᴛ.ɪᴅ. \nBot full fitur chat di https://wa.me/6289649672623?text=.menu" // Buat info aja...
    },
    Exif: {
