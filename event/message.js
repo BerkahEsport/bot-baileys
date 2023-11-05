@@ -211,7 +211,7 @@ if (m.from in conn.yts) {
                 }, { quoted: m })
             }
             break
-            case "yts":  {
+            case "yts": case "play": {
                 if (!m.args[0]) return m.reply(`Masukkan pencarian youtube!`)
                 if ( global.db.users[m.sender].limit < 1) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
@@ -228,7 +228,7 @@ if (m.from in conn.yts) {
                     data = null},  120000)]
             }
             break
-            case "yta":  {
+            case "yta": case "ytmp3": {
                 if (!m.args[0]) return m.reply(`Masukkan link youtube!`)
                 if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
@@ -238,10 +238,11 @@ if (m.from in conn.yts) {
                 }}
                 m.reply("wait")
                 let datayta = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/audio?url=${m.text}&apikey=${config.options.apikey}`)).json()
-                await m.reply(datayta.link)
+                let datas = await Func.getFiles(datayta.link, true)
+            m.reply(datas.res, {asDocument: true, fileName: datayta.title})
             }
             break
-            case "ytv":  {
+            case "ytv": case "ytmp4": {
                 if (!m.args[0]) return m.reply(`Masukkan link youtube!`)
                 if ( global.db.users[m.sender].limit < 5) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
@@ -251,7 +252,8 @@ if (m.from in conn.yts) {
                 }}
                 m.reply("wait")
                 let dataytv = await (await fetch(`https://api-be.berkahesport.repl.co/api/yutub/video?url=${m.text}&apikey=${config.options.apikey}`)).json()
-                await m.reply(dataytv.link)
+                let datas = await Func.getFiles(dataytv.link, true)
+            m.reply(datas.res, {asDocument: true, fileName: dataytv.title})
             }
             break
             case "ig":  {
