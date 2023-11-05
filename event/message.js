@@ -826,6 +826,14 @@ m.reply(result[0].audio, {asDocument: true, fileName: result[0].nama})
 }
 }
 break
+// <===== Category Owner =====>
+case 'getcase':
+if (!m.isOwner) return m.reply("owner")
+const getCase = (cases) => {
+return "case"+`'${cases}'` + fs.readFileSync("./event/message.js").toString().split('case \''+cases+'\'')[1].split("break")[0]+"break"
+}
+m.reply(`${getCase(m.text)}`)
+break
             default:
                 if (["*"].some(a => m.body?.toLowerCase()?.startsWith(a)) && m.isOwner) {
                     m.reply(format(message))
