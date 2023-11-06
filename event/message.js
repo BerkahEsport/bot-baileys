@@ -13,6 +13,7 @@ import { cpus as _cpus, totalmem, freemem } from "os";
 import os from "os";
 import { performance } from "perf_hooks";
 import { sizeFormatter } from "human-readable";
+let exec = promisify(cp.exec).bind(cp)
 export default async function Message(conn, m, message) {
     try {
         if (!m) return
@@ -297,7 +298,6 @@ if (m.from in conn.yts) {
             break
             case "speed":  {
                         m.reply("*ꜱᴇᴅᴀɴɢ ᴘʀᴏꜱᴇꜱ ᴋᴇᴄᴇᴘᴀᴛᴀɴ ɪɴᴛᴇʀɴᴇᴛ...*")
-                        let exec = promisify(cp.exec).bind(cp)
                       let o
                       try {
                       o = await exec("python speed.py")
@@ -835,6 +835,20 @@ const getCase = (cases) => {
 return "case"+`'${cases}'` + fs.readFileSync("./event/message.js").toString().split('case \''+cases+'\'')[1].split("break")[0]+"break"
 }
 m.reply(`${getCase(m.text)}`)
+break
+case 'cleartmp':
+if (!m.isOwner) return m.reply("owner")
+const directory = "./tmp";
+fs.readdir(directory, (err, files) => {
+    if (err) throw err;
+  
+    for (const file of files) {
+      fs.unlink(path.join(directory, file), err => {
+        if (err) throw err;
+      });
+    }
+  } )
+m.reply("✔️ ʙᴇʀʜᴀꜱɪʟ ᴍᴇɴɢʜᴀᴘᴜꜱ ꜱᴇʟᴜʀᴜʜ ꜰɪʟᴇ ᴅɪ ᴅɪʀᴇᴋᴛᴏʀɪ ᴛᴍᴘ.")
 break
             default:
                 if (["*"].some(a => m.body?.toLowerCase()?.startsWith(a)) && m.isOwner) {
