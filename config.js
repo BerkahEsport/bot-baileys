@@ -59,9 +59,6 @@ export default {
       premium: "ᴷʰᵘˢᵘˢ ᵖᵉⁿᵍᵍᵘⁿᵃ ᴾᴿᴱᴹᴵᵁᴹ...",
       vip: "ᴷʰᵘˢᵘˢ ᵖᵉⁿᵍᵍᵘⁿᵃ ⱽᴵᴾ...",
       limit: "ᴹᵃᵃᶠ ˡⁱᵐⁱᵗ ᵃⁿᵈᵃ ᵗⁱᵈᵃᵏ ᶜᵘᵏᵘᵖ, ˢⁱˡᵃʰᵏᵃⁿ ᵐᵉⁿᵘⁿᵍᵍᵘ ᵇᵉˢᵘᵏ ᵏᵉᵐᵇᵃˡⁱ ᵏᵃʳᵉⁿᵃ ˡⁱᵐⁱᵗ ᵈⁱʳᵉˢᵉᵗ ²⁴ʲᵃᵐ.",
-      dlFree: `ꜰɪʟᴇ ᴛᴇʀʟᴀʟᴜ ʙᴇꜱᴀʀ ${formatSize(limit.download.free)} ʜᴀɴʏᴀ ᴜɴᴛᴜᴋ ᴘᴇɴɢɢᴜɴᴀ ᴘʀᴇᴍɪᴜᴍ`,
-      dlPremium: `ᴛɪᴅᴀᴋ ᴅᴀᴘᴀᴛ ᴍᴇɴɢɪʀɪᴍ ꜰɪʟᴇ ᴛᴇʀʟᴀʟᴜ ʙᴇꜱᴀʀ ${formatSize(limit.download.premium)}`,
-      dlVIP: `ᴛɪᴅᴀᴋ ᴅᴀᴘᴀᴛ ᴍᴇɴɢɪʀɪᴍ ꜰɪʟᴇ ᴛᴇʀʟᴀʟᴜ ʙᴇꜱᴀʀ ${formatSize(limit.download.VIP)}`
    }
 }
 
