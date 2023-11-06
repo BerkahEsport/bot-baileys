@@ -4,16 +4,14 @@ import fs from "fs";
 import chalk from "chalk";
 import axios from "axios";
 import { getBinaryNodeChildren } from "@whiskeysockets/baileys";
-import cp, { exec } from "child_process";
+import { exec } from "child_process";
 import { format } from "util";
-import { promisify } from "util";
 import cron from "node-cron"
 import didyoumean from "didyoumean";
 import { cpus as _cpus, totalmem, freemem } from "os";
 import os from "os";
 import { performance } from "perf_hooks";
 import { sizeFormatter } from "human-readable";
-let exec = promisify(cp.exec).bind(cp)
 export default async function Message(conn, m, message) {
     try {
         if (!m) return
