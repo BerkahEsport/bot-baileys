@@ -3,7 +3,7 @@
 const menu = {
    main: ["menu", "simi", "profile", "speed", "owner", "ping", "quoted"],
    islam: ["alquran", "doa", "kisahnabi"],
-   owner: ["eval", "exec", "mute", "public", "setprofile", "setname"],
+   owner: ["cleartmp", "getfile", "eval", "exec", "mute", "public", "setprofile", "setname"],
    convert: ["sticker", "toimage"],
    group: ["hidetag", "add", "welcome", "leaving", "setprofile", "setname", "linkgroup"],
    tool: ["fetch", "rvo", "ai"],

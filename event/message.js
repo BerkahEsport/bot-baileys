@@ -4,8 +4,9 @@ import fs from "fs";
 import chalk from "chalk";
 import axios from "axios";
 import { getBinaryNodeChildren } from "@whiskeysockets/baileys";
-import { exec } from "child_process";
+import cp, { exec } from "child_process";
 import { format } from "util";
+import { promisify } from "util";
 import cron from "node-cron"
 import didyoumean from "didyoumean";
 import { cpus as _cpus, totalmem, freemem } from "os";
@@ -296,6 +297,7 @@ if (m.from in conn.yts) {
             break
             case "speed":  {
                         m.reply("*ꜱᴇᴅᴀɴɢ ᴘʀᴏꜱᴇꜱ ᴋᴇᴄᴇᴘᴀᴛᴀɴ ɪɴᴛᴇʀɴᴇᴛ...*")
+                        let exec = promisify(cp.exec).bind(cp)
                       let o
                       try {
                       o = await exec("python speed.py")
@@ -834,6 +836,7 @@ return "case"+`'${cases}'` + fs.readFileSync("./event/message.js").toString().sp
 }
 m.reply(`${getCase(m.text)}`)
 break
+
 case 'cleartmp':
 if (!m.isOwner) return m.reply("owner")
 const directory = "./tmp";
@@ -847,6 +850,22 @@ fs.readdir(directory, (err, files) => {
     }
   } )
 m.reply("✔️ ʙᴇʀʜᴀꜱɪʟ ᴍᴇɴɢʜᴀᴘᴜꜱ ꜱᴇʟᴜʀᴜʜ ꜰɪʟᴇ ᴅɪ ᴅɪʀᴇᴋᴛᴏʀɪ ᴛᴍᴘ.")
+break
+case "getfile": case "gf":  {
+    let exec = promisify(cp.exec).bind(cp)
+    if (!text) throw (`Teksnya mana?\n\ncontoh\n${prefix + command} main`)
+    m.reply("Executing...")
+    let o
+    try {
+        o = await exec("type " + text)
+    } catch (e) {
+        o = e
+    } finally {
+        let { stdout, stderr } = o
+        if (stdout.trim()) m.reply(stdout)
+        if (stderr.trim()) m.reply(stderr)
+    }
+}
 break
             default:
                 if (["*"].some(a => m.body?.toLowerCase()?.startsWith(a)) && m.isOwner) {
