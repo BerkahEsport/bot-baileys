@@ -174,7 +174,7 @@ if (m.from in conn.yts) {
                             mediaType: 1,
                             previewType: 0,
                             renderLargerThumbnail: true,
-                            thumbnail: fs.readFileSync("./tmp/qrbe.jpg"),
+                            thumbnail: fs.readFileSync("./qrbe.jpg"),
                             sourceUrl: config.Exif.packWebsite
                         }
                     }
@@ -182,7 +182,7 @@ if (m.from in conn.yts) {
             }
             case "profile": {
                 let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
-                let pp = await conn.profilePictureUrl(who, "image").catch(() => fs.readFileSync("./tmp/qrbe.jpg"))
+                let pp = await conn.profilePictureUrl(who, "image").catch(() => fs.readFileSync("./qrbe.jpg"))
                 let sender = global.db.users[who]
                 let text = `
 ┏━━〔 ${config.options.bot} 〕━▣
