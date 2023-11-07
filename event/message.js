@@ -918,6 +918,6 @@ break
         m.reply(format(e))
     } finally {
         if (m.error == false) m.react("✅")
-        else if (m.error == null) m.react("⚠️")
+        if (m.error == "warning") m.react("⚠️")
     }
 }
