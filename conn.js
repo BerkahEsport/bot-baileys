@@ -1,15 +1,16 @@
-import config from "./config.js"
-import { Client, Serialize } from "./lib/serialize.js"
-import baileys from "@whiskeysockets/baileys"
-const { useMultiFileAuthState, DisconnectReason, makeInMemoryStore, jidNormalizedUser, makeCacheableSignalKeyStore, PHONENUMBER_MCC } = baileys
-import { Boom } from "@hapi/boom"
-import Pino from "pino"
-import NodeCache from "node-cache"
-import chalk from "chalk"
-import readline from "readline"
-import { parsePhoneNumber } from "libphonenumber-js"
-import open from "open"
-import path from "path"
+import config from "./config.js";
+import { Client, Serialize } from "./lib/serialize.js";
+import baileys from "@whiskeysockets/baileys";
+const { useMultiFileAuthState, DisconnectReason, makeInMemoryStore, jidNormalizedUser, makeCacheableSignalKeyStore, PHONENUMBER_MCC } = baileys;
+import { Boom } from "@hapi/boom";
+import Pino from "pino";
+import NodeCache from "node-cache";
+import chalk from "chalk";
+import readline from "readline";
+import { parsePhoneNumber } from "libphonenumber-js";
+import open from "open";
+import path from "path";
+import fs from "fs";
 const database = (new (await import("./lib/database.js")).default())
 const store = makeInMemoryStore({ logger: Pino({ level: "fatal" }).child({ level: "fatal" }) })
 const pairingCode = !!config.options.pairingNumber || process.argv.includes("--pairing-code")
@@ -206,6 +207,7 @@ async function start() {
       }
 
       if (connection === "open") {
+         if (!fs.existsSync("./tmp")) fs.mkdirSync("./tmp")
          conn.be()
       }
    })

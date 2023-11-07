@@ -840,6 +840,7 @@ break
 
 case 'cleartmp':
 if (!m.isOwner) return m.reply("owner")
+if (!fs.existsSync("./tmp")) fs.mkdirSync("./tmp")
 const directory = "./tmp";
 fs.readdir(directory, (err, files) => {
     if (err) throw err;
