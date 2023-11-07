@@ -854,11 +854,11 @@ m.reply("✔️ ʙᴇʀʜᴀꜱɪʟ ᴍᴇɴɢʜᴀᴘᴜꜱ ꜱᴇʟᴜʀᴜʜ 
 break
 case "getfile": case "gf":  {
     let exec = promisify(cp.exec).bind(cp)
-    if (!text) throw (`Teksnya mana?\n\ncontoh\n${prefix + command} main`)
+    if (!m.text) throw (`Teksnya mana?\n\ncontoh\n${prefix + command} main`)
     m.reply("Executing...")
     let o
     try {
-        o = await exec("type " + text)
+        o = await exec("type " + m.text)
     } catch (e) {
         o = e
     } finally {
