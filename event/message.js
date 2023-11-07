@@ -117,7 +117,7 @@ if (m.from in conn.yts) {
                 await m.reply("wait")
             let data = await (await fetch(`${config.APIs.apibe.baseURL}/api/yutub/audio?url=${conn.yts[m.from][1][Number(m.arg[0])].url}&apikey=${config.APIs.apibe.Key}`)).json()
             let datas = await Func.getFiles(data.link, true)
-            m.reply(datas.res, {asDocument: true, fileName: data.title})
+            m.reply(datas.data, {asDocument: true, fileName: data.title})
         }
           if (m.arg[1] == "mp4" || m.arg[1] == "video") {
             if ( global.db.users[m.sender].limit < 5) return m.reply("limit")
@@ -129,7 +129,7 @@ if (m.from in conn.yts) {
             await m.reply("wait")
             let data = await (await fetch(`${config.APIs.apibe.baseURL}/api/yutub/video?url=${conn.yts[m.from][1][Number(m.arg[0])].url}&apikey=${config.APIs.apibe.Key}`)).json()
             let datas = await Func.getFiles(data.link, true)
-            m.reply(datas.res, {asDocument: true, fileName: data.title})
+            m.reply(datas.data, {asDocument: true, fileName: data.title})
         }
         }
     }
@@ -240,7 +240,7 @@ if (m.from in conn.yts) {
                 m.reply("wait")
                 let datayta = await (await fetch(`${config.APIs.apibe.baseURL}/api/yutub/audio?url=${m.text}&apikey=${config.APIs.apibe.Key}`)).json()
                 let datas = await Func.getFiles(datayta.link, true)
-            m.reply(datas.res, {asDocument: true, fileName: datayta.title})
+            m.reply(datas.data, {asDocument: true, fileName: datayta.title})
             }
             break
             case "ytv": case "ytmp4": {
@@ -254,7 +254,7 @@ if (m.from in conn.yts) {
                 m.reply("wait")
                 let dataytv = await (await fetch(`${config.APIs.apibe.baseURL}/api/yutub/video?url=${m.text}&apikey=${config.APIs.apibe.Key}`)).json()
                 let datas = await Func.getFiles(dataytv.link, true)
-            m.reply(datas.res, {asDocument: true, fileName: dataytv.title})
+            m.reply(datas.data, {asDocument: true, fileName: dataytv.title})
             }
             break
             case "ig":  {
