@@ -19,7 +19,7 @@ export default async function Message(conn, m, message) {
         if (!m) return
         if (!config.options.public && !m.isOwner) return
         if (m.from && db.groups[m.from]?.mute && !m.isOwner) return
-        if (m.isBot) return
+        if (m.fromMe) return
 
         (await import("../lib/loadDatabase.js")).default(m)
 
@@ -105,8 +105,8 @@ conn.yts = conn.yts ? conn.yts : {}
 if (m.from in conn.yts) {
     if (m.hasQuotedMsg) {
           if (conn.yts[m.from][0].id === m.quoted.id) {
-            if (!m.arg[1]) return m.reply("Silahkan balas pesan, masukkan angka dan tipe! \nContoh: 1 mp3 ")
-            if (Number(m.arg[0]) > conn.yts[m.from][1].length) return m.reply("Pilihan angka tidak ada! \nContoh: 1 mp3 ")
+            if (!m.arg[1]) return m.warn("Silahkan balas pesan, masukkan angka dan tipe! \nContoh: 1 mp3 ")
+            if (Number(m.arg[0]) > conn.yts[m.from][1].length) return m.m.warn("Pilihan angka tidak ada! \nContoh: 1 mp3 ")
             if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
             if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                 if ( global.db.users[m.sender].limit > 4) {
@@ -213,7 +213,7 @@ if (m.from in conn.yts) {
             }
             break
             case "yts": case "play": {
-                if (!m.args[0]) return m.reply(`Masukkan pencarian youtube!`)
+                if (!m.args[0]) return m.warn(`Masukkan pencarian youtube!`)
                 if ( global.db.users[m.sender].limit < 1) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 1) {
@@ -230,7 +230,7 @@ if (m.from in conn.yts) {
             }
             break
             case "yta": case "ytmp3": {
-                if (!m.args[0]) return m.reply(`Masukkan link youtube!`)
+                if (!m.args[0]) return m.warn(`Masukkan link youtube!`)
                 if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 4) {
@@ -244,7 +244,7 @@ if (m.from in conn.yts) {
             }
             break
             case "ytv": case "ytmp4": {
-                if (!m.args[0]) return m.reply(`Masukkan link youtube!`)
+                if (!m.args[0]) return m.warn(`Masukkan link youtube!`)
                 if ( global.db.users[m.sender].limit < 5) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 5) {
@@ -258,7 +258,7 @@ if (m.from in conn.yts) {
             }
             break
             case "ig":  {
-                if (!m.args[0]) return m.reply(`Masukkan link instagram!`)
+                if (!m.args[0]) return m.warn(`Masukkan link instagram!`)
                 if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 4) {
@@ -271,7 +271,7 @@ if (m.from in conn.yts) {
             }
             break
             case "tt":  {
-                if (!m.args[0]) return m.reply(`Masukkan link tiktok!`)
+                if (!m.args[0]) return m.warn(`Masukkan link tiktok!`)
                 if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 4) {
@@ -284,7 +284,7 @@ if (m.from in conn.yts) {
             }
             break
             case "fb":  {
-                if (!m.args[0]) return m.reply(`Masukkan link facebook!`)
+                if (!m.args[0]) return m.warn(`Masukkan link facebook!`)
                 if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 4) {
@@ -312,7 +312,7 @@ if (m.from in conn.yts) {
             }
             break    
             case "ai": {
-                if (!m.args[0]) return m.reply("Mau tanya apa ya? Contoh: .ai Halo siapa kamu?")
+                if (!m.args[0]) return m.warn("Mau tanya apa ya? Contoh: .ai Halo siapa kamu?")
                 if ( global.db.users[m.sender].limit < 3) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 3) {
@@ -427,7 +427,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                 if (!m.hasQuotedMsg) m.reply("quoted")
                 try {
                     const message = await Serialize(conn, (await conn.loadMessage(m.from, m.quoted.id)))
-                    if (!message.hasQuotedMsg) return m.reply("Quoted Not Found 🙄")
+                    if (!message.hasQuotedMsg) return m.warn("Quoted Not Found 🙄")
                     conn.sendMessage(m.from, { forward: message.quoted })
                 } catch {
                     m.reply("Quoted Not Found 🙄")
@@ -488,7 +488,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                 if (/image|video|webp/i.test(quoted.mime)) {
                     m.reply("wait")
                     const buffer = await quoted.downloadMedia()
-                    if (quoted?.msg?.seconds > 10) return m.reply(`Max video 9 second`)
+                    if (quoted?.msg?.seconds > 10) return m.warn(`Max video 9 second`)
                     let exif
                     if (m.text) {
                         let [packname, author] = m.text.split("|")
@@ -517,7 +517,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 2, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }}
                 let { webp2mp4File } = (await import("../lib/sticker.js"))
-                if (!/webp/i.test(quoted.mime)) return m.reply(`Reply Sticker with command ${prefix + command}`)
+                if (!/webp/i.test(quoted.mime)) return m.warn(`Reply Sticker with command ${prefix + command}`)
                 if (quoted.isAnimated) {
                     let media = await webp2mp4File((await quoted.downloadMedia()))
                     await m.reply(media)
@@ -539,7 +539,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                 if (!m.isAdmin) return m.reply("admin")
                 if (!m.isBotAdmin) return m.reply("botAdmin")
                 let users = m.mentions.length !== 0 ? m.mentions.slice(0, 2) : m.hasQuotedMsg ? [m.quoted.sender] : m.text.split(",").map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net").slice(0, 2)
-                if (users.length == 0) return m.reply("Fuck You 🖕")
+                if (users.length == 0) return m.warn("Fuck You 🖕")
                 await conn.groupParticipantsUpdate(m.from, users, "add")
                     .then(async (res) => {
                         for (let i of res) {
@@ -549,7 +549,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                                 let url = await conn.profilePictureUrl(m.from, "image").catch(_ => "https://lh3.googleusercontent.com/proxy/esjjzRYoXlhgNYXqU8Gf_3lu6V-eONTnymkLzdwQ6F6z0MWAqIwIpqgq_lk4caRIZF_0Uqb5U8NWNrJcaeTuCjp7xZlpL48JDx-qzAXSTh00AVVqBoT7MJ0259pik9mnQ1LldFLfHZUGDGY=w1200-h630-p-k-no-nu")
                                 await conn.sendGroupV4Invite(i.jid, m.from, node[0]?.attrs?.code || node.attrs.code, node[0]?.attrs?.expiration || node.attrs.expiration, m.metadata.subject, url, "Invitation to join my WhatsApp Group")
                             }
-                            else if (i.status == 409) return m.reply(`@${i.jid?.split("@")[0]} already in this group`)
+                            else if (i.status == 409) return m.warn(`@${i.jid?.split("@")[0]} already in this group`)
                             else m.reply(Func.format(i))
                         }
                     })
@@ -587,7 +587,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             }
             break
             case "fetch": case "get": {
-                if (!/^https:\/\//i.test(m.text) && !m.args[0]) return m.reply(`No Query?\n\nExample : ${prefix + command} https://api.xfarr.com`)
+                if (!/^https:\/\//i.test(m.text) && !m.args[0]) return m.warn(`No Query?\n\nExample : ${prefix + command} https://api.xfarr.com`)
                 m.reply("wait")
                 let mime = (await import("mime-types"))
                 const res = await axios.get(Func.isUrl(m.text)[0], { responseType: "arraybuffer" })
@@ -623,13 +623,13 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                     global.db.users[m.sender].limit -= 1
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 1, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }}
-                if (!quoted.msg.viewOnce) return m.reply(`Reply view once with command ${prefix + command}`)
+                if (!quoted.msg.viewOnce) return m.warn(`Reply view once with command ${prefix + command}`)
                 quoted.msg.viewOnce = false
                 await conn.sendMessage(m.from, { forward: quoted }, { quoted: m })
             }
             break
             case "kisahnabi": {
-if (!m.args[0]) return m.reply(m.from, `ʜᴀʀᴀᴘ ᴍᴀꜱᴜᴋᴀɴ ɴᴀᴍᴀ ɴᴀʙɪ\n\nᴄᴏɴᴛᴏʜ: .kisahnabi ᴍᴜʜᴀᴍᴍᴀᴅ`,m);
+if (!m.args[0]) return m.warn(m.from, `ʜᴀʀᴀᴘ ᴍᴀꜱᴜᴋᴀɴ ɴᴀᴍᴀ ɴᴀʙɪ\n\nᴄᴏɴᴛᴏʜ: .kisahnabi ᴍᴜʜᴀᴍᴍᴀᴅ`,m);
 let data = [ "Adam", "Idris", "Nuh", "Hud", "Sholeh",
 "Ibrahim", "Ismail", "Luth", "Ishaq", "Yaqub",
 "Yusuf", "Syuaib", "Ayyub", "Dzulkifli", "Musa",
@@ -666,7 +666,7 @@ conn.sendMessage(m.from, {
 };
 break
 case "doa": {
-    if (!m.args[0]) return m.reply("ᴍᴀꜱᴜᴋᴋᴀɴ ɴᴀᴍᴀ ᴅᴏᴀɴʏᴀ ᴀᴘᴀ?")
+    if (!m.args[0]) return m.warn("ᴍᴀꜱᴜᴋᴋᴀɴ ɴᴀᴍᴀ ᴅᴏᴀɴʏᴀ ᴀᴘᴀ?")
 conn.doa = conn.doa ? conn.doa : {}
 let doaseharihari = await (await fetch("https://raw.githubusercontent.com/BerkahEsport/api-be/main/data/islam/lainya/doaharian.json")).json()
 let data = doaseharihari.data.map((v,i) => `\n${i+1}. ${v.title}`)
@@ -800,14 +800,14 @@ conn.quran = conn.quran ? conn.quran : {}
 112. Al Ikhlash,
 113. Al Falaq,
 114. An Naas`.trim()
-if (!m.args[0]) return m.reply(`${list}\n\n*Contoh:* _.alquran An Naas_`)
+if (!m.args[0]) return m.warn(`${list}\n\n*Contoh:* _.alquran An Naas_`)
 let json = JSON.parse(fs.readFileSync("./lib/alquran.json"))
 let data = json.map(v => v.nama)
 let mirip = didyoumean(m.text, data)
 if (mirip == null) {
   const datas = json.filter(item => item.nama.toLowerCase().match(m.text));
-  if (datas.length == 0) throw ("Surat tidak ditemukan!")
-  let id = await m.reply(`★彡[ʜᴀꜱɪʟ ꜱᴜʀᴀᴛ ʏᴀɴɢ ᴅɪᴛᴇᴍᴜᴋᴀɴ]彡★
+  if (datas.length == 0) throw m.warn("Surat tidak ditemukan!")
+  let id = await m.warn(`★彡[ʜᴀꜱɪʟ ꜱᴜʀᴀᴛ ʏᴀɴɢ ᴅɪᴛᴇᴍᴜᴋᴀɴ]彡★
 
 ${datas.map((v,i) => `\n${i+1}. ${v.nama}`)}
 
@@ -918,5 +918,6 @@ break
         m.reply(format(e))
     } finally {
         if (m.error == false) m.react("✅")
+        else if (m.error == null) m.react("⚠️")
     }
 }
