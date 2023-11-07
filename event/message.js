@@ -181,7 +181,7 @@ if (m.from in conn.yts) {
                 }, { quoted: m })
             }
             case "profile": {
-                let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
+                let who = m.mentions && m.mentions[0] ? m.mentions[0] : m.fromMe ? conn.user.jid : m.sender
                 let pp = await conn.profilePictureUrl(who, "image").catch(() => fs.readFileSync("./qrbe.jpg"))
                 let sender = global.db.users[who]
                 let text = `
@@ -221,7 +221,7 @@ if (m.from in conn.yts) {
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 1, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }}
                 let data = await (await fetch(`${config.APIs.apibe.baseURL}/api/yutub/search?text=${m.text}&apikey=${config.APIs.apibe.Key}`)).json()
-                let hasil = data.map((v,i) => `\n*${i+1}*. *Judul:* ${v?.title}\n▸ *Durasi:* ${v?.timestamp}\n▸ *Link:* ${v?.url}\n\n`)
+                let hasil = data.result.map((v,i) => `\n*${i+1}*. *Judul:* ${v?.title}\n▸ *Durasi:* ${v?.timestamp}\n▸ *Link:* ${v?.url}\n\n`)
                 let id = await m.reply("*★彡[ʏᴏᴜᴛᴜʙᴇ ꜱᴇᴀʀᴄʜ]彡★*\n\n"+hasil+"\nᴮᵃˡᵃˢ ᵈᵃⁿ ᵏⁱʳⁱᵐ ˢᵉˢᵘᵃⁱ ᵃⁿᵍᵏᵃ!")
                 conn.yts = conn.yts ? conn.yts : {}
                 conn.yts[m.from] = [{id: id.key.id}, data, setTimeout(() => {
@@ -267,7 +267,7 @@ if (m.from in conn.yts) {
                 }}
                 m.reply("wait")
                 let dataig = await (await fetch(`${config.APIs.apibe.baseURL}/api/igdl?url=${m.text}&apikey=${config.APIs.apibe.Key}`)).json()
-                await m.reply(dataig.medias[0].url)
+                await m.reply(dataig.medias[0].url, {caption: dataig.title})
             }
             break
             case "tt":  {
@@ -280,7 +280,7 @@ if (m.from in conn.yts) {
                 }}
                 m.reply("wait")
                 let datatt = await (await fetch(`${config.APIs.apibe.baseURL}/api/ttdl?url=${m.text}&apikey=${config.APIs.apibe.Key}`)).json()
-                await m.reply(datatt.video.no_watermark_hd)
+                await m.reply(datatt.result.video.no_watermark_hd, {caption: `Name: ${datatt.result.author.nickname}\nID: ${datatt.result.author.unique_id}`})
             }
             break
             case "fb":  {
@@ -293,7 +293,7 @@ if (m.from in conn.yts) {
                 }}
                 m.reply("wait")
                 let datafb = await (await fetch(`${config.APIs.apibe.baseURL}/api/fbdl?url=${m.text}&apikey=${config.APIs.apibe.Key}`)).json()
-                await m.reply(datafb.result[0].url)
+                await m.reply(datafb.result.result[0].url)
             }
             break
             case "speed":  {
@@ -497,9 +497,9 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                         exif = { ...config.Exif }
                     }
                     m.reply(buffer, { asSticker: true, ...exif })
-                } else if (m.mentionedJid[0]) {
+                } else if (m.mentions[0]) {
                     m.reply("wait")
-                    let url = await conn.profilePictureUrl(m.mentionedJid[0], "image");
+                    let url = await conn.profilePictureUrl(m.mentions[0], "image");
                     m.reply(url, { asSticker: true, ...config.Exif })
                 } else if (/(https?:\/\/.*\.(?:png|jpg|jpeg|webp|mov|mp4|webm|gif))/i.test(m.text)) {
                     m.reply("wait")
@@ -529,16 +529,16 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             case "hidetag": case "h": {
                 if (!m.isGroup) return m.reply("group")
                 if (!m.isAdmin) return m.reply("admin")
-                let mentionedJid = m.metadata.participants.map(a => a.id)
+                let mentions = m.metadata.participants.map(a => a.id)
                 let mod = await conn.cMod(m.from, quoted, /hidetag|tag|ht|h|totag/i.test(quoted.body.toLowerCase()) ? quoted.body.toLowerCase().replace(prefix + command, "") : quoted.body)
-                conn.sendMessage(m.from, { forward: mod, mentionedJid })
+                conn.sendMessage(m.from, { forward: mod, mentions })
             }
             break
             case "add": {
                 if (!m.isGroup) return m.reply("group")
                 if (!m.isAdmin) return m.reply("admin")
                 if (!m.isBotAdmin) return m.reply("botAdmin")
-                let users = m.mentionedJid.length !== 0 ? m.mentionedJid.slice(0, 2) : m.hasQuotedMsg ? [m.quoted.sender] : m.text.split(",").map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net").slice(0, 2)
+                let users = m.mentions.length !== 0 ? m.mentions.slice(0, 2) : m.hasQuotedMsg ? [m.quoted.sender] : m.text.split(",").map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net").slice(0, 2)
                 if (users.length == 0) return m.reply("Fuck You 🖕")
                 await conn.groupParticipantsUpdate(m.from, users, "add")
                     .then(async (res) => {
