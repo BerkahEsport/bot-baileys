@@ -115,7 +115,7 @@ if (m.from in conn.yts) {
             }}
             if (m.arg[1] == "mp3" || m.arg[1] == "audio") {
                 await m.reply("wait")
-            let data = await (await fetch(`${config.APIs.apibe.baseURL}/api/yutub/audio?url=${conn.yts[m.from][1][Number(m.arg[0])].url}&apikey=${config.APIs.apibe.Key}`)).json()
+            let data = await (await fetch(`${config.APIs.apibe.baseURL}/api/yutub/audio?url=${conn.yts[m.from][1].result[Number(m.arg[0])].url}&apikey=${config.APIs.apibe.Key}`)).json()
             let datas = await Func.getFiles(data.link, true)
             m.reply(datas.data, {asDocument: true, fileName: data.title})
         }
@@ -127,7 +127,7 @@ if (m.from in conn.yts) {
                 m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 5, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
             }}
             await m.reply("wait")
-            let data = await (await fetch(`${config.APIs.apibe.baseURL}/api/yutub/video?url=${conn.yts[m.from][1][Number(m.arg[0])].url}&apikey=${config.APIs.apibe.Key}`)).json()
+            let data = await (await fetch(`${config.APIs.apibe.baseURL}/api/yutub/video?url=${conn.yts[m.from][1].result[Number(m.arg[0])].url}&apikey=${config.APIs.apibe.Key}`)).json()
             let datas = await Func.getFiles(data.link, true)
             m.reply(datas.data, {asDocument: true, fileName: data.title})
         }
