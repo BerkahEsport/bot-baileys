@@ -838,10 +838,10 @@ m.reply(`${getCase(m.text)}`)
 break
             default:
                 if (["bc"].some(a => m.body?.toLowerCase()?.startsWith(a)) && m.isOwner) {
-                    let ran = (Math.floor(Math.random() * 4))
-                    let data = JSON.parse(fs.readFileSync("./lib/bc/broadcast.json"))
-                    //let data = json.map(v => v.id)
-                    //let data = Object.keys(global.db.data.users)
+                    let ran = (Math.floor(Math.random() * 5))
+                    let listbc = JSON.parse(fs.readFileSync("./lib/data/broadcast.json"))
+                    let listdb = Object.keys(global.db.users)
+                    let data = listbc.length == 0 ? listdb : listbc
                     let info = `<= *★彡[ʙʀᴏᴀᴅᴄᴀꜱᴛ]彡★* =>
 Hai, bot *${config.options.bot}* sudah aktif...
 Ketik _.menu_ untuk menampilkan fitur bot...
