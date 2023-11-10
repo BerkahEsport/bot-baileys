@@ -865,7 +865,7 @@ _Jika bot tidak merespon silahkan coba lagi nanti._
                                   previewType: 0,
                                   renderLargerThumbnail: true,
                                   thumbnail: fs.readFileSync("./qrbe.jpg"),
-                                  sourceUrl: config.group.gc1
+                                  sourceUrl: config.options.group
                               }
                           }
                         })
