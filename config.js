@@ -29,6 +29,7 @@ export default {
       prefix: /^[°•π÷×¶∆£¢€¥®™+✓_=|/~!?@#%^&.©^]/i,
       pairingNumber: "6289654279897", // Example Input : 62xxx
       mybot: "6289649672623", // Buat cadangan BOT kalian
+      group: "https://chat.whatsapp.com/JKdIWr5fj990Ux2oqTjTo5",
       info: "Ini bot simpel ʙᴇʀᴋᴀʜᴇꜱᴘᴏʀᴛ.ɪᴅ. \nBot full fitur chat di https://wa.me/6289649672623?text=.menu" // Buat info aja...
    },
    Exif: {

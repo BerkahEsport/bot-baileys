@@ -1,7 +1,6 @@
 import config from "../config.js";
 import Func from "../lib/function.js";
 import fs from "fs";
-import path from "path";
 import chalk from "chalk";
 import axios from "axios";
 import { getBinaryNodeChildren } from "@whiskeysockets/baileys";
@@ -19,7 +18,7 @@ export default async function Message(conn, m, message) {
         if (!m) return
         if (!config.options.public && !m.isOwner) return
         if (m.from && db.groups[m.from]?.mute && !m.isOwner) return
-        if (m.fromMe) return
+        if (m.isBot) return
 
         (await import("../lib/loadDatabase.js")).default(m)
 
@@ -105,8 +104,8 @@ conn.yts = conn.yts ? conn.yts : {}
 if (m.from in conn.yts) {
     if (m.hasQuotedMsg) {
           if (conn.yts[m.from][0].id === m.quoted.id) {
-            if (!m.arg[1]) return m.warn("Silahkan balas pesan, masukkan angka dan tipe! \nContoh: 1 mp3 ")
-            if (Number(m.arg[0]) > conn.yts[m.from][1].length) return m.m.warn("Pilihan angka tidak ada! \nContoh: 1 mp3 ")
+            if (!m.arg[1]) return m.reply("Silahkan balas pesan, masukkan angka dan tipe! \nContoh: 1 mp3 ")
+            if (Number(m.arg[0]) > conn.yts[m.from][1].length) return m.reply("Pilihan angka tidak ada! \nContoh: 1 mp3 ")
             if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
             if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                 if ( global.db.users[m.sender].limit > 4) {
@@ -115,9 +114,9 @@ if (m.from in conn.yts) {
             }}
             if (m.arg[1] == "mp3" || m.arg[1] == "audio") {
                 await m.reply("wait")
-            let data = await (await fetch(`${config.APIs.apibe.baseURL}/api/yutub/audio?url=${conn.yts[m.from][1].result[Number(m.arg[0])].url}&apikey=${config.APIs.apibe.Key}`)).json()
+            let data = await (await fetch(`${config.APIs.apibe.baseURL}/api/yutub/audio?url=${conn.yts[m.from][1][Number(m.arg[0])].url}&apikey=${config.APIs.apibe.Key}`)).json()
             let datas = await Func.getFiles(data.link, true)
-            m.reply(datas.data, {asDocument: true, fileName: data.title})
+            m.reply(datas.res, {asDocument: true, fileName: data.title})
         }
           if (m.arg[1] == "mp4" || m.arg[1] == "video") {
             if ( global.db.users[m.sender].limit < 5) return m.reply("limit")
@@ -127,9 +126,9 @@ if (m.from in conn.yts) {
                 m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 5, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
             }}
             await m.reply("wait")
-            let data = await (await fetch(`${config.APIs.apibe.baseURL}/api/yutub/video?url=${conn.yts[m.from][1].result[Number(m.arg[0])].url}&apikey=${config.APIs.apibe.Key}`)).json()
+            let data = await (await fetch(`${config.APIs.apibe.baseURL}/api/yutub/video?url=${conn.yts[m.from][1][Number(m.arg[0])].url}&apikey=${config.APIs.apibe.Key}`)).json()
             let datas = await Func.getFiles(data.link, true)
-            m.reply(datas.data, {asDocument: true, fileName: data.title})
+            m.reply(datas.res, {asDocument: true, fileName: data.title})
         }
         }
     }
@@ -174,15 +173,15 @@ if (m.from in conn.yts) {
                             mediaType: 1,
                             previewType: 0,
                             renderLargerThumbnail: true,
-                            thumbnail: fs.readFileSync("./qrbe.jpg"),
+                            thumbnail: fs.readFileSync("./tmp/qrbe.jpg"),
                             sourceUrl: config.Exif.packWebsite
                         }
                     }
                 }, { quoted: m })
             }
             case "profile": {
-                let who = m.mentions && m.mentions[0] ? m.mentions[0] : m.fromMe ? conn.user.jid : m.sender
-                let pp = await conn.profilePictureUrl(who, "image").catch(() => fs.readFileSync("./qrbe.jpg"))
+                let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0] : m.fromMe ? conn.user.jid : m.sender
+                let pp = await conn.profilePictureUrl(who, "image").catch(() => fs.readFileSync("./tmp/qrbe.jpg"))
                 let sender = global.db.users[who]
                 let text = `
 ┏━━〔 ${config.options.bot} 〕━▣
@@ -213,7 +212,7 @@ if (m.from in conn.yts) {
             }
             break
             case "yts": case "play": {
-                if (!m.args[0]) return m.warn(`Masukkan pencarian youtube!`)
+                if (!m.args[0]) return m.reply(`Masukkan pencarian youtube!`)
                 if ( global.db.users[m.sender].limit < 1) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 1) {
@@ -221,7 +220,7 @@ if (m.from in conn.yts) {
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 1, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }}
                 let data = await (await fetch(`${config.APIs.apibe.baseURL}/api/yutub/search?text=${m.text}&apikey=${config.APIs.apibe.Key}`)).json()
-                let hasil = data.result.map((v,i) => `\n*${i+1}*. *Judul:* ${v?.title}\n▸ *Durasi:* ${v?.timestamp}\n▸ *Link:* ${v?.url}\n\n`)
+                let hasil = data.map((v,i) => `\n*${i+1}*. *Judul:* ${v?.title}\n▸ *Durasi:* ${v?.timestamp}\n▸ *Link:* ${v?.url}\n\n`)
                 let id = await m.reply("*★彡[ʏᴏᴜᴛᴜʙᴇ ꜱᴇᴀʀᴄʜ]彡★*\n\n"+hasil+"\nᴮᵃˡᵃˢ ᵈᵃⁿ ᵏⁱʳⁱᵐ ˢᵉˢᵘᵃⁱ ᵃⁿᵍᵏᵃ!")
                 conn.yts = conn.yts ? conn.yts : {}
                 conn.yts[m.from] = [{id: id.key.id}, data, setTimeout(() => {
@@ -230,7 +229,7 @@ if (m.from in conn.yts) {
             }
             break
             case "yta": case "ytmp3": {
-                if (!m.args[0]) return m.warn(`Masukkan link youtube!`)
+                if (!m.args[0]) return m.reply(`Masukkan link youtube!`)
                 if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 4) {
@@ -240,11 +239,11 @@ if (m.from in conn.yts) {
                 m.reply("wait")
                 let datayta = await (await fetch(`${config.APIs.apibe.baseURL}/api/yutub/audio?url=${m.text}&apikey=${config.APIs.apibe.Key}`)).json()
                 let datas = await Func.getFiles(datayta.link, true)
-            m.reply(datas.data, {asDocument: true, fileName: datayta.title})
+            m.reply(datas.res, {asDocument: true, fileName: datayta.title})
             }
             break
             case "ytv": case "ytmp4": {
-                if (!m.args[0]) return m.warn(`Masukkan link youtube!`)
+                if (!m.args[0]) return m.reply(`Masukkan link youtube!`)
                 if ( global.db.users[m.sender].limit < 5) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 5) {
@@ -254,11 +253,11 @@ if (m.from in conn.yts) {
                 m.reply("wait")
                 let dataytv = await (await fetch(`${config.APIs.apibe.baseURL}/api/yutub/video?url=${m.text}&apikey=${config.APIs.apibe.Key}`)).json()
                 let datas = await Func.getFiles(dataytv.link, true)
-            m.reply(datas.data, {asDocument: true, fileName: dataytv.title})
+            m.reply(datas.res, {asDocument: true, fileName: dataytv.title})
             }
             break
             case "ig":  {
-                if (!m.args[0]) return m.warn(`Masukkan link instagram!`)
+                if (!m.args[0]) return m.reply(`Masukkan link instagram!`)
                 if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 4) {
@@ -267,11 +266,11 @@ if (m.from in conn.yts) {
                 }}
                 m.reply("wait")
                 let dataig = await (await fetch(`${config.APIs.apibe.baseURL}/api/igdl?url=${m.text}&apikey=${config.APIs.apibe.Key}`)).json()
-                await m.reply(dataig.medias[0].url, {caption: dataig.title})
+                await m.reply(dataig.medias[0].url)
             }
             break
             case "tt":  {
-                if (!m.args[0]) return m.warn(`Masukkan link tiktok!`)
+                if (!m.args[0]) return m.reply(`Masukkan link tiktok!`)
                 if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 4) {
@@ -280,11 +279,11 @@ if (m.from in conn.yts) {
                 }}
                 m.reply("wait")
                 let datatt = await (await fetch(`${config.APIs.apibe.baseURL}/api/ttdl?url=${m.text}&apikey=${config.APIs.apibe.Key}`)).json()
-                await m.reply(datatt.result.video.no_watermark_hd, {caption: `Name: ${datatt.result.author.nickname}\nID: ${datatt.result.author.unique_id}`})
+                await m.reply(datatt.video.no_watermark_hd)
             }
             break
             case "fb":  {
-                if (!m.args[0]) return m.warn(`Masukkan link facebook!`)
+                if (!m.args[0]) return m.reply(`Masukkan link facebook!`)
                 if ( global.db.users[m.sender].limit < 4) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 4) {
@@ -293,7 +292,7 @@ if (m.from in conn.yts) {
                 }}
                 m.reply("wait")
                 let datafb = await (await fetch(`${config.APIs.apibe.baseURL}/api/fbdl?url=${m.text}&apikey=${config.APIs.apibe.Key}`)).json()
-                await m.reply(datafb.result.result[0].url)
+                await m.reply(datafb.result[0].url)
             }
             break
             case "speed":  {
@@ -312,7 +311,7 @@ if (m.from in conn.yts) {
             }
             break    
             case "ai": {
-                if (!m.args[0]) return m.warn("Mau tanya apa ya? Contoh: .ai Halo siapa kamu?")
+                if (!m.args[0]) return m.reply("Mau tanya apa ya? Contoh: .ai Halo siapa kamu?")
                 if ( global.db.users[m.sender].limit < 3) return m.reply("limit")
                 if ( !global.db.users[m.sender].premium || !global.db.users[m.sender].VIP ) { 
                     if ( global.db.users[m.sender].limit > 3) {
@@ -427,7 +426,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                 if (!m.hasQuotedMsg) m.reply("quoted")
                 try {
                     const message = await Serialize(conn, (await conn.loadMessage(m.from, m.quoted.id)))
-                    if (!message.hasQuotedMsg) return m.warn("Quoted Not Found 🙄")
+                    if (!message.hasQuotedMsg) return m.reply("Quoted Not Found 🙄")
                     conn.sendMessage(m.from, { forward: message.quoted })
                 } catch {
                     m.reply("Quoted Not Found 🙄")
@@ -488,7 +487,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                 if (/image|video|webp/i.test(quoted.mime)) {
                     m.reply("wait")
                     const buffer = await quoted.downloadMedia()
-                    if (quoted?.msg?.seconds > 10) return m.warn(`Max video 9 second`)
+                    if (quoted?.msg?.seconds > 10) return m.reply(`Max video 9 second`)
                     let exif
                     if (m.text) {
                         let [packname, author] = m.text.split("|")
@@ -497,9 +496,9 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                         exif = { ...config.Exif }
                     }
                     m.reply(buffer, { asSticker: true, ...exif })
-                } else if (m.mentions[0]) {
+                } else if (m.mentionedJid[0]) {
                     m.reply("wait")
-                    let url = await conn.profilePictureUrl(m.mentions[0], "image");
+                    let url = await conn.profilePictureUrl(m.mentionedJid[0], "image");
                     m.reply(url, { asSticker: true, ...config.Exif })
                 } else if (/(https?:\/\/.*\.(?:png|jpg|jpeg|webp|mov|mp4|webm|gif))/i.test(m.text)) {
                     m.reply("wait")
@@ -517,7 +516,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 2, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }}
                 let { webp2mp4File } = (await import("../lib/sticker.js"))
-                if (!/webp/i.test(quoted.mime)) return m.warn(`Reply Sticker with command ${prefix + command}`)
+                if (!/webp/i.test(quoted.mime)) return m.reply(`Reply Sticker with command ${prefix + command}`)
                 if (quoted.isAnimated) {
                     let media = await webp2mp4File((await quoted.downloadMedia()))
                     await m.reply(media)
@@ -529,17 +528,17 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             case "hidetag": case "h": {
                 if (!m.isGroup) return m.reply("group")
                 if (!m.isAdmin) return m.reply("admin")
-                let mentions = m.metadata.participants.map(a => a.id)
+                let mentionedJid = m.metadata.participants.map(a => a.id)
                 let mod = await conn.cMod(m.from, quoted, /hidetag|tag|ht|h|totag/i.test(quoted.body.toLowerCase()) ? quoted.body.toLowerCase().replace(prefix + command, "") : quoted.body)
-                conn.sendMessage(m.from, { forward: mod, mentions })
+                conn.sendMessage(m.from, { forward: mod, mentionedJid })
             }
             break
             case "add": {
                 if (!m.isGroup) return m.reply("group")
                 if (!m.isAdmin) return m.reply("admin")
                 if (!m.isBotAdmin) return m.reply("botAdmin")
-                let users = m.mentions.length !== 0 ? m.mentions.slice(0, 2) : m.hasQuotedMsg ? [m.quoted.sender] : m.text.split(",").map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net").slice(0, 2)
-                if (users.length == 0) return m.warn("Fuck You 🖕")
+                let users = m.mentionedJid.length !== 0 ? m.mentionedJid.slice(0, 2) : m.hasQuotedMsg ? [m.quoted.sender] : m.text.split(",").map(v => v.replace(/[^0-9]/g, "") + "@s.whatsapp.net").slice(0, 2)
+                if (users.length == 0) return m.reply("Fuck You 🖕")
                 await conn.groupParticipantsUpdate(m.from, users, "add")
                     .then(async (res) => {
                         for (let i of res) {
@@ -549,7 +548,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                                 let url = await conn.profilePictureUrl(m.from, "image").catch(_ => "https://lh3.googleusercontent.com/proxy/esjjzRYoXlhgNYXqU8Gf_3lu6V-eONTnymkLzdwQ6F6z0MWAqIwIpqgq_lk4caRIZF_0Uqb5U8NWNrJcaeTuCjp7xZlpL48JDx-qzAXSTh00AVVqBoT7MJ0259pik9mnQ1LldFLfHZUGDGY=w1200-h630-p-k-no-nu")
                                 await conn.sendGroupV4Invite(i.jid, m.from, node[0]?.attrs?.code || node.attrs.code, node[0]?.attrs?.expiration || node.attrs.expiration, m.metadata.subject, url, "Invitation to join my WhatsApp Group")
                             }
-                            else if (i.status == 409) return m.warn(`@${i.jid?.split("@")[0]} already in this group`)
+                            else if (i.status == 409) return m.reply(`@${i.jid?.split("@")[0]} already in this group`)
                             else m.reply(Func.format(i))
                         }
                     })
@@ -587,7 +586,7 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
             }
             break
             case "fetch": case "get": {
-                if (!/^https:\/\//i.test(m.text) && !m.args[0]) return m.warn(`No Query?\n\nExample : ${prefix + command} https://api.xfarr.com`)
+                if (!/^https:\/\//i.test(m.text) && !m.args[0]) return m.reply(`No Query?\n\nExample : ${prefix + command} https://api.xfarr.com`)
                 m.reply("wait")
                 let mime = (await import("mime-types"))
                 const res = await axios.get(Func.isUrl(m.text)[0], { responseType: "arraybuffer" })
@@ -623,13 +622,13 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                     global.db.users[m.sender].limit -= 1
                     m.reply(`ʟɪᴍɪᴛ ᴀɴᴅᴀ ᴛᴇʀᴘᴀᴋᴀɪ 1, ꜱɪʟᴀʜᴋᴀɴ ᴛᴜɴɢɢᴜ ꜱᴇʙᴇɴᴛᴀʀ!!!`)
                 }}
-                if (!quoted.msg.viewOnce) return m.warn(`Reply view once with command ${prefix + command}`)
+                if (!quoted.msg.viewOnce) return m.reply(`Reply view once with command ${prefix + command}`)
                 quoted.msg.viewOnce = false
                 await conn.sendMessage(m.from, { forward: quoted }, { quoted: m })
             }
             break
             case "kisahnabi": {
-if (!m.args[0]) return m.warn(m.from, `ʜᴀʀᴀᴘ ᴍᴀꜱᴜᴋᴀɴ ɴᴀᴍᴀ ɴᴀʙɪ\n\nᴄᴏɴᴛᴏʜ: .kisahnabi ᴍᴜʜᴀᴍᴍᴀᴅ`,m);
+if (!m.args[0]) return m.reply(m.from, `ʜᴀʀᴀᴘ ᴍᴀꜱᴜᴋᴀɴ ɴᴀᴍᴀ ɴᴀʙɪ\n\nᴄᴏɴᴛᴏʜ: .kisahnabi ᴍᴜʜᴀᴍᴍᴀᴅ`,m);
 let data = [ "Adam", "Idris", "Nuh", "Hud", "Sholeh",
 "Ibrahim", "Ismail", "Luth", "Ishaq", "Yaqub",
 "Yusuf", "Syuaib", "Ayyub", "Dzulkifli", "Musa",
@@ -666,7 +665,7 @@ conn.sendMessage(m.from, {
 };
 break
 case "doa": {
-    if (!m.args[0]) return m.warn("ᴍᴀꜱᴜᴋᴋᴀɴ ɴᴀᴍᴀ ᴅᴏᴀɴʏᴀ ᴀᴘᴀ?")
+    if (!m.args[0]) return m.reply("ᴍᴀꜱᴜᴋᴋᴀɴ ɴᴀᴍᴀ ᴅᴏᴀɴʏᴀ ᴀᴘᴀ?")
 conn.doa = conn.doa ? conn.doa : {}
 let doaseharihari = await (await fetch("https://raw.githubusercontent.com/BerkahEsport/api-be/main/data/islam/lainya/doaharian.json")).json()
 let data = doaseharihari.data.map((v,i) => `\n${i+1}. ${v.title}`)
@@ -800,14 +799,14 @@ conn.quran = conn.quran ? conn.quran : {}
 112. Al Ikhlash,
 113. Al Falaq,
 114. An Naas`.trim()
-if (!m.args[0]) return m.warn(`${list}\n\n*Contoh:* _.alquran An Naas_`)
+if (!m.args[0]) return m.reply(`${list}\n\n*Contoh:* _.alquran An Naas_`)
 let json = JSON.parse(fs.readFileSync("./lib/alquran.json"))
 let data = json.map(v => v.nama)
 let mirip = didyoumean(m.text, data)
 if (mirip == null) {
   const datas = json.filter(item => item.nama.toLowerCase().match(m.text));
-  if (datas.length == 0) throw m.warn("Surat tidak ditemukan!")
-  let id = await m.warn(`★彡[ʜᴀꜱɪʟ ꜱᴜʀᴀᴛ ʏᴀɴɢ ᴅɪᴛᴇᴍᴜᴋᴀɴ]彡★
+  if (datas.length == 0) throw ("Surat tidak ditemukan!")
+  let id = await m.reply(`★彡[ʜᴀꜱɪʟ ꜱᴜʀᴀᴛ ʏᴀɴɢ ᴅɪᴛᴇᴍᴜᴋᴀɴ]彡★
 
 ${datas.map((v,i) => `\n${i+1}. ${v.nama}`)}
 
@@ -837,39 +836,43 @@ return "case"+`'${cases}'` + fs.readFileSync("./event/message.js").toString().sp
 }
 m.reply(`${getCase(m.text)}`)
 break
-
-case 'cleartmp':
-if (!m.isOwner) return m.reply("owner")
-if (!fs.existsSync("./tmp")) fs.mkdirSync("./tmp")
-const directory = "./tmp";
-fs.readdir(directory, (err, files) => {
-    if (err) throw err;
-  
-    for (const file of files) {
-      fs.unlink(path.join(directory, file), err => {
-        if (err) throw err;
-      });
-    }
-  } )
-m.reply("✔️ ʙᴇʀʜᴀꜱɪʟ ᴍᴇɴɢʜᴀᴘᴜꜱ ꜱᴇʟᴜʀᴜʜ ꜰɪʟᴇ ᴅɪ ᴅɪʀᴇᴋᴛᴏʀɪ ᴛᴍᴘ.")
-break
-case "getfile": case "gf":  {
-    let exec = promisify(cp.exec).bind(cp)
-    if (!m.text) throw (`Teksnya mana?\n\ncontoh\n${prefix + command} main`)
-    m.reply("Executing...")
-    let o
-    try {
-        o = await exec("type " + m.text)
-    } catch (e) {
-        o = e
-    } finally {
-        let { stdout, stderr } = o
-        if (stdout.trim()) m.reply(stdout)
-        if (stderr.trim()) m.reply(stderr)
-    }
-}
-break
             default:
+                if (["bc"].some(a => m.body?.toLowerCase()?.startsWith(a)) && m.isOwner) {
+                    let ran = (Math.floor(Math.random() * 4))
+                    let data = JSON.parse(fs.readFileSync("./lib/bc/broadcast.json"))
+                    //let data = json.map(v => v.id)
+                    //let data = Object.keys(global.db.data.users)
+                    let info = `<= *★彡[ʙʀᴏᴀᴅᴄᴀꜱᴛ]彡★* =>
+Hai, bot *${config.options.bot}* sudah aktif...
+Ketik _.menu_ untuk menampilkan fitur bot...
+Terima kasih...
+
+*ᴄʜᴀᴛ ʙᴏᴛ*
+_https://wa.me/${config.options.mybot}_
+*ɢʀᴏᴜᴘ ʙᴏᴛ*
+_${config.options.group}_
+*ᴘᴇʀɪɴɢᴀᴛᴀɴ*: 
+_Jika bot tidak merespon silahkan coba lagi nanti._
+~Hiraukan pesan ini jika tidak mengerti.~`.trim()
+                let datas = await m.reply(`${info}`)
+                  for (const user of data) {
+                      await conn.sendMessage(user, { forward: datas, contextInfo: {
+                              mentionedJid: user,
+                              externalAdReply: {
+                                  forwardingScore: data.length,
+                                  title: conn.user.name,
+                                  mediaType: 1,
+                                  previewType: 0,
+                                  renderLargerThumbnail: true,
+                                  thumbnail: fs.readFileSync("./qrbe.jpg"),
+                                  sourceUrl: config.group.gc1
+                              }
+                          }
+                        })
+                   await new Promise(resolve => setTimeout(resolve, ran * 1000));
+                  }
+                  await m.reply(`Mengirim ke ${data.length} kontak.`)
+                }
                 if (["*"].some(a => m.body?.toLowerCase()?.startsWith(a)) && m.isOwner) {
                     m.reply(format(message))
                 }
@@ -918,6 +921,5 @@ break
         m.reply(format(e))
     } finally {
         if (m.error == false) m.react("✅")
-        if (m.error == "warning") m.react("⚠️")
     }
 }
