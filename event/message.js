@@ -1,5 +1,6 @@
 import config from "../config.js";
 import Func from "../lib/function.js";
+import uploadTele from "../lib/uploadTele.js";
 import fs from "fs";
 import chalk from "chalk";
 import axios from "axios";
@@ -826,6 +827,52 @@ _Silahkan balas pesan ini dan ketikkan angkanya yang ingin dipilih!_`.trim())
 ᴋᴇᴛᴇʀᴀɴɢᴀɴ: _${result[0].keterangan}_`.trim(), m)
 m.reply(result[0].audio, {asDocument: true, fileName: result[0].nama})
 }
+}
+break
+// <===== Category Tools =====>
+case 'qc': case 'quickchat': {
+let media = {}, reply
+if (m.hasQuotedMsg) {
+    if (m.quoted.hasMedia) {
+        let upload = await uploadTele(await m.quoted.downloadMedia())
+        media = { media: { url: upload } }
+    }
+    
+    if (m.quoted.hasQuotedMsg) {
+        reply = {
+            name: m.quoted.quoted.sender == m.sender ? "Anda" : await m.quoted.quoted.pushname,
+            text: m.quoted.quoted.body,
+            chatId: 5,
+            id: 5
+        }
+    }
+let jsonnya = {
+    type: "quoted",
+    format: "png",
+    backgroundColor: "#1b1e23",
+    messages: [
+        {
+            avatar: true,
+            from: {
+                id: 8,
+                name: await m.quoted.pushname,
+                photo: {
+                    url: await conn.profilePictureUrl(m.quoted.sender, "image").catch(() => "https://i0.wp.com/telegra.ph/file/134ccbbd0dfc434a910ab.png"),
+                }
+            },
+            ...media,
+            text: m.quoted.text,
+            replyMessage: { ...reply },
+        },
+    ],
+}
+const post = await axios.post("https://bot.lyo.su/quote/generate",
+jsonnya,{
+    headers: { "Content-Type": "application/json"},
+})
+let buffer = Buffer.from(post.data.result.image, "base64")
+conn.sendFile(m.from, buffer, new Date(), "", m, { asSticker: true, packPublish: "BerkahEsport.ID", packName: "Stiker dibuat oleh:" })
+} else throw (`Tolong reply pesanya!`)
 }
 break
 // <===== Category Owner =====>
