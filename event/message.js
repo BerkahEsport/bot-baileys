@@ -831,17 +831,17 @@ m.reply(result[0].audio, {asDocument: true, fileName: result[0].nama})
 break
 // <===== Category Tools =====>
 case 'qc': case 'quickchat': {
-    let skizo = Func.random(["doyansharing", "y6rsxtbase"])
+    let skizo = ["doyansharing", "y6rsxtbase"]
     let who = m.hasQuotedMsg ? m.quoted.sender : m.fromMe ? conn.user.jid : m.sender
     let name = await conn.getName(who)
     let text = m.hasQuotedMsg ? m.quoted.text : m.text
     var fakec
     let avatar = await conn.profilePictureUrl(m.sender, 'image').catch(_ => 'https://telegra.ph//file/c4044a0d3b4cc8b8dc2dd.jpg')
     try {
-        fakec = "https://mfarels.my.id/api/fakechat-wa?nama=" + encodeURIComponent(name) + "&text=" + encodeURIComponent(text) + "&no=" + encodeURIComponent(who.split("@")[0])
+        fakec = `https://skizo.tech/api/fakechat?text=${encodeURIComponent(text)}&username=${name}&avatar=${avatar}&apikey=${skizo[0]}`
     } catch (e) {
         try {
-            fakec = `https://skizo.tech/api/fakechat?text=${encodeURIComponent(text)}&username=${name}&avatar=${avatar}&apikey=${skizo}`
+            fakec = `https://skizo.tech/api/fakechat?text=${encodeURIComponent(text)}&username=${name}&avatar=${avatar}&apikey=${skizo[1]}`
         } catch (e) {
             await m.reply(e)
         }
