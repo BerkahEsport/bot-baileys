@@ -838,7 +838,7 @@ case 'qc': case 'quickchat': {
     var fakec
     let image = await conn.profilePictureUrl(who, 'image').catch(_ => 'https://telegra.ph//file/c4044a0d3b4cc8b8dc2dd.jpg')
     let data = await conn.getFile(image, true)
-    let avatar = await upload.UploadFileUgu(data)
+    let avatar = await upload(data)
     try {
         fakec = `https://skizo.tech/api/qc?text=${encodeURIComponent(text)}&username=${name}&avatar=${avatar}&apikey=${skizo[0]}`
     } catch (e) {
@@ -849,6 +849,7 @@ case 'qc': case 'quickchat': {
         }
     }
     m.reply(fakec, {asSticker: true})
+    console.log(avatar)
 }
 break
 // <===== Category Owner =====>
