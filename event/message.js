@@ -837,7 +837,7 @@ case 'qc': case 'quickchat': {
     let text = m.hasQuotedMsg ? m.quoted.text : m.text
     var fakec
     let image = await conn.profilePictureUrl(who, 'image').catch(_ => 'https://telegra.ph//file/c4044a0d3b4cc8b8dc2dd.jpg')
-    let avatar = await uploadTele(image)
+    let avatar = await uploadTele(await conn.getFile(image))
     try {
         fakec = `https://skizo.tech/api/qc?text=${encodeURIComponent(text)}&username=${name}&avatar=${avatar}&apikey=${skizo[0]}`
     } catch (e) {
