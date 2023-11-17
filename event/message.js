@@ -849,16 +849,31 @@ case 'qc': case 'quickchat': {
         }
     }
     m.reply(fakec, {asSticker: true})
-    console.log(avatar)
 }
 break
 // <===== Category Owner =====>
-case 'getcase':
+case 'cleartmp': {
+    const directory = "./tmp";
+
+    fs.readdir(directory, (err, files) => {
+      if (err) throw err;
+    
+      for (const file of files) {
+        fs.unlink(path.join(directory, file), err => {
+          if (err) throw err;
+        });
+      }
+    } )
+      conn.reply( m.from, "✔️ ʙᴇʀʜᴀꜱɪʟ ᴍᴇɴɢʜᴀᴘᴜꜱ ꜱᴇʟᴜʀᴜʜ ꜰɪʟᴇ ᴅɪ ᴅɪʀᴇᴋᴛᴏʀɪ ᴛᴍᴘ.", m )
+}
+break
+case 'getcase': {
 if (!m.isOwner) return m.reply("owner")
 const getCase = (cases) => {
 return "case"+`'${cases}'` + fs.readFileSync("./event/message.js").toString().split('case \''+cases+'\'')[1].split("break")[0]+"break"
 }
 m.reply(`${getCase(m.text)}`)
+}
 break
             default:
                 if (["bc"].some(a => m.body?.toLowerCase()?.startsWith(a)) && m.isOwner) {
