@@ -833,11 +833,10 @@ break
 case 'qc': case 'quickchat': {
     let skizo = ["doyansharing", "y6rsxtbase"]
     let who = m.hasQuotedMsg ? m.quoted.sender : m.fromMe ? conn.user.jid : m.sender
-    let name = await conn.getName(who)
+    let name = conn.getName(who)
     let text = m.hasQuotedMsg ? m.quoted.text : m.text
     var fakec
-    let image = await conn.profilePictureUrl(who, 'image').catch(_ => 'https://telegra.ph//file/c4044a0d3b4cc8b8dc2dd.jpg')
-    let avatar = await uploadTele((await fetch(image)).buffer())
+    let avatar = conn.profilePictureUrl(who, 'image').catch(_ => 'https://telegra.ph//file/c4044a0d3b4cc8b8dc2dd.jpg')
     try {
         fakec = `https://skizo.tech/api/qc?text=${encodeURIComponent(text)}&username=${name}&avatar=${avatar}&apikey=${skizo[0]}`
     } catch (e) {
