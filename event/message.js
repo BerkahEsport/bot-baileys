@@ -960,6 +960,6 @@ _Jika bot tidak merespon silahkan coba lagi nanti._
         m.react("❌")
         m.reply(format(e))
     } finally {
-        if (m.error == false) m.react("✅")
+        if (m?.error == false) m.react("✅")
     }
 }
