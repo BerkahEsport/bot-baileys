@@ -831,48 +831,22 @@ m.reply(result[0].audio, {asDocument: true, fileName: result[0].nama})
 break
 // <===== Category Tools =====>
 case 'qc': case 'quickchat': {
-let media = {}, reply
-if (m.hasQuotedMsg) {
-    if (m.quoted.hasMedia) {
-        let upload = await uploadTele(await m.quoted.downloadMedia())
-        media = { media: { url: upload } }
-    }
-    
-    if (m.quoted.hasQuotedMsg) {
-        reply = {
-            name: m.quoted.quoted.sender == m.sender ? "Anda" : await m.quoted.quoted.pushname,
-            text: m.quoted.quoted.body,
-            chatId: 5,
-            id: 5
+    let who = m.hasQuotedMsg ? m.mentions[0] : m.fromMe ? conn.user.jid : m.sender
+    let name = await conn.getName(who)
+    var fakec, text
+    let avatar = await conn.profilePictureUrl(m.sender, 'image').catch(_ => 'https://telegra.ph//file/c4044a0d3b4cc8b8dc2dd.jpg')
+    try {
+        fakec = "https://mfarels.my.id/api/fakechat-wa?nama=" + encodeURIComponent(name) + "&text=" + encodeURIComponent(text) + "&no=" + encodeURIComponent(who.split("@")[0])
+        text = m.hasQuotedMsg ? m.quoted.text : m.text
+    } catch (e) {
+        try {
+            fakec = `https://skizo.tech/api/fakechat?text=${encodeURIComponent(text)}&username=${name}&avatar=${avatar}&apikey=y6rsxtbase`
+            text = m.hasQuotedMsg ? m.quoted.text : m.text
+        } catch (e) {
+            await m.reply(e)
         }
     }
-let jsonnya = {
-    type: "quoted",
-    format: "png",
-    backgroundColor: "#1b1e23",
-    messages: [
-        {
-            avatar: true,
-            from: {
-                id: 8,
-                name: await m.quoted.pushname,
-                photo: {
-                    url: await conn.profilePictureUrl(m.quoted.sender, "image").catch(() => "https://i0.wp.com/telegra.ph/file/134ccbbd0dfc434a910ab.png"),
-                }
-            },
-            ...media,
-            text: m.quoted.text,
-            replyMessage: { ...reply },
-        },
-    ],
-}
-const post = await axios.post("https://bot.lyo.su/quote/generate",
-jsonnya,{
-    headers: { "Content-Type": "application/json"},
-})
-let buffer = Buffer.from(post.data.result.image, "base64")
-conn.sendFile(m.from, buffer, new Date(), "", m, { asSticker: true, packPublish: "BerkahEsport.ID", packName: "Stiker dibuat oleh:" })
-} else throw (`Tolong reply pesanya!`)
+    m.reply(fakec, {asSticker: true})
 }
 break
 // <===== Category Owner =====>

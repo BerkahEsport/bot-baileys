@@ -4,7 +4,7 @@ const menu = {
    main: ["menu", "simi", "profile", "speed", "owner", "ping", "quoted"],
    islam: ["alquran", "doa", "kisahnabi"],
    owner: ["cleartmp", "getfile", "eval", "exec", "mute", "public", "setprofile", "setname"],
-   convert: ["sticker", "toimage"],
+   convert: ["sticker", "toimage", "qc"],
    group: ["hidetag", "add", "welcome", "leaving", "setprofile", "setname", "linkgroup"],
    tool: ["fetch", "rvo", "ai"],
    download: ["yts", "ytv", "yta", "ig", "tt", "fb"]
