@@ -832,7 +832,7 @@ break
 // <===== Category Tools =====>
 case 'qc': case 'quickchat': {
     let skizo = Func.random(["doyansharing", "y6rsxtbase"])
-    let who = m.hasQuotedMsg ? m.mentions[0] : m.fromMe ? conn.user.jid : m.sender
+    let who = m.hasQuotedMsg ? m.quoted.sender : m.fromMe ? conn.user.jid : m.sender
     let name = await conn.getName(who)
     let text = m.hasQuotedMsg ? m.quoted.text : m.text
     var fakec
