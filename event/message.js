@@ -1,6 +1,5 @@
 import config from "../config.js";
 import Func from "../lib/function.js";
-import uploadTele from "../lib/uploadTele.js";
 import fs from "fs";
 import chalk from "chalk";
 import axios from "axios";
@@ -14,6 +13,7 @@ import { cpus as _cpus, totalmem, freemem } from "os";
 import os from "os";
 import { performance } from "perf_hooks";
 import { sizeFormatter } from "human-readable";
+import upload from "../lib/upload.js";
 export default async function Message(conn, m, message) {
     try {
         if (!m) return
@@ -836,7 +836,9 @@ case 'qc': case 'quickchat': {
     let name = conn.getName(who)
     let text = m.hasQuotedMsg ? m.quoted.text : m.text
     var fakec
-    let avatar = conn.profilePictureUrl(who, 'image').catch(_ => 'https://telegra.ph//file/c4044a0d3b4cc8b8dc2dd.jpg')
+    let image = conn.profilePictureUrl(who, 'image').catch(_ => 'https://telegra.ph//file/c4044a0d3b4cc8b8dc2dd.jpg')
+    let data = await conn.getFile(image, true)
+    let avatar = upload.UploadFileUgu(data)
     try {
         fakec = `https://skizo.tech/api/qc?text=${encodeURIComponent(text)}&username=${name}&avatar=${avatar}&apikey=${skizo[0]}`
     } catch (e) {
