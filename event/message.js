@@ -840,10 +840,10 @@ case 'qc': case 'quickchat': {
     let data = await conn.getFile(image, true)
     let avatar = await upload(data)
     try {
-        fakec = `https://skizo.tech/api/qc?text=${encodeURIComponent(text)}&username=${name}&avatar=${avatar}&apikey=${skizo[0]}`
+        fakec = `https://skizo.tech/api/qc?text=${encodeURIComponent(text)}&username=${name}&avatar=${avatar.url}&apikey=${skizo[0]}`
     } catch (e) {
         try {
-            fakec = `https://skizo.tech/api/qc?text=${encodeURIComponent(text)}&username=${name}&avatar=${avatar}&apikey=${skizo[1]}`
+            fakec = `https://skizo.tech/api/qc?text=${encodeURIComponent(text)}&username=${name}&avatar=${avatar.url}&apikey=${skizo[1]}`
         } catch (e) {
             await m.reply(e)
         }
