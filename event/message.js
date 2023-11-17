@@ -1,6 +1,7 @@
 import config from "../config.js";
 import Func from "../lib/function.js";
 import fs from "fs";
+import path from "path";
 import chalk from "chalk";
 import axios from "axios";
 import { getBinaryNodeChildren } from "@whiskeysockets/baileys";
