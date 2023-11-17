@@ -836,12 +836,13 @@ case 'qc': case 'quickchat': {
     let name = await conn.getName(who)
     let text = m.hasQuotedMsg ? m.quoted.text : m.text
     var fakec
-    let avatar = await conn.profilePictureUrl(m.sender, 'image').catch(_ => 'https://telegra.ph//file/c4044a0d3b4cc8b8dc2dd.jpg')
+    let image = await conn.profilePictureUrl(who, 'image').catch(_ => 'https://telegra.ph//file/c4044a0d3b4cc8b8dc2dd.jpg')
+    let avatar = await uploadTele(image)
     try {
-        fakec = `https://skizo.tech/api/fakechat?text=${encodeURIComponent(text)}&username=${name}&avatar=${avatar}&apikey=${skizo[0]}`
+        fakec = `https://skizo.tech/api/qc?text=${encodeURIComponent(text)}&username=${name}&avatar=${avatar}&apikey=${skizo[0]}`
     } catch (e) {
         try {
-            fakec = `https://skizo.tech/api/fakechat?text=${encodeURIComponent(text)}&username=${name}&avatar=${avatar}&apikey=${skizo[1]}`
+            fakec = `https://skizo.tech/api/qc?text=${encodeURIComponent(text)}&username=${name}&avatar=${avatar}&apikey=${skizo[1]}`
         } catch (e) {
             await m.reply(e)
         }
