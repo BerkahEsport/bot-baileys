@@ -51,10 +51,6 @@ export default async function Message(conn, m, message) {
             if (sender.simi == true) m.reply("Waktu auto Simi telah berakhir! >_<");
               sender.simi = false
               }, (10 * 60000));
-          if (/out|Out/i.test(m.text)) {
-              sender.simi = false
-              return m.reply("Fitur auto simi berhasil dimatikan.")
-          }
           if (!m.text) return
           try {
               let api = await simtalk(m.text);
@@ -64,6 +60,10 @@ export default async function Message(conn, m, message) {
               m.reply("Simi tidak mengerti, coba tanyakan yang lainya. 🙁")
             }
       }
+      if (/out|Out/i.test(m.text)) {
+        sender.simi = false
+        return m.reply("Fitur auto simi berhasil dimatikan.")
+    }
 // QURAN
 conn.quran = conn.quran ? conn.quran : {}
 if (m.from in conn.quran) {
